@@ -15,6 +15,34 @@ header {
     grid-area: header;
     background-color: var(--background-primary-700);   
 }
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    color: white;
+}
+
+.logo {
+    font-weight: 400;
+}
+
+.logo > h2 {
+    display: inline-block;
+    padding: 2px;
+    background-color: var(--background-primary-50);
+    color: var(--text-blue);
+}
+
+.icon-search{
+    display: flex;
+    gap: 0.8rem;
+}
 
 aside {
     grid-area: aside;
