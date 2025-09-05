@@ -6,20 +6,37 @@
         "header header "
         "aside main "
         "footer footer"  ;
-    grid-template-columns: 70px 1fr;
-    grid-template-rows: 70px 1fr 70px;
+    grid-template-columns: 48px 1fr;
+    grid-template-rows: 48px 1fr 36px;
     height: 100vh;
 }
 
 header {
     grid-area: header;
-    background-color: var(--background-primary-700);   
+    background-color: var(--background-primary-700); 
+    display: flex;  
 }
+
+.mic-icon {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid var(--background-primary);
+    border-bottom: 1px solid var(--background-primary);
+    width: 48px;
+    min-height: 48px;
+    max-width: 48px;
+    flex-shrink: 0;
+}
+
 .header-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    flex: 1;
+    margin:0 2rem;
 }
 .logo {
     display: flex;
@@ -27,27 +44,51 @@ header {
     gap: 2rem;
     color: white;
 }
-
-.logo {
+.logo > h1 {
+    
+    font-family: Inter;
     font-weight: 400;
+    font-style: Regular;
+    font-size: 16px;
+    line-height: 100%;
+    letter-spacing: 0%;
 }
 
 .logo > h2 {
     display: inline-block;
-    padding: 2px;
+    padding: 2px 6px;
+    border-radius: 3px;
     background-color: var(--background-primary-50);
     color: var(--text-blue);
+    font-weight: 700;
+    font-size: 9px;
+    line-height: 14px;
 }
 
 .icon-search{
     display: flex;
-    gap: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
 }
 
 aside {
     grid-area: aside;
-    background-color: var(--background-primary-700);   
+    background-color: var(--background-primary-700);  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0;
 }
+
+.aside-icons {
+    display: flex;   
+    flex-direction: column;
+    gap: 24px;
+}
+
+
 main {
     grid-area: main;
 
@@ -55,5 +96,31 @@ main {
 
 footer {
     grid-area:footer;
-    background-color: var(--background-primary-200);   
+    background-color: var(--background-primary-100);      
+    color: var(--background-primary-700);
+}
+
+.footer-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;       
+    margin-left: 14px; 
+}
+
+.footer-wrapper > div {
+    display: flex;
+    align-items: center;
+    gap: 11px;      
+    margin-top: 8px;
+}
+
+.footer-wrapper > div h2 {
+    width: 144px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+    transform: rotate(0deg); 
 }

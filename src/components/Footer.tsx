@@ -1,9 +1,21 @@
 import React from 'react';
+import Icon from '../utilities/Icon';
 
 
 const Footer: React.FC = ()=> {
   return (
-    <div>Footer</div>
+    <footer >
+      <div className='footer-wrapper'>
+        <div>
+            <Icon iconName='building' />
+            <p>Sky World Limited</p>
+        </div>
+        <div>
+          <Icon iconName='user' />
+          <p>Jane Doe</p>
+        </div>
+        </div>
+    </footer>
   );
 };
 

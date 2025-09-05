@@ -4,6 +4,9 @@ import Icon from '../utilities/Icon';
 const Navbar = ()=> {
   return (
     <header >
+        <div className='mic-icon'>
+          <Icon iconName='microphone'/>
+        </div>
       <div className='header-wrapper'>
         <div className='logo'>
           <h1>Help Desk - Sky World Limited</h1>
