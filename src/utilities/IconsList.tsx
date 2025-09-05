@@ -1,5 +1,4 @@
 
-import Reacct from "react";
 
 
 interface IconBaseProps {
