@@ -1,0 +1,31 @@
+@import url(./variables.css);
+
+.body-wrapper {
+    display: grid;
+    grid-template-areas:
+        "header header "
+        "aside main "
+        "footer footer"  ;
+    grid-template-columns: 70px 1fr;
+    grid-template-rows: 70px 1fr 70px;
+    height: 100vh;
+}
+
+header {
+    grid-area: header;
+    background-color: var(--background-primary-700);   
+}
+
+aside {
+    grid-area: aside;
+    background-color: var(--background-primary-700);   
+}
+main {
+    grid-area: main;
+
+}
+
+footer {
+    grid-area:footer;
+    background-color: var(--background-primary-200);   
+}
