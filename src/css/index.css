@@ -1,0 +1,23 @@
+@import url(./variables.css);
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background-color: var(--background-primary);
+}
+
+header{
+  background-color: var(--background-primary-700);
+  display: flex;
+}
+
+.icon-search{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
