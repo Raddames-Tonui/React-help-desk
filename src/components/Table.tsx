@@ -61,7 +61,7 @@ const Table: React.FC = () => {
     ticket_subject: {
       caption: "Ticket Subject",
       render: (row) => (
-        <a href="#" style={{ color: "blue", textDecoration: "underline" }}>
+        <a href="#" style={{ color: "#144D5A", textDecoration: "underline" }}>
           {row.ticket_subject}
         </a>
       ),
@@ -104,7 +104,6 @@ const Table: React.FC = () => {
   );
 
   return (
-    // <table style={{ borderCollapse: "collapse", width: "100%" }}>
     <table>
       <thead>
         <tr>
@@ -115,9 +114,8 @@ const Table: React.FC = () => {
                 style={{
                   textAlign: col.align,
                   width: col.size,
-                  border: "1px solid #ddd",
+                //   border: "1px solid #ddd",
                   padding: "8px",
-                  background: "#f9f9f9",
                 }}
               >
                 {col.caption}
@@ -136,7 +134,7 @@ const Table: React.FC = () => {
                   style={{
                     textAlign: col.align,
                     width: col.size,
-                    border: "1px solid #ddd",
+                    // border: "1px solid #ddd",
                     padding: "8px",
                   }}
                 >
