@@ -1,5 +1,5 @@
 {
-  "name": "dynamics",
+  "name": "React - typescript task",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,7 +15,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0"
   },
-  "Dependencies": {
+  "devDependencies": {
     "@eslint/js": "^9.3.0",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
