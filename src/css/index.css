@@ -16,3 +16,15 @@ body {
 }
 
 
+
+
+
+/* Hide scrollbars but keep scrolling */
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}

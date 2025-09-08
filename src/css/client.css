@@ -1,0 +1,20 @@
+.tickets-page-header {
+  background-color: var(--bg-secondary);
+  color: var(--primary-700);
+  border-bottom: 1px solid var(--border-color-default);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 1rem;
+}
+
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+
+

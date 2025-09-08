@@ -1,0 +1,268 @@
+@import url(./fonts.css);
+
+:root {
+    --bg-default: #ffffff; 
+    --bg-secondary: #E0E9EB;
+        /* Form Colors */
+    --form-bg-default: #ffff;
+    --form-bg-focus: #fff5d1;
+    --form-bg-error: #ffcccb;
+    --form-bg-valid: #d9ffd9;
+    
+        /* Border Colors */
+    --form-border-default: #ccc;
+    --form-border-focus: #4cb9d3;
+    --form-border-valid: #35dc3d;
+    --form-border-error: #dc3545;
+
+        /* Focus Colors */
+    --form-focus-shadow: rgba(0,122,204,0.2);
+    --form-error-shadow: rgba(220,53,69,0.2);
+
+        /* Required Field Colors */
+    --form-required-color: #dc3545;
+    --form-required-bg: #fff5f5;
+
+        /* Layout */
+    --form-flex-gap: 5px;
+    --form-input-height: 40px;
+    --form-input-padding: 8px 12px;
+    --form-border-radius: 4px;
+    --form-font-size: 14px;
+}
+
+.form-wrapper {
+    margin: 15px 0 0 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--form-flex-gap);
+    /* align-items: start; */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    max-width: 716px;
+}
+
+.form-group > label {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600; 
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0; 
+  color: #333;
+}
+
+/* default field styling */
+.form-group > input[type="text"],
+.form-group > textarea{
+    width: 100%;
+    background: var(--form-bg-default);
+    border: 1px solid var(--form-border-default);
+    border-radius: var(--form-border-radius);
+    padding: var(--form-input-padding);
+    font-size: var(--form-font-size);
+    min-height: var(--form-input-height);
+    box-sizing: border-box;
+}
+
+
+/* Focus state */
+.form-group > input[type="text"]:focus,
+.form-group > textarea:focus {
+    outline: none;
+    /* background: var(--form-bg-focus); */
+    border-color: var(--form-border-focus);
+    /* box-shadow: 0 0 0 3px var(--form-focus-shadow); */
+}
+
+
+/* required field styling */
+.form-group > input:required,
+.form-group > textarea:required {
+    background: var(--form-bg-default);
+    /* border-color: 1px solid var(--form-required-color); */
+}
+
+/* Valid required fields (when filled) */
+.form-group > input:required:valid,
+.form-group > textarea:required:valid {
+    border-color: var(--form-border-valid);
+    background-color: var(--form-bg-valid);
+}
+
+/* Invalid required fields */
+/* .form-group > input:required:invalid:not(:placeholder-shown),
+.form-group > textarea:required:invalid:not(:placeholder-shown) {
+    border-color: var(--form-required-color);
+    background: var(--form-bg-default);
+} */
+
+
+/* Error focus states */
+.form-group > input[type="text"].has-error:focus,
+.form-group > textarea.has-error:focus {
+    box-shadow: 0 0 0 3px var(--form-error-shadow);
+}
+
+.form-group> textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/*  Description Field  */
+.description-field {
+  border: 1px solid var(--form-border-default);
+  border-bottom: none;
+  border-radius: var(--form-border-radius);
+  overflow: hidden;
+  background: var(--form-bg-default);
+  display: flex;
+  flex-direction: column;
+}
+
+/*  Toolbar  */
+.text-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px;
+  /* border-bottom: 1px solid #dcdcdc; */
+  background: #f9f9f9;
+}
+
+.text-editor-toolbar button {
+  background: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.text-editor-toolbar button:hover {
+  background: #f0f0f0;
+  border-color: #c0c0c0;
+}
+
+.text-editor-toolbar button.active {
+  background: #007acc;
+  color: #fff;
+  border-color: #007acc;
+}
+
+/* Toolbar separator */
+.text-editor-toolbar .separator {
+  width: 1px;
+  background: #dcdcdc;
+  margin: 0 6px;
+}
+
+/*  Textarea  */
+.description-field textarea {
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 150px;
+  outline: none;
+}
+
+.description-field textarea:focus {
+  background: #fff;
+}
+
+
+
+
+/* File Upload Section */
+input[type="file"] {
+  margin-top: 8px;
+}
+
+.custom-file-label {
+    display: inline-block;
+    padding: var(--form-input-padding);
+    background: var(--form-bg-default);
+    border: 1px solid var(--form-border-default);
+    border-radius: var(--form-border-radius);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.custom-file-label:hover {
+  border: 1px solid var(--form-border-focus);
+}
+
+.file-note {
+  font-size: 12px;
+  color: #666;
+  margin: 8px 0 16px 0;
+  font-style: italic;
+}
+
+.uploaded-files {
+  margin-top: 8px;
+}
+
+.uploaded-files a {
+  font-size: 14px;
+  color: #007acc;
+  text-decoration: none;
+  margin-right: 8px;
+}
+
+.uploaded-files a:hover {
+  text-decoration: underline;
+}
+
+.uploaded-files .remove {
+  color: #dc3545;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* Buttons */
+.form-actions {
+    background: var(--bg-secondary);    
+    border-top: 1px solid var(--form-border-default);
+    padding: 10px 1rem;
+    display: flex;
+    gap: 12px;
+}
+
+.form-actions button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-actions .primary, .secondary {
+  background: var(--primary-700);
+  color: #fff;
+}
+
+.form-actions .primary:hover, .form-actions .secondary:hover {
+  background: var(--primary-800);
+}
+
+
+.form-actions .cancel {
+  background: var(--form-bg-default);
+  color: #dc3545;
+  border: 1px solid #dc3545;
+}
+
+.form-actions .cancel:hover {
+  background: #ffe6e6;
+}
