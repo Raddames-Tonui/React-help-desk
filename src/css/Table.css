@@ -1,0 +1,13 @@
+:root{
+    --bg-color-primary: #ffffff ;
+
+    /* Layout */
+
+}
+
+table{
+    background-color:var(--bg-color-primary) ;
+    margin: 1rem;
+    border-collapse: collapse;
+    width: 100%;
+}

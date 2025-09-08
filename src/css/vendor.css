@@ -104,3 +104,10 @@
 .tickets-table {
   flex: 1;
 }
+
+
+
+.table-wrapper{
+  display: flex;
+  justify-content: center;
+}

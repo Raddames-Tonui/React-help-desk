@@ -1,5 +1,6 @@
 import React from "react";
 import "../css/vendor.css"
+import Table from "../components/Table";
 
 
 const Vendor: React.FC = () => {
@@ -45,6 +46,10 @@ const Vendor: React.FC = () => {
         <div className="tickets-page-header">
           <h3>All Tickets</h3>
           <button >Add Ticket</button>
+        </div>
+        
+        <div className="table-wrapper">
+          <Table />
         </div>
       </div>
     </section>
