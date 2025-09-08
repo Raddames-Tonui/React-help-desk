@@ -68,7 +68,6 @@ const Client: React.FC = () => {
       </div>
 
       <div className="form-actions">
-        {/* Notice: we use `form="ticket-form"` not `id` */}
         <button type="submit" className="primary" form="ticket-form">Create</button>
         <button type="submit" className="secondary" form="ticket-form">Create and add another</button>
         <button type="reset" className="cancel" form="ticket-form">Cancel</button>

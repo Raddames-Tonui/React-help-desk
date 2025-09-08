@@ -5,9 +5,16 @@
   src: url('/fonts/OpenSans-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;
+  font-display: swap;  /*good for performance (shows fallback font until custom font loads).*/
 }
 
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/fonts/OpenSans-SemiBold.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: 'Open Sans';
   src: url('/fonts/OpenSans-SemiBold.ttf') format('truetype');

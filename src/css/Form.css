@@ -1,4 +1,4 @@
-@import url(./fonts.css);
+/* @import url(./fonts.css); */
 
 :root {
     --bg-default: #ffffff; 
@@ -13,21 +13,21 @@
     --form-border-default: #ccc;
     --form-border-focus: #4cb9d3;
     --form-border-valid: #35dc3d;
-    --form-border-error: #dc3545;
+    --form-border-error: #FD7E14;
 
         /* Focus Colors */
     --form-focus-shadow: rgba(0,122,204,0.2);
     --form-error-shadow: rgba(220,53,69,0.2);
 
         /* Required Field Colors */
-    --form-required-color: #dc3545;
+    --form-required-color: #FD7E14;
     --form-required-bg: #fff5f5;
 
         /* Layout */
-    --form-flex-gap: 5px;
+    --form-flex-gap: 12px;
     --form-input-height: 40px;
     --form-input-padding: 8px 12px;
-    --form-border-radius: 4px;
+    --form-border-radius: 3px;
     --form-font-size: 14px;
 }
 
@@ -39,20 +39,19 @@ form {
     display: flex;
     flex-direction: column;
     gap: var(--form-flex-gap);
-    /* align-items: start; */
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
     max-width: 716px;
+    gap: 5px;
 }
 
 .form-group > label {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 600; 
-  font-size: 14px;
-  line-height: 18px;
+  font-weight: 500;      
+  font-size: 1rem;     
+  line-height: 1.125rem;  
   letter-spacing: 0; 
   color: #333;
 }
@@ -259,8 +258,8 @@ input[type="file"] {
 
 .form-actions .cancel {
   background: var(--form-bg-default);
-  color: #dc3545;
-  border: 1px solid #dc3545;
+  color: #FD7E14;
+  border: 1px solid #FD7E14;
 }
 
 .form-actions .cancel:hover {
