@@ -1,8 +1,6 @@
 import React from "react";
-import "../css/vendor.css"
-import Table from "../components/Table";
-import type { ColumnProps } from "../components/Table";
-
+import "../css/vendor.css";
+import Table, { ColumnDef } from "../components/Table";
 
 interface Ticket {
   ticket_id: number;
@@ -16,7 +14,7 @@ const tickets: Ticket[] = [
   {
     ticket_id: 1,
     ticket_subject: "Addition of Guarantors to Loan Module",
-    ticket_status: "Open",
+    ticket_status: "Closed",
     source: "Email",
     date_requested: "2024-05-06 12:00:00",
   },
@@ -30,7 +28,7 @@ const tickets: Ticket[] = [
   {
     ticket_id: 3,
     ticket_subject: "Portal Rights Requisition",
-    ticket_status: "Closed",
+    ticket_status: "Open",
     source: "Email",
     date_requested: "2024-05-08 12:00:00",
   },
@@ -43,21 +41,53 @@ const tickets: Ticket[] = [
   },
 ];
 
-const columns: ColumnProps<Ticket>[] = [
-  { id: "ticket_id", caption: "Ticket ID", size: 80 },
+
+const ticketColumns: ColumnDef<Ticket>[] = [
   {
-    id: "ticket_subject",
-    caption: "Ticket Subject",
-    size: 300,
-    render: (row) => (
+    accessor: "ticket_id",
+    header: "Ticket ID",
+    width: 80,
+    align: "right",
+    sortable: true,
+  },
+  {
+    accessor: "ticket_subject",
+    header: "Subject",
+    width: 300,
+    render: ({ value }) => (
       <a href="#" style={{ color: "#144D5A", textDecoration: "underline" }}>
-        {row.ticket_subject}
+        {String(value)}
       </a>
     ),
   },
-  { id: "ticket_status", caption: "Ticket Status", size: 150 },
-  { id: "source", caption: "Source", size: 200 },
-  { id: "date_requested", caption: "Date Requested", size: 200 },
+  {
+    accessor: "ticket_status",
+    header: "Status",
+    width: 150,
+    render: ({ value }) => {
+      const status = String(value);
+      const color =
+        status === "Open"
+          ? "green"
+          : status === "In Progress"
+          ? "orange"
+          : status === "Resolved"
+          ? "blue"
+          : "gray";
+      return <span style={{ color }}>{status}</span>;
+    },
+  },
+  {
+    accessor: "source",
+    header: "Source",
+    width: 200,
+  },
+  {
+    accessor: "date_requested",
+    header: "Date Requested",
+    width: 200,
+    dataType: "date",
+  },
 ];
 
 
@@ -66,48 +96,52 @@ const Vendor: React.FC = () => {
     <section className="tickets-page">
       <nav className="tickets-nav">
         <div className="tickets-page-header">
-            <h3>All Tickets</h3>
+          <h3>All Tickets</h3>
         </div>
-         <ul>
+        <ul>
           <li className="all active">
             <span className="label">All</span>
-            <span className="count">0</span>
+            <span className="count">{tickets.length}</span>
           </li>
           <li className="open">
             <span className="label">Open</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) => t.ticket_status === "Open").length}
+            </span>
           </li>
           <li className="progress">
             <span className="label">In Progress</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) => t.ticket_status === "In Progress").length}
+            </span>
           </li>
           <li className="resolved">
             <span className="label">Resolved</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) => t.ticket_status === "Resolved").length}
+            </span>
           </li>
           <li className="closed">
             <span className="label">Closed</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) => t.ticket_status === "Closed").length}
+            </span>
           </li>
-          <li className="dropped">
-            <span className="label">Dropped</span>
-            <span className="count">0</span>
-          </li>
-          <li className="hold">
-            <span className="label">On Hold</span>
-            <span className="count">0</span>
-          </li>
-    </ul>
+        </ul>
       </nav>
 
       <div className="tickets-table">
         <div className="tickets-page-header">
           <h3>All Tickets</h3>
-          <button >Add Ticket</button>
+          <button>Add Ticket</button>
         </div>
-        
+
         <div className="table-wrapper">
-          <Table columns={columns} data={tickets}/>
+          <Table<Ticket>
+            data={tickets}
+            columns={ticketColumns}
+            rowKey={(row) => row.ticket_id}
+          />
         </div>
       </div>
     </section>
