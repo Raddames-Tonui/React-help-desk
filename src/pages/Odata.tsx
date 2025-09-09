@@ -1,10 +1,8 @@
 import React from 'react';
 
-interface Props {
-  
-}
 
-const Odata: React.FC<Props> = (props) => {
+
+const Odata: React.FC = () => {
   return (
     <div>Odata</div>
   );
