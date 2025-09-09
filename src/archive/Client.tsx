@@ -1,36 +1,26 @@
-// src/pages/Client.tsx
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "../css/client.css";
 import "../css/Form.css";
-
-import Quill, { DeltaStatic } from "quill";
-import Editor from "../components/Editor"; 
+import ReactQuill from "react-quill";
+// import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 
+
+
 const Client: React.FC = () => {
-  const [range, setRange] = useState<any>();
-  const [lastChange, setLastChange] = useState<any>();
-
-  const quillRef = useRef<Quill | null>(null);
-
-  const Delta = Quill.import("delta") as typeof DeltaStatic;
-
-  const initialValue = new Delta()
-    .insert("")
-    .insert("\n", { header: 1 })
-    .insert("\n");
-
-    const [files, setFiles] = useState<File[]>([]);
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const selectedFiles = Array.from(e.target.files);
-        setFiles(selectedFiles);
-      }
-    };
-
-    const removefiles = (index: number) => {
-      setFiles((prevFile) => prevFile.filter((_, i) => i !== index));
+  const [value, setValue] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFiles = Array.from(e.target.files);
+      setFiles(selectedFiles);
     }
+  };
+
+  const removefiles = (index: number) => {
+    setFiles((prevFile) => prevFile.filter((_, i) => i !== index));
+  }
+
   return (
     <section>
       <div className="tickets-page-header">
@@ -57,12 +47,29 @@ const Client: React.FC = () => {
 
           <div className="form-group">
             <label htmlFor="description">Description</label>
-            <Editor
-              ref={quillRef}
-              defaultValue={initialValue}
-              onSelectionChange={setRange}
-              onTextChange={setLastChange}
-            />
+            {/* <div className="description-field">
+              <div className="text-editor-toolbar">
+                <button type="button"><b>B</b></button>
+                <button type="button"><i>I</i></button>
+                <button type="button">U</button>
+                <span className="separator"></span>
+                <button type="button">H1</button>
+                <button type="button">H2</button>
+                <button type="button">H3</button>
+                <button type="button">H4</button>
+                <span className="separator"></span>
+                <button type="button">•</button>
+                <button type="button">1.</button>
+                <span className="separator"></span>
+                <button type="button">⎘</button> 
+                <button type="button">⤴</button>
+                <button type="button">“ ”</button>
+                <button type="button">≡</button>
+              </div>
+            </div> */}
+                  <ReactQuill theme="snow" value={value} onChange={setValue} />
+
+            <textarea name="description" id="description" rows={8} required></textarea>
           </div>
 
           <div className="form-group">

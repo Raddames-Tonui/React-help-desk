@@ -1,9 +1,6 @@
 :root{
     --bg-color-primary: #ffffff ;
-    /* Layout */
-    --color-header: #484F56;
-
-    
+    --color-header: #484F56;   
 }
 
 table{

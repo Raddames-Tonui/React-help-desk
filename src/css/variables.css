@@ -1,6 +1,6 @@
 :root {
   --bg-default: #ffffff; 
-  --bg-secondary: #E0E9EB;
+  --bg-secondary: #F5F7F9;
 
   --primary-50: #F7FCFD;
   --primary-100: #E0E9EB;
@@ -14,5 +14,4 @@
   --primary-900: #001419;
 
   --text-blue: #228BE6;
-
 }

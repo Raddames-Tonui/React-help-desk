@@ -29,13 +29,27 @@ const tickets: Ticket[] = [
   },
   {
     ticket_id: 3,
+    ticket_subject: " Password",
+    ticket_status: "Open",
+    source: "Email",
+    date_requested: "2024-05-07 12:00:00",
+  },
+  {
+    ticket_id: 4,
+    ticket_subject: "Reset Password",
+    ticket_status: "Resolved",
+    source: "Email",
+    date_requested: "2024-05-07 12:00:00",
+  },
+  {
+    ticket_id: 5,
     ticket_subject: "Portal Rights Requisition",
     ticket_status: "Closed",
     source: "Email",
     date_requested: "2024-05-08 12:00:00",
   },
   {
-    ticket_id: 4,
+    ticket_id: 6,
     ticket_subject: "Addition of SHA Insurance",
     ticket_status: "In Progress",
     source: "Help Desk System",
@@ -49,13 +63,29 @@ const columns: ColumnProps<Ticket>[] = [
     id: "ticket_subject",
     caption: "Ticket Subject",
     size: 300,
-    render: (row) => (
-      <a href="#" style={{ color: "#144D5A", textDecoration: "underline" }}>
-        {row.ticket_subject}
+    render: (row, value) => (
+      <a href={`/tickets/${row.ticket_id}`} style={{ color: "#144D5A", textDecoration: "underline" }}>
+        {value}
       </a>
     ),
   },
-  { id: "ticket_status", caption: "Ticket Status", size: 150 },
+  {
+    id: "ticket_status",
+    caption: "Ticket Status",
+    size: 150,
+    render: (row, value) => {
+      const status = String(value);
+      const color =
+        status === "Open"
+          ? "green"
+          : status === "In Progress"
+          ? "orange"
+          : status === "Resolved"
+          ? "blue"
+          : "gray";
+      return <span style={{ color }}>{status}</span>;
+    },
+  },
   { id: "source", caption: "Source", size: 200 },
   { id: "date_requested", caption: "Date Requested", size: 200 },
 ];
@@ -71,31 +101,43 @@ const Vendor: React.FC = () => {
          <ul>
           <li className="all active">
             <span className="label">All</span>
-            <span className="count">0</span>
+            <span className="count">{tickets.length}</span>
           </li>
           <li className="open">
             <span className="label">Open</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) => t.ticket_status === "Open").length}
+            </span>
           </li>
           <li className="progress">
             <span className="label">In Progress</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) => t.ticket_status == "In Progress").length}
+            </span>
           </li>
           <li className="resolved">
             <span className="label">Resolved</span>
-            <span className="count">0</span>
+            <span className="count">
+              {tickets.filter((t) =>t.ticket_status === "Resolved").length}
+            </span>
           </li>
           <li className="closed">
             <span className="label">Closed</span>
-            <span className="count">0</span>
+            <span className="count">
+                {tickets.filter((t) =>t.ticket_status === "Closed").length}
+            </span>
           </li>
           <li className="dropped">
             <span className="label">Dropped</span>
-            <span className="count">0</span>
+            <span className="count">
+               {tickets.filter((t) =>t.ticket_status === "Dropped").length}
+            </span>
           </li>
           <li className="hold">
             <span className="label">On Hold</span>
-            <span className="count">0</span>
+            <span className="count">
+               {tickets.filter((t) =>t.ticket_status === "On Hold").length}
+            </span>
           </li>
     </ul>
       </nav>
