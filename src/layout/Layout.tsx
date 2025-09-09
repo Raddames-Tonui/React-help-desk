@@ -8,11 +8,6 @@ import "../css/layout.css"
 function Layout() {
   return (
     <div className="body-wrapper">
-        {/* <nav>
-          <Link to="/">Home</Link> |{" "}
-          <Link to="/vendor">About</Link> |{" "}
-          <Link to="/Client">Dashboard</Link>
-        </nav> */}
       <Navbar />
       <Sidebar/>
 

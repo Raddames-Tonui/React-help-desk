@@ -40,7 +40,8 @@
   color: #ffffff;
   padding: 10px; 
   width: 6.875rem;           
-  border-radius: 0.25rem;   
+  border-radius: 0.25rem;  
+  border: none; 
 }
 
 .tickets-nav {

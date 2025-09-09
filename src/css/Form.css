@@ -180,7 +180,7 @@ form {
 
 
 
-/* File Upload Section */
+/* File Upload*/
 input[type="file"] {
   margin-top: 8px;
 }
@@ -226,6 +226,22 @@ input[type="file"] {
   font-weight: bold;
   cursor: pointer;
   margin-left: 8px;
+}
+
+.file-list{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom:1rem ;
+}
+
+.file-item {
+  display:flex; 
+  flex-direction: row;
+  gap: 1rem;
+}
+.file-item > a {
+  color: #1C7ED6;
 }
 
 /* Buttons */
