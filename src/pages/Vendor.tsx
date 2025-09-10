@@ -73,7 +73,7 @@ const columns: ColumnProps<Ticket>[] = [
     id: "ticket_status",
     caption: "Ticket Status",
     size: 150,
-    render: (row, value) => {
+    render: ( value) => {
       const status = String(value);
       const color =
         status === "Open"

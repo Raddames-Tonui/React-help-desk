@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
-import Table, { ColumnProps } from "../components/Table"; 
+import Table from "../components/Table"; 
+import type { ColumnProps } from "../components/Table"; 
 import "../css/Table.css"
 import Loader from "../components/Loader";
 
@@ -90,7 +91,7 @@ const Odata: React.FC = () => {
       id: "Emails",
       caption: "Emails",
       size: 250,
-      render: (row, value) => (Array.isArray(value) ? value.join(" ") : "—"),
+      render: (value) => (Array.isArray(value) ? value.join(" ") : "—"),
     },
     {
       id: "AddressInfo",
