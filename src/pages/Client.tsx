@@ -1,6 +1,4 @@
-// src/pages/Client.tsx
 import React, { useRef, useState } from "react";
-import "../css/client.css";
 import "../css/Form.css";
 
 import Quill, { DeltaStatic } from "quill";

@@ -16,6 +16,32 @@ body {
 }
 
 
+.home-page{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: var(--primary-50);
+}
+
+
+.home-page ul{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-decoration: none;
+    list-style: none;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 
 
 

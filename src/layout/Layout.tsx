@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 
 import "../css/layout.css"
 
+
 function Layout() {
   return (
     <div className="body-wrapper">

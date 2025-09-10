@@ -5,7 +5,7 @@
   src: url('/fonts/OpenSans-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
-  font-display: swap;  /*good for performance (shows fallback font until custom font loads).*/
+  font-display: swap;  
 }
 
 @font-face {

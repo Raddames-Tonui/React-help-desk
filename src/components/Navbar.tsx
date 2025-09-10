@@ -1,7 +1,10 @@
 import { useLocation } from "react-router-dom";
 import Icon from "../utilities/Icon";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [selectedValue, setSelectedValue]  = useState("default")
+
   const location = useLocation();
   const path = location.pathname.toLowerCase();
 
@@ -23,8 +26,8 @@ const Navbar = () => {
         <div className="icon-search">
           <Icon iconName="add" />
           <Icon iconName="search" />
-          <select name="search" id="select-institution">
-            <option value="" disabled selected>
+          <select name="search" id="select-institution" value={selectedValue} onChange={e => setSelectedValue(e.target.value)}>
+            <option value="default" disabled >
               Select Institution
             </option>
             <option value="apstar">Apstar SACCO Limited</option>
