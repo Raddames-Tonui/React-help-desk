@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import "../css/client.css";
 import "../css/Form.css";
-import ReactQuill from "react-quill";
-// import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-
-
+import Editor from "./Editor";
 
 const Client: React.FC = () => {
-  const [value, setValue] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
@@ -19,7 +15,7 @@ const Client: React.FC = () => {
 
   const removefiles = (index: number) => {
     setFiles((prevFile) => prevFile.filter((_, i) => i !== index));
-  }
+  };
 
   return (
     <section>
@@ -29,7 +25,6 @@ const Client: React.FC = () => {
 
       <div className="form-wrapper">
         <form className="form" id="ticket-form">
-
           <div className="form-group">
             <label htmlFor="main-category">Main Category</label>
             <input type="text" id="main-category" name="main-category" required />
@@ -47,41 +42,22 @@ const Client: React.FC = () => {
 
           <div className="form-group">
             <label htmlFor="description">Description</label>
-            {/* <div className="description-field">
-              <div className="text-editor-toolbar">
-                <button type="button"><b>B</b></button>
-                <button type="button"><i>I</i></button>
-                <button type="button">U</button>
-                <span className="separator"></span>
-                <button type="button">H1</button>
-                <button type="button">H2</button>
-                <button type="button">H3</button>
-                <button type="button">H4</button>
-                <span className="separator"></span>
-                <button type="button">•</button>
-                <button type="button">1.</button>
-                <span className="separator"></span>
-                <button type="button">⎘</button> 
-                <button type="button">⤴</button>
-                <button type="button">“ ”</button>
-                <button type="button">≡</button>
-              </div>
-            </div> */}
-                  <ReactQuill theme="snow" value={value} onChange={setValue} />
-
-            <textarea name="description" id="description" rows={8} required></textarea>
+            <Editor name="description" placeholder="Enter description..." />
           </div>
 
           <div className="form-group">
             <label htmlFor="attachments">Attachments</label>
             <div>
-              <input type="file"
+              <input
+                type="file"
                 id="file-upload"
                 style={{ display: "none" }}
                 multiple
                 onChange={handleFileChange}
               />
-              <label htmlFor="file-upload" className="custom-file-label">Select File(s)</label>
+              <label htmlFor="file-upload" className="custom-file-label">
+                Select File(s)
+              </label>
               <p className="file-note">
                 Allowed file extensions: <strong>.jpg, .jpeg, .pdf, .png </strong> <br />
                 Maximum File Size: <strong> 2MB </strong> <br />
@@ -89,20 +65,12 @@ const Client: React.FC = () => {
               </p>
               <div className="file-list">
                 {files.map((file, index) => (
-                  <div key={index} className="file-item" >
-                    <span className="file-icon">
-                      <svg width="16" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2.99931 15.4883C2.24908 15.4883 1.52877 15.2076 0.95469 14.6881C-0.318181 13.5336 -0.318181 11.6558 0.954396 10.5021L10.8796 0.973574C12.4282 -0.428676 14.8003 -0.302676 16.5314 1.26432C17.307 1.96682 17.7423 2.97957 17.726 4.04407C17.7096 5.09734 17.2545 6.10532 16.4766 6.80982L8.97543 14.0293C8.76665 14.2316 8.41656 14.2408 8.19369 14.0511C7.97136 13.8611 7.96058 13.5441 8.17019 13.3426L15.6827 6.11207C16.2703 5.57982 16.6074 4.82481 16.6198 4.03006C16.6323 3.23482 16.3146 2.48506 15.7493 1.97281C14.6874 1.01081 12.9586 0.507058 11.6732 1.67181L1.74828 11.2003C0.894907 11.9738 0.895184 13.2161 1.73722 13.9793C2.13209 14.3365 2.60081 14.5105 3.09995 14.4833C3.59383 14.456 4.10154 14.227 4.52961 13.839L12.4268 6.24003C12.713 5.98078 13.2881 5.34528 12.7027 4.81478C12.3712 4.51453 12.1383 4.53303 12.0618 4.53878C11.843 4.55628 11.5875 4.69303 11.3223 4.93353L5.37828 10.6488C5.16839 10.8505 4.81803 10.8603 4.59651 10.67C4.3739 10.4805 4.36367 10.163 4.57301 9.96203L10.5279 4.23603C10.996 3.81078 11.4747 3.58028 11.9619 3.54078C12.3422 3.51026 12.9077 3.58353 13.4845 4.10653C14.3407 4.88201 14.2342 6.01953 13.2204 6.93803L5.32327 14.5365C4.69278 15.1085 3.93147 15.4408 3.1677 15.4832C3.11156 15.4867 3.05542 15.4882 2.99929 15.4882L2.99931 15.4883Z" fill="#1C7ED6"/>
-                      </svg>
-                    </span>
+                  <div key={index} className="file-item">
+                    <span className="file-icon">📎</span>
                     <a href={URL.createObjectURL(file)} target="_blank" rel="noreferrer">
                       {file.name}
                     </a>
-                    <span className="remove-file" onClick={() => removefiles(index)}>
-                      <svg width="16" height="16" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.489201 0.46967C0.782094 0.176777 1.25697 0.176777 1.54986 0.46967L5.01953 3.93934L8.4892 0.46967C8.78209 0.176777 9.25697 0.176777 9.54986 0.46967C9.84275 0.762563 9.84275 1.23744 9.54986 1.53033L6.08019 5L9.54986 8.46967C9.84275 8.76256 9.84275 9.23744 9.54986 9.53033C9.25697 9.82322 8.78209 9.82322 8.4892 9.53033L5.01953 6.06066L1.54986 9.53033C1.25697 9.82322 0.782094 9.82322 0.489201 9.53033C0.196308 9.23744 0.196308 8.76256 0.489201 8.46967L3.95887 5L0.489201 1.53033C0.196308 1.23744 0.196308 0.762563 0.489201 0.46967Z" fill="#C92A2A"/>
-                      </svg>
-                    </span>
+                    <span className="remove-file" onClick={() => removefiles(index)}>✕</span>
                   </div>
                 ))}
               </div>
@@ -112,9 +80,15 @@ const Client: React.FC = () => {
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="primary" form="ticket-form">Create</button>
-        <button type="submit" className="secondary" form="ticket-form">Create and add another</button>
-        <button type="reset" className="cancel" form="ticket-form">Cancel</button>
+        <button type="submit" className="primary" form="ticket-form">
+          Create
+        </button>
+        <button type="submit" className="secondary" form="ticket-form">
+          Create and add another
+        </button>
+        <button type="reset" className="cancel" form="ticket-form">
+          Cancel
+        </button>
       </div>
     </section>
   );

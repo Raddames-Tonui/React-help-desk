@@ -30,12 +30,12 @@ export default function Loader({
 
         .ring {
           fill: none;
-          stroke: hsla(341, 97%, 59%, 0.3);
+          stroke: hsla(192, 97%, 59%, 0.30);
           stroke-width: 2;
         }
 
         .ball {
-          fill: #fc2f70;
+          fill: #2f81fcff;
           stroke: none;
         }
       `}</style>

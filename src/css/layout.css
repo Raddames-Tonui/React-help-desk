@@ -124,6 +124,8 @@ aside {
 main {
     grid-area: main;
     background-color: var(--primary-50);
+    overflow:auto ;
+    height: 100%;
 }
 
 footer {
