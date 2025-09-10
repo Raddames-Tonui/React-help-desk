@@ -73,7 +73,7 @@ const columns: ColumnProps<Ticket>[] = [
     id: "ticket_status",
     caption: "Ticket Status",
     size: 150,
-    render: ( value) => {
+    render: (row, value) => {
       const status = String(value);
       const color =
         status === "Open"
@@ -86,12 +86,12 @@ const columns: ColumnProps<Ticket>[] = [
           ? "#0CA678"
           : status === "Dropped"
           ? "#F03E3E"
-          : status === "Resolved"
-          ? "#37B24D"
           : "gray";
+
       return <span style={{ color }}>{status}</span>;
     },
   },
+
   { id: "source", caption: "Source", size: 200 },
   { id: "date_requested", caption: "Date Requested", size: 200 },
 ];

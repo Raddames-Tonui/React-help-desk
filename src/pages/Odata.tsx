@@ -91,14 +91,15 @@ const Odata: React.FC = () => {
       id: "Emails",
       caption: "Emails",
       size: 250,
-      render: (value) => (Array.isArray(value) ? value.join(" ") : "—"),
+      render: (row, value) => (Array.isArray(value) ? value.join(" ") : "—"),
     },
     {
       id: "AddressInfo",
       caption: "City",
       size: 200,
-      render: (row) => row.AddressInfo?.[0]?.City?.Name || "—",
+      render: (row, value) => row.AddressInfo?.[0]?.City?.Name || "—",
     },
+
   ];
 
   return (
