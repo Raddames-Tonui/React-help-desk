@@ -1,34 +1,70 @@
-import React, { useRef, useState } from "react";
+import React, { useReducer } from "react";
 import "../css/Form.css";
+import Editor from "../components/Editor";
 
-import Quill, { DeltaStatic } from "quill";
-import Editor from "../components/Editor"; 
-import "quill/dist/quill.snow.css";
+type State = {
+  mainCategory: string;
+  subCategory: string;
+  problem: string;
+  description: string;
+  files: File[];
+}
+
+type Action =
+  | { type: "SET_FIELD"; field: keyof State; value: string }
+  | { type: "SET_DESCRIPTION"; value: string }
+  | { type: "SET_FILES"; files: File[] }
+  | { type: "REMOVE_FILE"; index: number }
+  | { type: "RESET" };
+
+const initialState: State = {
+  mainCategory: "",
+  subCategory: "",
+  problem: "",
+  description: "",
+  files: [],
+};
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "SET_DESCRIPTION":
+      return { ...state, description: action.value };
+    case "SET_FILES":
+      return { ...state, files: action.files };
+    case "REMOVE_FILE":
+      return { ...state, files: state.files.filter((_, i) => i !== action.index) };
+    case "RESET":
+      return initialState;
+    default:
+      return state;
+  }
+}
 
 const Client: React.FC = () => {
-  const [range, setRange] = useState<any>();
-  const [lastChange, setLastChange] = useState<any>();
-
-  const quillRef = useRef<Quill | null>(null);
-
-  const Delta = Quill.import("delta") as typeof DeltaStatic;
-
-  const initialValue = new Delta()
-    .insert("")
-    .insert("\n", { header: 1 })
-    .insert("\n");
-
-    const [files, setFiles] = useState<File[]>([]);
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const selectedFiles = Array.from(e.target.files);
-        setFiles(selectedFiles);
-      }
-    };
-
-    const removefiles = (index: number) => {
-      setFiles((prevFile) => prevFile.filter((_, i) => i !== index));
+  const [state, dispatch] = useReducer(reducer, initialState);
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFiles = Array.from(e.target.files);
+      dispatch({ type: "SET_FILES", files: selectedFiles });
     }
+  };
+
+  const removefiles = (index: number) => {
+    dispatch({ type: "REMOVE_FILE", index });
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log(state);
+
+    dispatch({ type: "RESET" });
+  }
+    
+    
   return (
     <section>
       <div className="tickets-page-header">
@@ -36,31 +72,41 @@ const Client: React.FC = () => {
       </div>
 
       <div className="form-wrapper">
-        <form className="form" id="ticket-form">
+        <form className="form" id="ticket-form" onSubmit={handleSubmit}>
 
           <div className="form-group">
             <label htmlFor="main-category">Main Category</label>
-            <input type="text" id="main-category" name="main-category" required />
+            <input type="text" id="main-category" name="main-category"
+              value={state.mainCategory}
+              onChange={e => dispatch({type: "SET_FIELD", field: "mainCategory", value: e.target.value})}
+              required />
           </div>
 
           <div className="form-group">
             <label htmlFor="sub-category">Sub Category</label>
-            <input type="text" id="sub-category" name="sub-category" required />
+            <input type="text" id="sub-category" name="sub-category"
+              value={state.subCategory}
+              onChange={e => dispatch({type: "SET_FIELD", field: "subCategory", value: e.target.value})}
+              required />
           </div>
 
           <div className="form-group">
             <label htmlFor="problem">Problem/Issue</label>
-            <input type="text" id="problem" name="problem" required />
+            <input type="text" id="problem" name="problem"
+              value={state.problem}
+              onChange={e=> dispatch({type: "SET_FIELD", field: "problem", value: e.target.value})}
+              required />
           </div>
 
           <div className="form-group">
             <label htmlFor="description">Description</label>
-            <Editor
-              ref={quillRef}
-              defaultValue={initialValue}
-              onSelectionChange={setRange}
-              onTextChange={setLastChange}
-            />
+            <Editor name="description"
+              onChange={(html) => dispatch({type: "SET_FIELD", field: "description", value: html}) } />
+            <textarea
+              style={{ display: "flex" }}
+              value={state.description}
+              onChange={e => dispatch({type: "SET_DESCRIPTION", value: e.target.value})}
+              readOnly></textarea>
           </div>
 
           <div className="form-group">
@@ -79,7 +125,7 @@ const Client: React.FC = () => {
                 Maximum No. of File: <strong> 5 </strong>
               </p>
               <div className="file-list">
-                {files.map((file, index) => (
+                {state.files.map((file, index) => (
                   <div key={index} className="file-item" >
                     <span className="file-icon">
                       <svg width="16" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +137,7 @@ const Client: React.FC = () => {
                     </a>
                     <span className="remove-file" onClick={() => removefiles(index)}>
                       <svg width="16" height="16" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M0.489201 0.46967C0.782094 0.176777 1.25697 0.176777 1.54986 0.46967L5.01953 3.93934L8.4892 0.46967C8.78209 0.176777 9.25697 0.176777 9.54986 0.46967C9.84275 0.762563 9.84275 1.23744 9.54986 1.53033L6.08019 5L9.54986 8.46967C9.84275 8.76256 9.84275 9.23744 9.54986 9.53033C9.25697 9.82322 8.78209 9.82322 8.4892 9.53033L5.01953 6.06066L1.54986 9.53033C1.25697 9.82322 0.782094 9.82322 0.489201 9.53033C0.196308 9.23744 0.196308 8.76256 0.489201 8.46967L3.95887 5L0.489201 1.53033C0.196308 1.23744 0.196308 0.762563 0.489201 0.46967Z" fill="#C92A2A"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M0.489201 0.46967C0.782094 0.176777 1.25697 0.176777 1.54986 0.46967L5.01953 3.93934L8.4892 0.46967C8.78209 0.176777 9.25697 0.176777 9.54986 0.46967C9.84275 0.762563 9.84275 1.23744 9.54986 1.53033L6.08019 5L9.54986 8.46967C9.84275 8.76256 9.84275 9.23744 9.54986 9.53033C9.25697 9.82322 8.78209 9.82322 8.4892 9.53033L5.01953 6.06066L1.54986 9.53033C1.25697 9.82322 0.782094 9.82322 0.489201 9.53033C0.196308 9.23744 0.196308 8.76256 0.489201 8.46967L3.95887 5L0.489201 1.53033C0.196308 1.23744 0.196308 0.762563 0.489201 0.46967Z" fill="#C92A2A"/>
                       </svg>
                     </span>
                   </div>
@@ -105,7 +151,8 @@ const Client: React.FC = () => {
       <div className="form-actions">
         <button type="submit" className="primary" form="ticket-form">Create</button>
         <button type="submit" className="secondary" form="ticket-form">Create and add another</button>
-        <button type="reset" className="cancel" form="ticket-form">Cancel</button>
+        <button type="button" className="cancel" form="ticket-form"
+          onClick={() => dispatch({type: "RESET"})}>Cancel</button>
       </div>
     </section>
   );

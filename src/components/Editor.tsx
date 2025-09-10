@@ -15,14 +15,29 @@ import "../css/tiptap.css";
 interface EditorProps {
   name: string;
   placeholder?: string;
+  onChange?: (html: string) => void;
 }
 
-const Editor: React.FC<EditorProps> = ({ name }) => {
+const Editor: React.FC<EditorProps> = ({ name, onChange }) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+
+      StarterKit.configure({
+        link: false,   // disable built-in
+        underline: false,
+      }),
       Underline,
-      Link,
+      Link.configure({
+        openOnClick: false,   // don’t open links when clicked
+        autolink: true,       // auto-detect URLs
+        linkOnPaste: true,    // paste → auto-convert to link
+        protocols: ["http", "https", "mailto"], // allowed protocols
+        HTMLAttributes: {
+          class: "tiptap-link", // your custom CSS class
+          target: "_blank",     // default open in new tab
+          rel: "noopener noreferrer nofollow",
+        },
+      }),
       Image,
       Youtube,
       Subscript,
@@ -37,6 +52,11 @@ const Editor: React.FC<EditorProps> = ({ name }) => {
         class: "tiptap-editor",
       },
     },
+    onUpdate: ({ editor }) => {
+      if (onChange) {
+        onChange(editor.getHTML());
+      }
+    }
   });
 
   if (!editor) return null;
@@ -93,7 +113,7 @@ const Editor: React.FC<EditorProps> = ({ name }) => {
             <Icon iconName="h3" />
           </button>
           <button
-            onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}  {/* ✅ fixed level */}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()} 
             className={editor.isActive("heading", { level: 4 }) ? "active" : ""}
           >
             <Icon iconName="h4" />

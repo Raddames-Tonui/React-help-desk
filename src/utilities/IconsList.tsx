@@ -109,38 +109,38 @@ export const Avatar: React.FC<IconBaseProps> = ({ className }) => (
 
 export const Bold: React.FC<IconBaseProps> = ({ className }) => (
     <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.5 3H10.5C11.2956 3 12.0587 3.31607 12.6213 3.87868C13.1839 4.44129 13.5 5.20435 13.5 6C13.5 6.79565 13.1839 7.55871 12.6213 8.12132C12.0587 8.68393 11.2956 9 10.5 9H4.5V3Z" stroke="#495057" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M4.5 9H11.25C12.0456 9 12.8087 9.31607 13.3713 9.87868C13.9339 10.4413 14.25 11.2044 14.25 12C14.25 12.7956 13.9339 13.5587 13.3713 14.1213C12.8087 14.6839 12.0456 15 11.25 15H4.5V9Z" stroke="#495057" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.5 3H10.5C11.2956 3 12.0587 3.31607 12.6213 3.87868C13.1839 4.44129 13.5 5.20435 13.5 6C13.5 6.79565 13.1839 7.55871 12.6213 8.12132C12.0587 8.68393 11.2956 9 10.5 9H4.5V3Z" stroke="#495057" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M4.5 9H11.25C12.0456 9 12.8087 9.31607 13.3713 9.87868C13.9339 10.4413 14.25 11.2044 14.25 12C14.25 12.7956 13.9339 13.5587 13.3713 14.1213C12.8087 14.6839 12.0456 15 11.25 15H4.5V9Z" stroke="#495057" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 )
 export const Italic: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14.25 3H7.5" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10.5 15H3.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11.25 3L6.75 15" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.25 3H7.5" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M10.5 15H3.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M11.25 3L6.75 15" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const Underline: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.5 2.25V7.5C4.5 8.69347 4.97411 9.83807 5.81802 10.682C6.66193 11.5259 7.80653 12 9 12C10.1935 12 11.3381 11.5259 12.182 10.682C13.0259 9.83807 13.5 8.69347 13.5 7.5V2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 15.75H15" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.5 2.25V7.5C4.5 8.69347 4.97411 9.83807 5.81802 10.682C6.66193 11.5259 7.80653 12 9 12C10.1935 12 11.3381 11.5259 12.182 10.682C13.0259 9.83807 13.5 8.69347 13.5 7.5V2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M3 15.75H15" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const Strikethrough: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4.5 4V9.25C4.5 10.4435 4.97411 11.5881 5.81802 12.432C6.66193 13.2759 7.80653 13.75 9 13.75C10.1935 13.75 11.3381 13.2759 12.182 12.432C13.0259 11.5881 13.5 10.4435 13.5 9.25V4" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M3 9.75H15" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.5 4V9.25C4.5 10.4435 4.97411 11.5881 5.81802 12.432C6.66193 13.2759 7.80653 13.75 9 13.75C10.1935 13.75 11.3381 13.2759 12.182 12.432C13.0259 11.5881 13.5 10.4435 13.5 9.25V4" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M3 9.75H15" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const Type: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M3 5.25V3H15V5.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6.75 15H11.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M9 3V15" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M2.75732 15.2426L15.7573 2.24261" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3 5.25V3H15V5.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6.75 15H11.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M9 3V15" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M2.75732 15.2426L15.7573 2.24261" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 )
 export const H1: React.FC<IconBaseProps> = ({ className }) => (
@@ -169,19 +169,19 @@ export const H4: React.FC<IconBaseProps> = ({ className }) => (
 )
 export const List: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6 4.5H15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 9H15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 13.5H15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M2.25 4.5H2.2575" stroke="#495057" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M2.25 9H2.2575" stroke="#495057" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M2.25 13.5H2.2575" stroke="#495057" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6 4.5H15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6 9H15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6 13.5H15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M2.25 4.5H2.2575" stroke="#495057" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M2.25 9H2.2575" stroke="#495057" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M2.25 13.5H2.2575" stroke="#495057" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 )
 export const NumberedList: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6 4.5H15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 9H15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 13.5H15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6 4.5H15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6 9H15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6 13.5H15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 <path d="M2.002 3.50631C1.946 3.52765 1.858 3.55298 1.738 3.58231C1.618 3.61165 1.52067 3.63165 1.446 3.64231L1.406 3.41831C1.542 3.38898 1.68067 3.33965 1.822 3.27031C1.966 3.20098 2.086 3.12498 2.182 3.04231H2.186L2.43 3.08231V5.33831L2.926 5.37431V5.57031H1.486V5.37431L2.002 5.33831V3.50631Z" fill="#495057"/>
 <path d="M1.438 10.013C1.68333 9.8743 1.90867 9.71564 2.114 9.53697C2.31933 9.35564 2.482 9.16897 2.602 8.97697C2.72467 8.78497 2.786 8.60364 2.786 8.43297C2.786 8.2863 2.742 8.1703 2.654 8.08497C2.566 7.99697 2.44067 7.95297 2.278 7.95297C2.126 7.95297 1.99533 7.98364 1.886 8.04497C1.77667 8.10364 1.67533 8.17697 1.582 8.26497L1.454 8.08497C1.54733 7.97564 1.68067 7.87697 1.854 7.78897C2.02733 7.6983 2.21267 7.65297 2.41 7.65297C2.59667 7.65297 2.754 7.68764 2.882 7.75697C3.01 7.82364 3.10467 7.91164 3.166 8.02097C3.22733 8.1303 3.258 8.2503 3.258 8.38097C3.258 8.64497 3.13133 8.91697 2.878 9.19697C2.62467 9.4743 2.30733 9.72364 1.926 9.94497L3.166 9.85297L3.306 9.50897L3.51 9.54897L3.406 10.181H1.498L1.438 10.013Z" fill="#495057"/>
 <path d="M1.878 15.0059C1.81667 15.0059 1.74867 15.0006 1.674 14.9899C1.59933 14.9819 1.53667 14.9713 1.486 14.9579V14.7299C1.574 14.7566 1.67933 14.7699 1.802 14.7699C2.01267 14.7699 2.194 14.7366 2.346 14.6699C2.50067 14.6033 2.618 14.5126 2.698 14.3979C2.78067 14.2833 2.822 14.1579 2.822 14.0219C2.822 13.8406 2.766 13.7006 2.654 13.6019C2.54467 13.5006 2.37533 13.4486 2.146 13.4459L2.022 13.4779C1.934 13.5046 1.89133 13.5166 1.894 13.5139L1.826 13.3019C1.938 13.2806 2.04333 13.2486 2.142 13.2059C2.30733 13.1366 2.44067 13.0446 2.542 12.9299C2.64333 12.8126 2.694 12.6886 2.694 12.5579C2.694 12.4059 2.64867 12.2953 2.558 12.2259C2.47 12.1539 2.35667 12.1179 2.218 12.1179C2.098 12.1179 1.982 12.1393 1.87 12.1819C1.76067 12.2246 1.666 12.2766 1.586 12.3379L1.478 12.1579C1.55267 12.0833 1.67133 12.0113 1.834 11.9419C1.99933 11.8699 2.16733 11.8339 2.338 11.8339C2.58067 11.8339 2.77667 11.8873 2.926 11.9939C3.07533 12.0979 3.15 12.2579 3.15 12.4739C3.15 12.6633 3.07533 12.8353 2.926 12.9899C2.77667 13.1446 2.59933 13.2579 2.394 13.3299C2.42067 13.3273 2.458 13.3259 2.506 13.3259C2.66333 13.3259 2.802 13.3553 2.922 13.4139C3.042 13.4726 3.134 13.5526 3.198 13.6539C3.26467 13.7526 3.298 13.8646 3.298 13.9899C3.298 14.1846 3.23933 14.3593 3.122 14.5139C3.00467 14.6686 2.838 14.7886 2.622 14.8739C2.40867 14.9619 2.16067 15.0059 1.878 15.0059Z" fill="#495057"/>
@@ -190,22 +190,22 @@ export const NumberedList: React.FC<IconBaseProps> = ({ className }) => (
 )
 export const Link: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M11.25 5.25H13.5C13.9925 5.25 14.4801 5.347 14.9351 5.53545C15.39 5.72391 15.8034 6.00013 16.1517 6.34835C16.4999 6.69657 16.7761 7.10997 16.9645 7.56494C17.153 8.01991 17.25 8.50754 17.25 9C17.25 9.49246 17.153 9.98009 16.9645 10.4351C16.7761 10.89 16.4999 11.3034 16.1517 11.6517C15.8034 11.9999 15.39 12.2761 14.9351 12.4645C14.4801 12.653 13.9925 12.75 13.5 12.75H11.25M6.75 12.75H4.5C4.00754 12.75 3.51991 12.653 3.06494 12.4645C2.60997 12.2761 2.19657 11.9999 1.84835 11.6517C1.14509 10.9484 0.75 9.99456 0.75 9C0.75 8.00544 1.14509 7.05161 1.84835 6.34835C2.55161 5.64509 3.50544 5.25 4.5 5.25H6.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6 9H12" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.25 5.25H13.5C13.9925 5.25 14.4801 5.347 14.9351 5.53545C15.39 5.72391 15.8034 6.00013 16.1517 6.34835C16.4999 6.69657 16.7761 7.10997 16.9645 7.56494C17.153 8.01991 17.25 8.50754 17.25 9C17.25 9.49246 17.153 9.98009 16.9645 10.4351C16.7761 10.89 16.4999 11.3034 16.1517 11.6517C15.8034 11.9999 15.39 12.2761 14.9351 12.4645C14.4801 12.653 13.9925 12.75 13.5 12.75H11.25M6.75 12.75H4.5C4.00754 12.75 3.51991 12.653 3.06494 12.4645C2.60997 12.2761 2.19657 11.9999 1.84835 11.6517C1.14509 10.9484 0.75 9.99456 0.75 9C0.75 8.00544 1.14509 7.05161 1.84835 6.34835C2.55161 5.64509 3.50544 5.25 4.5 5.25H6.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6 9H12" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 )
 export const Image: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14.25 2.25H3.75C2.92157 2.25 2.25 2.92157 2.25 3.75V14.25C2.25 15.0784 2.92157 15.75 3.75 15.75H14.25C15.0784 15.75 15.75 15.0784 15.75 14.25V3.75C15.75 2.92157 15.0784 2.25 14.25 2.25Z" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M6.375 7.5C6.99632 7.5 7.5 6.99632 7.5 6.375C7.5 5.75368 6.99632 5.25 6.375 5.25C5.75368 5.25 5.25 5.75368 5.25 6.375C5.25 6.99632 5.75368 7.5 6.375 7.5Z" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 11.25L12 7.5L3.75 15.75" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.25 2.25H3.75C2.92157 2.25 2.25 2.92157 2.25 3.75V14.25C2.25 15.0784 2.92157 15.75 3.75 15.75H14.25C15.0784 15.75 15.75 15.0784 15.75 14.25V3.75C15.75 2.92157 15.0784 2.25 14.25 2.25Z" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M6.375 7.5C6.99632 7.5 7.5 6.99632 7.5 6.375C7.5 5.75368 6.99632 5.25 6.375 5.25C5.75368 5.25 5.25 5.75368 5.25 6.375C5.25 6.99632 5.75368 7.5 6.375 7.5Z" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 11.25L12 7.5L3.75 15.75" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const Youtube: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M16.9049 4.815C16.8159 4.45906 16.6344 4.13293 16.3789 3.86955C16.1235 3.60618 15.803 3.41489 15.4499 3.315C14.1599 3 8.99994 3 8.99994 3C8.99994 3 3.83994 3 2.54994 3.345C2.19688 3.44489 1.87642 3.63618 1.62095 3.89955C1.36548 4.16293 1.18403 4.48906 1.09494 4.845C0.858851 6.15417 0.743367 7.48223 0.74994 8.8125C0.741525 10.1528 0.857016 11.491 1.09494 12.81C1.19316 13.1549 1.37867 13.4686 1.63355 13.7209C1.88843 13.9731 2.20406 14.1554 2.54994 14.25C3.83994 14.595 8.99994 14.595 8.99994 14.595C8.99994 14.595 14.1599 14.595 15.4499 14.25C15.803 14.1501 16.1235 13.9588 16.3789 13.6954C16.6344 13.4321 16.8159 13.1059 16.9049 12.75C17.1392 11.4507 17.2547 10.1328 17.2499 8.8125C17.2584 7.47222 17.1429 6.13402 16.9049 4.815V4.815Z" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.3125 11.265L11.625 8.81249L7.3125 6.35999V11.265Z" fill="#495057" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.9049 4.815C16.8159 4.45906 16.6344 4.13293 16.3789 3.86955C16.1235 3.60618 15.803 3.41489 15.4499 3.315C14.1599 3 8.99994 3 8.99994 3C8.99994 3 3.83994 3 2.54994 3.345C2.19688 3.44489 1.87642 3.63618 1.62095 3.89955C1.36548 4.16293 1.18403 4.48906 1.09494 4.845C0.858851 6.15417 0.743367 7.48223 0.74994 8.8125C0.741525 10.1528 0.857016 11.491 1.09494 12.81C1.19316 13.1549 1.37867 13.4686 1.63355 13.7209C1.88843 13.9731 2.20406 14.1554 2.54994 14.25C3.83994 14.595 8.99994 14.595 8.99994 14.595C8.99994 14.595 14.1599 14.595 15.4499 14.25C15.803 14.1501 16.1235 13.9588 16.3789 13.6954C16.6344 13.4321 16.8159 13.1059 16.9049 12.75C17.1392 11.4507 17.2547 10.1328 17.2499 8.8125C17.2584 7.47222 17.1429 6.13402 16.9049 4.815V4.815Z" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.3125 11.265L11.625 8.81249L7.3125 6.35999V11.265Z" fill="#495057" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
@@ -217,36 +217,36 @@ export const Quote: React.FC<IconBaseProps> = ({ className }) => (
 )
 export const Code: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.8071 12.685L16.4871 9L12.8071 5.315" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5.19279 5.315L1.50781 8.99998L5.19279 12.685" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M7.22168 15.6364L10.7781 2.36355" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.8071 12.685L16.4871 9L12.8071 5.315" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M5.19279 5.315L1.50781 8.99998L5.19279 12.685" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M7.22168 15.6364L10.7781 2.36355" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const AlignLeft: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.75 7.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 4.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 10.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.75 13.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.75 7.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 4.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 10.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M12.75 13.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const AlignCenter: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13.5 7.5H4.5" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 4.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 10.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M13.5 13.5H4.5" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.5 7.5H4.5" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 4.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 10.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M13.5 13.5H4.5" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
 export const AlignRight: React.FC<IconBaseProps> = ({ className }) => (
 <svg  className={className} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.75 7.5H5.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 4.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 10.5H2.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.75 13.5H5.25" stroke="#495057" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.75 7.5H5.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 4.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 10.5H2.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M15.75 13.5H5.25" stroke="#495057" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
 )
