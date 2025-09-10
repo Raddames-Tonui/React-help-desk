@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/vendor.css";
-import Table, { ColumnDef } from "../components/Table";
+import Table, { ColumnDef } from "../../src/components/Table";
 
 interface Ticket {
   ticket_id: number;
