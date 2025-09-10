@@ -5,3 +5,10 @@ Implementations done
   using dynamic table for rendering.
   using usereducer and ODATA
 
+  todo: 
+    - submit to local storage
+    - display submitted
+    - encrypt data in local storage
+    - Filter and sort all rows and columns
+    - Display success/ error toasts
+
