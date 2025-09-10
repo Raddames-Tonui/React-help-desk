@@ -95,7 +95,7 @@ const Vendor: React.FC = () => {
   return (
     <section className="tickets-page">
       <nav className="tickets-nav">
-        <div className="tickets-page-header">
+        <div className="page-header">
           <h3>All Tickets</h3>
         </div>
         <ul>
@@ -131,7 +131,7 @@ const Vendor: React.FC = () => {
       </nav>
 
       <div className="tickets-table">
-        <div className="tickets-page-header">
+        <div className="page-header">
           <h3>All Tickets</h3>
           <button>Add Ticket</button>
         </div>

@@ -1,6 +1,7 @@
 @import url(./variables.css);
 
 
+
 :root {
   --option-all: #1098AD;
   --option-open: #FD7E14;
@@ -23,7 +24,7 @@
   flex-direction: row; 
 }
 
-.tickets-page-header {
+.page-header {
   background-color: var(--bg-secondary);
   color: var(--primary-700);
   border-bottom: 1px solid var(--border-color-default);
@@ -35,7 +36,7 @@
   padding: 0 1rem;          
 }
 
-.tickets-page-header > button {
+.page-header > button {
   background-color: var(--primary-700);
   color: #ffffff;
   padding: 10px; 

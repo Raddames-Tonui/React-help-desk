@@ -30,7 +30,7 @@ const tickets: Ticket[] = [
   {
     ticket_id: 3,
     ticket_subject: " Password",
-    ticket_status: "Open",
+    ticket_status: "Dropped",
     source: "Email",
     date_requested: "2024-05-07 12:00:00",
   },
@@ -77,11 +77,17 @@ const columns: ColumnProps<Ticket>[] = [
       const status = String(value);
       const color =
         status === "Open"
-          ? "green"
+          ? "#FD7E14"
           : status === "In Progress"
-          ? "orange"
+          ? "#1C7ED6"
           : status === "Resolved"
-          ? "blue"
+          ? "#37B24D"
+          : status === "Closed"
+          ? "#0CA678"
+          : status === "Dropped"
+          ? "#F03E3E"
+          : status === "Resolved"
+          ? "#37B24D"
           : "gray";
       return <span style={{ color }}>{status}</span>;
     },
@@ -91,11 +97,13 @@ const columns: ColumnProps<Ticket>[] = [
 ];
 
 
+
+
 const Vendor: React.FC = () => {
   return (
     <section className="tickets-page">
       <nav className="tickets-nav">
-        <div className="tickets-page-header">
+        <div className="page-header">
             <h3>All Tickets</h3>
         </div>
          <ul>
@@ -143,7 +151,7 @@ const Vendor: React.FC = () => {
       </nav>
 
       <div className="tickets-table">
-        <div className="tickets-page-header">
+        <div className="page-header">
           <h3>All Tickets</h3>
           <button >Add Ticket</button>
         </div>

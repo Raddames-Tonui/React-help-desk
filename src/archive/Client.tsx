@@ -19,7 +19,7 @@ const Client: React.FC = () => {
 
   return (
     <section>
-      <div className="tickets-page-header">
+      <div className="page-header">
         <h3>Create Ticket</h3>
       </div>
 

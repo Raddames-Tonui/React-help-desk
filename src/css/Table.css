@@ -10,15 +10,13 @@ table{
     width: 100%;
 }
 
-table, tr, th, td {
+table, tr {
     border: 1px solid #ddd;
 }
 
 th {
     color: var(--color-header);
 }
-
-
 
 
 

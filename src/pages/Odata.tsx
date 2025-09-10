@@ -102,32 +102,36 @@ const Odata: React.FC = () => {
 
   return (
     <div >
-      <div className="tickets-page-header">
+      <div className="page-header">
         <h3>OData People</h3>
+        <div className="page-utils">
+          <div>
+            <input
+              type="text"
+              placeholder="Filter by first name..."
+              onChange={(e) =>
+                dispatch({
+                  type: "SET_FILTER",
+                  filter: e.target.value
+                    ? `contains(FirstName,'${e.target.value}')`
+                    : "",
+                })
+              }
+            />
+          </div>
+            
+            <select
+              value={state.sort}
+              onChange={(e) => dispatch({ type: "SET_SORT", sort: e.target.value })}
+            >
+              <option value="">Sort...</option>
+              <option value="FirstName asc">First Name (A-Z)</option>
+              <option value="FirstName desc">First Name (Z-A)</option>
+            </select>
+          </div>
       </div>
 
-      <div style={{ marginBottom: "1rem" }}>
-        <input
-          type="text"
-          placeholder="Filter by first name..."
-          onChange={(e) =>
-            dispatch({
-              type: "SET_FILTER",
-              filter: e.target.value
-                ? `contains(FirstName,'${e.target.value}')`
-                : "",
-            })
-          }
-        />
-        <select
-          value={state.sort}
-          onChange={(e) => dispatch({ type: "SET_SORT", sort: e.target.value })}
-        >
-          <option value="">Sort...</option>
-          <option value="FirstName asc">First Name (A-Z)</option>
-          <option value="FirstName desc">First Name (Z-A)</option>
-        </select>
-      </div>
+
       <section className="table-section">
           {state.loading && <div className="loader"><Loader /></div> }
           {state.error && <p style={{ color: "red" }}>{state.error}</p>}
