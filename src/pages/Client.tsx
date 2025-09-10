@@ -100,10 +100,12 @@ const Client: React.FC = () => {
 
           <div className="form-group">
             <label htmlFor="description">Description</label>
-            <Editor name="description"
+            <Editor
+              name="description"
+              value={state.description}
               onChange={(html) => dispatch({type: "SET_FIELD", field: "description", value: html}) } />
             <textarea
-              style={{ display: "flex" }}
+              style={{ display: "none" }}
               value={state.description}
               onChange={e => dispatch({type: "SET_DESCRIPTION", value: e.target.value})}
               readOnly></textarea>

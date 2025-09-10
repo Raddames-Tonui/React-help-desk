@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -15,10 +15,11 @@ import "../css/tiptap.css";
 interface EditorProps {
   name: string;
   placeholder?: string;
+  value?: string;
   onChange?: (html: string) => void;
 }
 
-const Editor: React.FC<EditorProps> = ({ name, onChange }) => {
+const Editor: React.FC<EditorProps> = ({ name, onChange, value }) => {
   const editor = useEditor({
     extensions: [
 
@@ -46,7 +47,7 @@ const Editor: React.FC<EditorProps> = ({ name, onChange }) => {
         types: ["heading", "paragraph"],
       }),
     ],
-    content: "",
+    content: value,
     editorProps: {
       attributes: {
         class: "tiptap-editor",
@@ -58,6 +59,12 @@ const Editor: React.FC<EditorProps> = ({ name, onChange }) => {
       }
     }
   });
+
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value || "");
+    }
+  }, [value, editor])
 
   if (!editor) return null;
 
@@ -213,7 +220,7 @@ const Editor: React.FC<EditorProps> = ({ name, onChange }) => {
       <textarea
         name={name}
         style={{ display: "none" }}
-        value={editor.getHTML()}
+        value={value}
         readOnly
       />
     </div>
