@@ -56,13 +56,39 @@ const Client: React.FC = () => {
     dispatch({ type: "REMOVE_FILE", index });
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file); 
+  });
+};
 
-    console.log(state);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    dispatch({ type: "RESET" });
-  }
+  const filesBase64 = await Promise.all(
+    state.files.map(async (file) => ({
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      content: await fileToBase64(file), 
+    }))
+  );
+
+  const storageState = {
+    ...state,
+    files: filesBase64,
+  };
+
+  localStorage.setItem("ticketForm", JSON.stringify(storageState));
+
+  // console.log("Saved to localStorage:", storageState);
+
+  dispatch({ type: "RESET" });
+};
+
     
     
   return (

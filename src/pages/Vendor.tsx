@@ -44,7 +44,7 @@ const tickets: Ticket[] = [
   {
     ticket_id: 5,
     ticket_subject: "Portal Rights Requisition",
-    ticket_status: "Closed",
+    ticket_status: "In Progress",
     source: "Email",
     date_requested: "2024-05-08 12:00:00",
   },

@@ -27,12 +27,7 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
             (col) =>
               !col.hide && (
                 <th
-                  key={String(col.id)}
-                  style={{
-                    textAlign: col.align ?? "left",
-                    width: col.size,
-                    padding: "8px",
-                  }}
+                  key={String(col.id)}            
                 >
                   {col.caption}
                 </th>

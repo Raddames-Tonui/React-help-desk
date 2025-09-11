@@ -5,6 +5,7 @@ import Client from "./pages/Client";
 import Vendor from "./pages/Vendor";
 import Home from "./pages/Home";
 import Odata from "./pages/Odata";
+import Vendor2 from "./pages/Vendor2";
 
 export interface AppRoute {
   path?: string;
@@ -21,6 +22,7 @@ export const routes: AppRoute[] = [
     children: [
       { path: "/client", element: <Client/> },
       { path: "/vendor", element: <Vendor /> },
+      { path: "/vendor/submission", element: <Vendor2 /> },
       { path: "/odata", element: <Odata/> },
     ],
   },
