@@ -1,12 +1,12 @@
-import { useLocation } from "react-router-dom";
 import Icon from "../utilities/Icon";
 import { useState } from "react";
+import { useRouter } from "@tanstack/react-router";
 
 const Navbar = () => {
-  const [selectedValue, setSelectedValue]  = useState("default")
+  const [selectedValue, setSelectedValue] = useState("default");
 
-  const location = useLocation();
-  const path = location.pathname.toLowerCase();
+  const router = useRouter();
+  const path = router.state.location.pathname.toLowerCase();
 
   const isVendor = path.startsWith("/vendor");
 
@@ -19,15 +19,24 @@ const Navbar = () => {
       <div className="header-wrapper">
         <div className="logo">
           <h1>Help Desk - Sky World Limited</h1>
-          <h2 style={{
-            color: isVendor ? "var(--text-blue)" : "#FD7E14"
-          }}>{isVendor ? "VENDOR" : "CLIENT"}</h2>
+          <h2
+            style={{
+              color: isVendor ? "var(--text-blue)" : "#FD7E14",
+            }}
+          >
+            {isVendor ? "VENDOR" : "CLIENT"}
+          </h2>
         </div>
         <div className="icon-search">
           <Icon iconName="add" />
           <Icon iconName="search" />
-          <select name="search" id="select-institution" value={selectedValue} onChange={e => setSelectedValue(e.target.value)}>
-            <option value="default" disabled >
+          <select
+            name="search"
+            id="select-institution"
+            value={selectedValue}
+            onChange={(e) => setSelectedValue(e.target.value)}
+          >
+            <option value="default" disabled>
               Select Institution
             </option>
             <option value="apstar">Apstar SACCO Limited</option>

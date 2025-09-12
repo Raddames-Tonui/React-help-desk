@@ -1,0 +1,33 @@
+// src/routes/pages/__altLayout.tsx
+import { createFileRoute, Outlet, Link } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/pages/__layout')({
+  component: AltLayout,
+})
+
+function AltLayout() {
+  return (
+    <div style={{
+      border: '3px dotted purple',
+      padding: '1rem',
+      backgroundColor: '#f5f0ff',
+      minHeight: '100vh'
+    }}>
+      <header style={{ marginBottom: '1rem' }}>
+        <h2>🌟 Alternate Pages Layout</h2>
+        <nav>
+          <Link to="/pages/home" style={{ marginRight: "1rem" }}>Home</Link>
+          <Link to="/pages/odata">OData</Link>
+        </nav>
+      </header>
+
+      <main style={{ padding: '1rem', backgroundColor: '#fff', borderRadius: '8px' }}>
+        <Outlet />
+      </main>
+
+      <footer style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.9rem', color: '#555' }}>
+        Alternate Layout Footer
+      </footer>
+    </div>
+  )
+}
