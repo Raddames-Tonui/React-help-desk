@@ -11,35 +11,27 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PagesIndexRouteImport } from './routes/pages/index'
 import { Route as Pages_layoutRouteImport } from './routes/pages/__layout'
-import { Route as AuthResetpasswordRouteImport } from './routes/auth/resetpassword'
-import { Route as AuthRegisterRouteImport } from './routes/auth/signup'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AuthForgotpasswordRouteImport } from './routes/auth/forgotpassword'
-import { Route as Auth_layoutRouteImport } from './routes/auth/__layout'
 import { Route as PagesVendorIndexRouteImport } from './routes/pages/vendor/index'
-import { Route as PagesOdataIndexRouteImport } from './routes/pages/odata.tsx/index'
+import { Route as PagesOdataIndexRouteImport } from './routes/pages/odata/index'
 import { Route as PagesClientIndexRouteImport } from './routes/pages/client/index'
+import { Route as PagesVendorVendorRouteImport } from './routes/pages/vendor/$vendor'
+import { Route as AuthAuthRegisterRouteImport } from './routes/auth/auth.register'
+import { Route as AuthAuthLoginRouteImport } from './routes/auth/auth.login'
 
 const PagesRouteImport = createFileRoute('/pages')()
-const AuthRouteImport = createFileRoute('/auth')()
 
 const PagesRoute = PagesRouteImport.update({
   id: '/pages',
   path: '/pages',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
+const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -56,30 +48,6 @@ const Pages_layoutRoute = Pages_layoutRouteImport.update({
   id: '/__layout',
   getParentRoute: () => PagesRoute,
 } as any)
-const AuthResetpasswordRoute = AuthResetpasswordRouteImport.update({
-  id: '/resetpassword',
-  path: '/resetpassword',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthForgotpasswordRoute = AuthForgotpasswordRouteImport.update({
-  id: '/forgotpassword',
-  path: '/forgotpassword',
-  getParentRoute: () => AuthRoute,
-} as any)
-const Auth_layoutRoute = Auth_layoutRouteImport.update({
-  id: '/__layout',
-  getParentRoute: () => AuthRoute,
-} as any)
 const PagesVendorIndexRoute = PagesVendorIndexRouteImport.update({
   id: '/vendor/',
   path: '/vendor/',
@@ -95,30 +63,41 @@ const PagesClientIndexRoute = PagesClientIndexRouteImport.update({
   path: '/client/',
   getParentRoute: () => PagesRoute,
 } as any)
+const PagesVendorVendorRoute = PagesVendorVendorRouteImport.update({
+  id: '/vendor/$vendor',
+  path: '/vendor/$vendor',
+  getParentRoute: () => PagesRoute,
+} as any)
+const AuthAuthRegisterRoute = AuthAuthRegisterRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAuthLoginRoute = AuthAuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/auth': typeof Auth_layoutRoute
-  '/auth/forgotpassword': typeof AuthForgotpasswordRoute
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/auth/resetpassword': typeof AuthResetpasswordRoute
+  '/auth': typeof AuthRouteRouteWithChildren
   '/pages': typeof Pages_layoutRoute
   '/pages/': typeof PagesIndexRoute
+  '/auth/auth/login': typeof AuthAuthLoginRoute
+  '/auth/auth/register': typeof AuthAuthRegisterRoute
+  '/pages/vendor/$vendor': typeof PagesVendorVendorRoute
   '/pages/client': typeof PagesClientIndexRoute
   '/pages/odata': typeof PagesOdataIndexRoute
   '/pages/vendor': typeof PagesVendorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/auth': typeof Auth_layoutRoute
-  '/auth/forgotpassword': typeof AuthForgotpasswordRoute
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/auth/resetpassword': typeof AuthResetpasswordRoute
+  '/auth': typeof AuthRouteRouteWithChildren
   '/pages': typeof PagesIndexRoute
+  '/auth/auth/login': typeof AuthAuthLoginRoute
+  '/auth/auth/register': typeof AuthAuthRegisterRoute
+  '/pages/vendor/$vendor': typeof PagesVendorVendorRoute
   '/pages/client': typeof PagesClientIndexRoute
   '/pages/odata': typeof PagesOdataIndexRoute
   '/pages/vendor': typeof PagesVendorIndexRoute
@@ -126,16 +105,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/auth/__layout': typeof Auth_layoutRoute
-  '/auth/forgotpassword': typeof AuthForgotpasswordRoute
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/auth/resetpassword': typeof AuthResetpasswordRoute
+  '/auth': typeof AuthRouteRouteWithChildren
   '/pages': typeof PagesRouteWithChildren
   '/pages/__layout': typeof Pages_layoutRoute
   '/pages/': typeof PagesIndexRoute
+  '/auth/auth/login': typeof AuthAuthLoginRoute
+  '/auth/auth/register': typeof AuthAuthRegisterRoute
+  '/pages/vendor/$vendor': typeof PagesVendorVendorRoute
   '/pages/client/': typeof PagesClientIndexRoute
   '/pages/odata/': typeof PagesOdataIndexRoute
   '/pages/vendor/': typeof PagesVendorIndexRoute
@@ -144,43 +120,36 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/auth'
-    | '/auth/forgotpassword'
-    | '/auth/login'
-    | '/auth/register'
-    | '/auth/resetpassword'
     | '/pages'
     | '/pages/'
+    | '/auth/auth/login'
+    | '/auth/auth/register'
+    | '/pages/vendor/$vendor'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/auth'
-    | '/auth/forgotpassword'
-    | '/auth/login'
-    | '/auth/register'
-    | '/auth/resetpasswor   d'
     | '/pages'
+    | '/auth/auth/login'
+    | '/auth/auth/register'
+    | '/pages/vendor/$vendor'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/auth'
-    | '/auth/__layout'
-    | '/auth/forgotpassword'
-    | '/auth/login'
-    | '/auth/register'
-    | '/auth/resetpassword'
     | '/pages'
     | '/pages/__layout'
     | '/pages/'
+    | '/auth/auth/login'
+    | '/auth/auth/register'
+    | '/pages/vendor/$vendor'
     | '/pages/client/'
     | '/pages/odata/'
     | '/pages/vendor/'
@@ -188,8 +157,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  AuthRoute: typeof AuthRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   PagesRoute: typeof PagesRouteWithChildren
 }
 
@@ -206,14 +174,7 @@ declare module '@tanstack/react-router' {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -237,41 +198,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Pages_layoutRouteImport
       parentRoute: typeof PagesRoute
     }
-    '/auth/resetpassword': {
-      id: '/auth/resetpassword'
-      path: '/resetpassword'
-      fullPath: '/auth/resetpassword'
-      preLoaderRoute: typeof AuthResetpasswordRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/auth/forgotpassword': {
-      id: '/auth/forgotpassword'
-      path: '/forgotpassword'
-      fullPath: '/auth/forgotpassword'
-      preLoaderRoute: typeof AuthForgotpasswordRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/auth/__layout': {
-      id: '/auth/__layout'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof Auth_layoutRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/pages/vendor/': {
       id: '/pages/vendor/'
       path: '/vendor'
@@ -293,30 +219,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PagesClientIndexRouteImport
       parentRoute: typeof PagesRoute
     }
+    '/pages/vendor/$vendor': {
+      id: '/pages/vendor/$vendor'
+      path: '/vendor/$vendor'
+      fullPath: '/pages/vendor/$vendor'
+      preLoaderRoute: typeof PagesVendorVendorRouteImport
+      parentRoute: typeof PagesRoute
+    }
+    '/auth/auth/register': {
+      id: '/auth/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/auth/register'
+      preLoaderRoute: typeof AuthAuthRegisterRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/auth/login': {
+      id: '/auth/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/auth/login'
+      preLoaderRoute: typeof AuthAuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
   }
 }
 
-interface AuthRouteChildren {
-  Auth_layoutRoute: typeof Auth_layoutRoute
-  AuthForgotpasswordRoute: typeof AuthForgotpasswordRoute
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
-  AuthResetpasswordRoute: typeof AuthResetpasswordRoute
+interface AuthRouteRouteChildren {
+  AuthAuthLoginRoute: typeof AuthAuthLoginRoute
+  AuthAuthRegisterRoute: typeof AuthAuthRegisterRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  Auth_layoutRoute: Auth_layoutRoute,
-  AuthForgotpasswordRoute: AuthForgotpasswordRoute,
-  AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
-  AuthResetpasswordRoute: AuthResetpasswordRoute,
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAuthLoginRoute: AuthAuthLoginRoute,
+  AuthAuthRegisterRoute: AuthAuthRegisterRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
 
 interface PagesRouteChildren {
   Pages_layoutRoute: typeof Pages_layoutRoute
   PagesIndexRoute: typeof PagesIndexRoute
+  PagesVendorVendorRoute: typeof PagesVendorVendorRoute
   PagesClientIndexRoute: typeof PagesClientIndexRoute
   PagesOdataIndexRoute: typeof PagesOdataIndexRoute
   PagesVendorIndexRoute: typeof PagesVendorIndexRoute
@@ -325,6 +269,7 @@ interface PagesRouteChildren {
 const PagesRouteChildren: PagesRouteChildren = {
   Pages_layoutRoute: Pages_layoutRoute,
   PagesIndexRoute: PagesIndexRoute,
+  PagesVendorVendorRoute: PagesVendorVendorRoute,
   PagesClientIndexRoute: PagesClientIndexRoute,
   PagesOdataIndexRoute: PagesOdataIndexRoute,
   PagesVendorIndexRoute: PagesVendorIndexRoute,
@@ -334,8 +279,7 @@ const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  AuthRoute: AuthRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   PagesRoute: PagesRouteWithChildren,
 }
 export const routeTree = rootRouteImport

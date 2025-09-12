@@ -11,27 +11,26 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PagesIndexRouteImport } from './routes/pages/index'
 import { Route as Pages_layoutRouteImport } from './routes/pages/__layout'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as Auth_layoutRouteImport } from './routes/auth/__layout'
 import { Route as PagesVendorIndexRouteImport } from './routes/pages/vendor/index'
 import { Route as PagesOdataIndexRouteImport } from './routes/pages/odata/index'
 import { Route as PagesClientIndexRouteImport } from './routes/pages/client/index'
 import { Route as PagesVendorVendorRouteImport } from './routes/pages/vendor/$vendor'
+import { Route as AuthAuthRegisterRouteImport } from './routes/_auth/auth.register'
+import { Route as AuthAuthLoginRouteImport } from './routes/_auth/auth.login'
 
 const PagesRouteImport = createFileRoute('/pages')()
-const AuthRouteImport = createFileRoute('/auth')()
 
 const PagesRoute = PagesRouteImport.update({
   id: '/pages',
   path: '/pages',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -47,15 +46,6 @@ const PagesIndexRoute = PagesIndexRouteImport.update({
 const Pages_layoutRoute = Pages_layoutRouteImport.update({
   id: '/__layout',
   getParentRoute: () => PagesRoute,
-} as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRoute,
-} as any)
-const Auth_layoutRoute = Auth_layoutRouteImport.update({
-  id: '/__layout',
-  getParentRoute: () => AuthRoute,
 } as any)
 const PagesVendorIndexRoute = PagesVendorIndexRouteImport.update({
   id: '/vendor/',
@@ -77,13 +67,23 @@ const PagesVendorVendorRoute = PagesVendorVendorRouteImport.update({
   path: '/vendor/$vendor',
   getParentRoute: () => PagesRoute,
 } as any)
+const AuthAuthRegisterRoute = AuthAuthRegisterRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthAuthLoginRoute = AuthAuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof Auth_layoutRoute
-  '/auth/login': typeof AuthLoginRoute
   '/pages': typeof Pages_layoutRoute
   '/pages/': typeof PagesIndexRoute
+  '/auth/login': typeof AuthAuthLoginRoute
+  '/auth/register': typeof AuthAuthRegisterRoute
   '/pages/vendor/$vendor': typeof PagesVendorVendorRoute
   '/pages/client': typeof PagesClientIndexRoute
   '/pages/odata': typeof PagesOdataIndexRoute
@@ -91,9 +91,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof Auth_layoutRoute
-  '/auth/login': typeof AuthLoginRoute
   '/pages': typeof PagesIndexRoute
+  '/auth/login': typeof AuthAuthLoginRoute
+  '/auth/register': typeof AuthAuthRegisterRoute
   '/pages/vendor/$vendor': typeof PagesVendorVendorRoute
   '/pages/client': typeof PagesClientIndexRoute
   '/pages/odata': typeof PagesOdataIndexRoute
@@ -102,12 +102,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/auth/__layout': typeof Auth_layoutRoute
-  '/auth/login': typeof AuthLoginRoute
+  '/_auth': typeof AuthRouteRouteWithChildren
   '/pages': typeof PagesRouteWithChildren
   '/pages/__layout': typeof Pages_layoutRoute
   '/pages/': typeof PagesIndexRoute
+  '/_auth/auth/login': typeof AuthAuthLoginRoute
+  '/_auth/auth/register': typeof AuthAuthRegisterRoute
   '/pages/vendor/$vendor': typeof PagesVendorVendorRoute
   '/pages/client/': typeof PagesClientIndexRoute
   '/pages/odata/': typeof PagesOdataIndexRoute
@@ -117,10 +117,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
-    | '/auth/login'
     | '/pages'
     | '/pages/'
+    | '/auth/login'
+    | '/auth/register'
     | '/pages/vendor/$vendor'
     | '/pages/client'
     | '/pages/odata'
@@ -128,9 +128,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
-    | '/auth/login'
     | '/pages'
+    | '/auth/login'
+    | '/auth/register'
     | '/pages/vendor/$vendor'
     | '/pages/client'
     | '/pages/odata'
@@ -138,12 +138,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/auth'
-    | '/auth/__layout'
-    | '/auth/login'
+    | '/_auth'
     | '/pages'
     | '/pages/__layout'
     | '/pages/'
+    | '/_auth/auth/login'
+    | '/_auth/auth/register'
     | '/pages/vendor/$vendor'
     | '/pages/client/'
     | '/pages/odata/'
@@ -152,7 +152,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
   PagesRoute: typeof PagesRouteWithChildren
 }
 
@@ -165,11 +165,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PagesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -192,20 +192,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/pages'
       preLoaderRoute: typeof Pages_layoutRouteImport
       parentRoute: typeof PagesRoute
-    }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/auth/__layout': {
-      id: '/auth/__layout'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof Auth_layoutRouteImport
-      parentRoute: typeof AuthRoute
     }
     '/pages/vendor/': {
       id: '/pages/vendor/'
@@ -235,20 +221,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PagesVendorVendorRouteImport
       parentRoute: typeof PagesRoute
     }
+    '/_auth/auth/register': {
+      id: '/_auth/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthAuthRegisterRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_auth/auth/login': {
+      id: '/_auth/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthAuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
   }
 }
 
-interface AuthRouteChildren {
-  Auth_layoutRoute: typeof Auth_layoutRoute
-  AuthLoginRoute: typeof AuthLoginRoute
+interface AuthRouteRouteChildren {
+  AuthAuthLoginRoute: typeof AuthAuthLoginRoute
+  AuthAuthRegisterRoute: typeof AuthAuthRegisterRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  Auth_layoutRoute: Auth_layoutRoute,
-  AuthLoginRoute: AuthLoginRoute,
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthAuthLoginRoute: AuthAuthLoginRoute,
+  AuthAuthRegisterRoute: AuthAuthRegisterRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
 
 interface PagesRouteChildren {
   Pages_layoutRoute: typeof Pages_layoutRoute
@@ -272,7 +274,7 @@ const PagesRouteWithChildren = PagesRoute._addFileChildren(PagesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
   PagesRoute: PagesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
