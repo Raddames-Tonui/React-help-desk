@@ -126,8 +126,10 @@ header {
 }
 
 .dropdown-user {
+    padding: 5px;
   font-size: 16px;
   color: var(--primary-700);
+  text-align: center;
   border-bottom: 1px solid #eee;
 }
 

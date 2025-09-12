@@ -2,7 +2,7 @@ import React from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-hot-toast";
 
-//  React Hook Form + Yup
+// React Hook Form + Yup
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -11,8 +11,10 @@ export const Route = createFileRoute("/_auth/auth/register")({
   component: RegisterPage,
 });
 
-//  validation schema using Yup
+// Yap validation schema 
 const schema = yup.object({
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
   username: yup.string().required("Username is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
@@ -31,14 +33,13 @@ type FormData = yup.InferType<typeof schema>;
 function RegisterPage() {
   const navigate = useNavigate();
 
-  // useForm with yupResolver 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-    defaultValues: { role: "client" }, 
+    defaultValues: { role: "client" },
   });
 
   const onSubmit = (data: FormData) => {
@@ -67,6 +68,34 @@ function RegisterPage() {
     <div className="register-container">
       <form onSubmit={handleSubmit(onSubmit)} className="register-form">
         <h2 className="form-title">Sign Up</h2>
+
+        <label className="form-label" htmlFor="firstName">
+          First Name:
+        </label>
+        <input
+          id="firstName"
+          type="text"
+          {...register("firstName")}
+          className="form-input"
+          placeholder="Enter first name"
+        />
+        {errors.firstName && (
+          <p className="error-message">{errors.firstName.message}</p>
+        )}
+
+        <label className="form-label" htmlFor="lastName">
+          Last Name:
+        </label>
+        <input
+          id="lastName"
+          type="text"
+          {...register("lastName")}
+          className="form-input"
+          placeholder="Enter last name"
+        />
+        {errors.lastName && (
+          <p className="error-message">{errors.lastName.message}</p>
+        )}
 
         <label className="form-label" htmlFor="username">
           Username:
@@ -139,3 +168,5 @@ function RegisterPage() {
     </div>
   );
 }
+
+export default RegisterPage;

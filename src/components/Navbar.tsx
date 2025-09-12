@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     router.options.context.auth.logout();
-    router.navigate({ to: "/_auth/auth/login" });
+    router.navigate({ to: "/auth/login" });
   };
 
   return (
