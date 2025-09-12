@@ -4,16 +4,17 @@ import { routeTree } from './routeTree.gen'
 // auth utilities
 const auth = {
   login: (data: any) => {
-    sessionStorage.setItem('user', JSON.stringify(data))
+    const { password, ...safeData } = data;
+    sessionStorage.setItem('user', JSON.stringify(safeData));
   },
   logout: () => {
-    sessionStorage.removeItem('user')
+    sessionStorage.removeItem('user');
   },
   getUser: () => {
-    const user = sessionStorage.getItem('user')
-    return user ? JSON.parse(user) : null
+    const user = sessionStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   },
-}
+};
 
 //  router with context
 export const router = createRouter({

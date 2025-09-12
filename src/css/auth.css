@@ -1,0 +1,191 @@
+/* @import url(./fonts.css); */
+
+:root {
+    --bg-default: #ffffff; 
+    --bg-secondary: #E0E9EB;
+        /* Form Colors */
+    --form-bg-default: #ffff;
+    --form-bg-focus: #fff5d1;
+    --form-bg-error: #ffcccb;
+    --form-bg-valid: #d9ffd9;
+    
+        /* Border Colors */
+    --form-border-default: #ccc;
+    --form-border-focus: #4cb9d3;
+    --form-border-valid: #35dc3d;
+    --form-border-error: #FD7E14;
+
+        /* Focus Colors */
+    --form-focus-shadow: rgba(0,122,204,0.2);
+    --form-error-shadow: rgba(220,53,69,0.2);
+
+        /* Required Field Colors */
+    --form-required-color: #FD7E14;
+    --form-required-bg: #fff5f5;
+
+        /* Layout */
+    --form-flex-gap: 12px;
+    --form-input-height: 40px;
+    --form-input-padding: 8px 12px;
+    --form-border-radius: 3px;
+    --form-font-size: 14px;
+}
+
+
+.form-wrapper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+}
+
+/* Card container */
+.form-card {
+  background: var(--bg-default);
+  max-width: 420px;
+  width: 100%;
+  padding: 2rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--form-border-default);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* Branding */
+.form-logo img {
+  height: 48px;
+  width: auto;
+  margin: 0 auto;
+}
+
+.form-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0190B0;
+  margin-top: 0.5rem;
+}
+
+.form-title {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* Base form layout */
+.form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--form-flex-gap);
+}
+
+/* Input group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid var(--form-border-default);
+  border-radius: var(--form-border-radius);
+  padding: var(--form-input-padding);
+  font-size: var(--form-font-size);
+  min-height: var(--form-input-height);
+  transition: border 0.2s, background 0.2s;
+}
+
+/* Focus states */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--form-border-focus);
+  outline: none;
+}
+
+/* Valid / Invalid */
+.form-group input:required:valid,
+.form-group select:required:valid,
+.form-group textarea:required:valid {
+  border-color: var(--form-border-valid);
+  background-color: var(--form-bg-valid);
+}
+
+.form-group input:required:invalid:not(:placeholder-shown),
+.form-group select:required:invalid:not(:placeholder-shown),
+.form-group textarea:required:invalid:not(:placeholder-shown) {
+  border-color: var(--form-border-error);
+  background: var(--form-bg-error);
+}
+
+/* Label row for things like "Forgot password?" */
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-link {
+  font-size: 0.85rem;
+  color: #0190B0;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.form-link:hover {
+  color: #005f73;
+}
+
+/* Actions */
+.form-actions {
+  margin-top: 1rem;
+}
+
+.btn {
+  width: 100%;
+  height: var(--form-input-height);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, #0190B0, #24C8ED);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, #4A8A98, #173B3F);
+}
+
+/* Footer text */
+.form-footer {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.form-footer a {
+  color: #24C8ED;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.form-footer a:hover {
+  color: #4A8A98;
+}

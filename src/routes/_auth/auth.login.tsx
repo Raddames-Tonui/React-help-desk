@@ -1,97 +1,113 @@
-import React, { useState } from 'react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { toast } from 'react-hot-toast';
-// import { Route as AuthLayoutRoute } from './__layout'; 
+import React, { useState } from "react";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { toast } from "react-hot-toast";
+// import "../../css/auth.css"
 
-export const Route = createFileRoute('/_auth/auth/login')({
+export const Route = createFileRoute("/_auth/auth/login")({
   component: LoginPage,
 });
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'client' | 'vendor'>('client');
+  const router = useRouter();
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username) return toast.error('Username required');
-    if (!password) return toast.error('Password required');
+    if (!usernameOrEmail) return toast.error("Username or Email required");
+    if (!password) return toast.error("Password required");
 
-    // Get registered users from localStorage
-    const users = JSON.parse(localStorage.getItem('users') || '[]') as {
+    // Users in localStorage
+    const users = JSON.parse(localStorage.getItem("users") || "[]") as {
       username: string;
+      email: string;
       password: string;
-      role: 'client' | 'vendor';
+      role: "client" | "vendor";
     }[];
 
-    // Find matching user
+    // Match by username or email
     const matchedUser = users.find(
-      user => user.username === username && user.password === password && user.role === role
+      (user) =>
+        (user.username === usernameOrEmail || user.email === usernameOrEmail) &&
+        user.password === password
     );
 
     if (!matchedUser) {
-      return toast.error('Invalid credentials or role');
+      return toast.error("Invalid credentials");
     }
 
-    // Store logged-in user in sessionStorage
-    sessionStorage.setItem('username', matchedUser.username);
-    sessionStorage.setItem('role', matchedUser.role);
+    // Use auth context (without password)
+    router.options.context.auth.login({
+      username: matchedUser.username,
+      email: matchedUser.email,
+      role: matchedUser.role,
+    });
 
-    toast.success('Login successful!', { duration: 1500 });
+    toast.success("Login successful!", { duration: 1500 });
 
-    // Redirect after toast
     setTimeout(() => {
-      navigate({ to: role === 'client' ? '/pages/client' : '/pages/vendor' });
+      navigate({ to: matchedUser.role === "client" ? "/pages/client" : "/pages/vendor" });
     }, 1500);
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded shadow-md w-full max-w-sm"
-      >
-        <h2 className="text-2xl mb-6 text-center font-semibold">Login</h2>
+    <div className="form-wrapper">
+      <div className="form-card">
+        {/* Logo + Branding */}
+        <div className="form-logo">
+          <img src="/helpdesk-logo.png" alt="Logo" />
+        </div>
+        <h1 className="form-brand">HelpDesk</h1>
+        <h2 className="form-title">User Login</h2>
 
-        <label className="block mb-2">Username:</label>
-        <input
-          type="text"
-          value={username}
-          onChange={e => setUsername(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-          placeholder="Enter username"
-          required
-        />
+        {/* Form */}
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="usernameOrEmail">Username or Email</label>
+            <input
+              id="usernameOrEmail"
+              name="usernameOrEmail"
+              type="text"
+              value={usernameOrEmail}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
+              placeholder="Enter username or email"
+              required
+            />
+          </div>
 
-        <label className="block mb-2">Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-          placeholder="Enter password"
-          required
-        />
+          <div className="form-group">
+            <div className="form-label-row">
+              <label htmlFor="password">Password</label>
+              <a href="/auth/resetpassword" className="form-link">
+                Forgot password?
+              </a>
+            </div>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
+              required
+            />
+          </div>
 
-        <label className="block mb-2">Role:</label>
-        <select
-          value={role}
-          onChange={e => setRole(e.target.value as 'client' | 'vendor')}
-          className="w-full p-2 border rounded mb-6"
-        >
-          <option value="client">Client</option>
-          <option value="vendor">Vendor</option>
-        </select>
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+          </div>
+        </form>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
-        >
-          Login
-        </button>
-      </form>
+        <p className="form-footer">
+          Don’t have an account? <a href="/auth/register">Register</a>
+        </p>
+      </div>
     </div>
   );
 }
+
+export default LoginPage;

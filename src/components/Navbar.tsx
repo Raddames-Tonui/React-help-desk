@@ -4,11 +4,17 @@ import { useRouter } from "@tanstack/react-router";
 
 const Navbar = () => {
   const [selectedValue, setSelectedValue] = useState("default");
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const router = useRouter();
-  const path = router.state.location.pathname.toLowerCase();
 
-  const isVendor = path.startsWith("/vendor");
+  const user = router.options.context.auth.getUser();
+  const role = user?.role || "client"; 
+
+  const handleLogout = () => {
+    router.options.context.auth.logout();
+    router.navigate({ to: "/_auth/auth/login" });
+  };
 
   return (
     <header>
@@ -21,12 +27,13 @@ const Navbar = () => {
           <h1>Help Desk - Sky World Limited</h1>
           <h2
             style={{
-              color: isVendor ? "var(--text-blue)" : "#FD7E14",
+              color: role === "vendor" ? "var(--text-blue)" : "#FD7E14",
             }}
           >
-            {isVendor ? "VENDOR" : "CLIENT"}
+            {role.toUpperCase()}
           </h2>
         </div>
+
         <div className="icon-search">
           <Icon iconName="add" />
           <Icon iconName="search" />
@@ -44,7 +51,25 @@ const Navbar = () => {
           </select>
 
           <Icon iconName="notification" />
-          <Icon iconName="avatar" />
+
+          <div className="avatar-dropdown">
+            <div
+              className="avatar-icon"
+              onClick={() => setShowDropdown((prev) => !prev)}
+              style={{ cursor: "pointer" }}
+            >
+              <Icon iconName="avatar" />
+            </div>
+
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <p className="dropdown-user">{user?.username || user?.email}</p>
+                <button className="dropdown-item" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>
