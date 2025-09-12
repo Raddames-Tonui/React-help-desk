@@ -27,7 +27,7 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
             (col) =>
               !col.hide && (
                 <th
-                  key={String(col.id)}            
+                  key={String(col.id)}    
                 >
                   {col.caption}
                 </th>
@@ -57,6 +57,8 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
           </tr>
         ))}
       </tbody>
+
+      
     </table>
   );
 };

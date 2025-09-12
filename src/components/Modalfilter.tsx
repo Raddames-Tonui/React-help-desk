@@ -82,7 +82,6 @@ export default function Modalfilter<T>({
               key={i}
               style={{ display: "flex", gap: "8px", marginBottom: "10px" }}
             >
-              {/* Column select */}
               <select
                 value={rule.column}
                 onChange={(e) => updateRule(i, "column", e.target.value)}
@@ -97,7 +96,6 @@ export default function Modalfilter<T>({
                   ))}
               </select>
 
-              {/* Relation select */}
               <select
                 value={rule.relation}
                 onChange={(e) => updateRule(i, "relation", e.target.value)}
@@ -126,10 +124,10 @@ export default function Modalfilter<T>({
         </div>
       }
       footer={
-        <>
+        <div>
           <button className="cancel"  onClick={reset}>Reset</button>
           <button className="modal-close-btn" onClick={handleSubmit}>Apply</button>
-        </>
+        </div>
       }
     />
   );

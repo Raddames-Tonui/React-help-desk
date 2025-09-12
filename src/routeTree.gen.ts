@@ -16,6 +16,7 @@ import { Route as PagesIndexRouteImport } from './routes/pages/index'
 import { Route as PagesVendorIndexRouteImport } from './routes/pages/vendor/index'
 import { Route as PagesOdataIndexRouteImport } from './routes/pages/odata/index'
 import { Route as PagesClientIndexRouteImport } from './routes/pages/client/index'
+import { Route as PagesVendorIdRouteImport } from './routes/pages/vendor/$id'
 import { Route as AuthAuthResetpasswordRouteImport } from './routes/_auth/auth.resetpassword'
 import { Route as AuthAuthRegisterRouteImport } from './routes/_auth/auth.register'
 import { Route as AuthAuthLoginRouteImport } from './routes/_auth/auth.login'
@@ -54,6 +55,11 @@ const PagesClientIndexRoute = PagesClientIndexRouteImport.update({
   path: '/client/',
   getParentRoute: () => PagesRouteRoute,
 } as any)
+const PagesVendorIdRoute = PagesVendorIdRouteImport.update({
+  id: '/vendor/$id',
+  path: '/vendor/$id',
+  getParentRoute: () => PagesRouteRoute,
+} as any)
 const AuthAuthResetpasswordRoute = AuthAuthResetpasswordRouteImport.update({
   id: '/auth/resetpassword',
   path: '/auth/resetpassword',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthAuthLoginRoute
   '/auth/register': typeof AuthAuthRegisterRoute
   '/auth/resetpassword': typeof AuthAuthResetpasswordRoute
+  '/pages/vendor/$id': typeof PagesVendorIdRoute
   '/pages/client': typeof PagesClientIndexRoute
   '/pages/odata': typeof PagesOdataIndexRoute
   '/pages/vendor': typeof PagesVendorIndexRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthAuthLoginRoute
   '/auth/register': typeof AuthAuthRegisterRoute
   '/auth/resetpassword': typeof AuthAuthResetpasswordRoute
+  '/pages/vendor/$id': typeof PagesVendorIdRoute
   '/pages/client': typeof PagesClientIndexRoute
   '/pages/odata': typeof PagesOdataIndexRoute
   '/pages/vendor': typeof PagesVendorIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/_auth/auth/login': typeof AuthAuthLoginRoute
   '/_auth/auth/register': typeof AuthAuthRegisterRoute
   '/_auth/auth/resetpassword': typeof AuthAuthResetpasswordRoute
+  '/pages/vendor/$id': typeof PagesVendorIdRoute
   '/pages/client/': typeof PagesClientIndexRoute
   '/pages/odata/': typeof PagesOdataIndexRoute
   '/pages/vendor/': typeof PagesVendorIndexRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
+    | '/pages/vendor/$id'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
+    | '/pages/vendor/$id'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '/_auth/auth/login'
     | '/_auth/auth/register'
     | '/_auth/auth/resetpassword'
+    | '/pages/vendor/$id'
     | '/pages/client/'
     | '/pages/odata/'
     | '/pages/vendor/'
@@ -197,6 +209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PagesClientIndexRouteImport
       parentRoute: typeof PagesRouteRoute
     }
+    '/pages/vendor/$id': {
+      id: '/pages/vendor/$id'
+      path: '/vendor/$id'
+      fullPath: '/pages/vendor/$id'
+      preLoaderRoute: typeof PagesVendorIdRouteImport
+      parentRoute: typeof PagesRouteRoute
+    }
     '/_auth/auth/resetpassword': {
       id: '/_auth/auth/resetpassword'
       path: '/auth/resetpassword'
@@ -239,6 +258,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface PagesRouteRouteChildren {
   PagesIndexRoute: typeof PagesIndexRoute
+  PagesVendorIdRoute: typeof PagesVendorIdRoute
   PagesClientIndexRoute: typeof PagesClientIndexRoute
   PagesOdataIndexRoute: typeof PagesOdataIndexRoute
   PagesVendorIndexRoute: typeof PagesVendorIndexRoute
@@ -246,6 +266,7 @@ interface PagesRouteRouteChildren {
 
 const PagesRouteRouteChildren: PagesRouteRouteChildren = {
   PagesIndexRoute: PagesIndexRoute,
+  PagesVendorIdRoute: PagesVendorIdRoute,
   PagesClientIndexRoute: PagesClientIndexRoute,
   PagesOdataIndexRoute: PagesOdataIndexRoute,
   PagesVendorIndexRoute: PagesVendorIndexRoute,

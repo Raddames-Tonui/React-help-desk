@@ -1,7 +1,6 @@
 import React, { useReducer, useEffect, useState } from "react";
 import Table, { ColumnProps } from "../components/Table";
 import Loader from "../components/Loader";
-import { buildFilterOptions, buildSortOptions } from "../utilities/tableUtils";
 import Modalfilter from "../components/ModalFilter";
 import Modalsort from "../components/Modalsort";
 
@@ -90,9 +89,6 @@ const Odata: React.FC = () => {
     fetchData();
   }, [state.filter, state.sort, state.page]);
 
-  // Generate dynamic filter + sort fields
-  const filterableColumns = buildFilterOptions(columns);
-  const sortableColumns = buildSortOptions(columns);
 
   return (
     <div>
@@ -127,6 +123,23 @@ const Odata: React.FC = () => {
           dispatch({ type: "SET_SORT", sort: sortString })
         }
       />
+
+       <div className="pagination" >
+        <button
+          disabled={state.page === 1}
+          onClick={() => dispatch({ type: "SET_PAGE", page: state.page - 1 })}
+          className="pagination-btn prev-btn"
+        >
+          Prev
+        </button>
+        <span className="page-no" >Page {state.page}</span>
+        <button
+          onClick={() => dispatch({ type: "SET_PAGE", page: state.page + 1 })}
+          className="pagination-btn next-btn"
+        >
+          Next
+        </button>
+      </div>
 
     </div>
   );

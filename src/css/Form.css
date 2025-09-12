@@ -88,11 +88,11 @@ form {
 }
 
 /* Valid required fields (when filled) */
-.form-group > input:required:valid,
+/* .form-group > input:required:valid,
 .form-group > textarea:required:valid {
     border-color: var(--form-border-valid);
     background-color: var(--form-bg-valid);
-}
+} */
 
 /* Invalid required fields */
 /* .form-group > input:required:invalid:not(:placeholder-shown),

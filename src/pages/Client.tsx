@@ -73,18 +73,27 @@ const handleSubmit = async (e: React.FormEvent) => {
       name: file.name,
       size: file.size,
       type: file.type,
-      content: await fileToBase64(file), 
+      content: await fileToBase64(file),
     }))
   );
 
-  const storageState = {
+  const newTicket = {
     ...state,
     files: filesBase64,
+    ticket_id: Date.now(), 
+    date_requested: new Date().toISOString(),
   };
 
-  localStorage.setItem("ticketForm", JSON.stringify(storageState));
+  const saved = localStorage.getItem("ticketForm");
+  let tickets = saved ? JSON.parse(saved) : [];
 
-  // console.log("Saved to localStorage:", storageState);
+  if (!Array.isArray(tickets)) tickets = [tickets];
+
+  tickets.push(newTicket);
+
+  localStorage.setItem("ticketForm", JSON.stringify(tickets));
+
+  console.log("Saved to localStorage:", newTicket);
 
   dispatch({ type: "RESET" });
 };
