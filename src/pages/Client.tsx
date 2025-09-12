@@ -153,6 +153,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 id="file-upload"
                 style={{ display: "none" }}
                 multiple
+                accept=".jpg,.jpeg,.png,.pdf"
                 onChange={handleFileChange}
               />
               <label htmlFor="file-upload" className="custom-file-label">Select File(s)</label>

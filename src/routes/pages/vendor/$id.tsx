@@ -14,7 +14,7 @@ function VendorDetail() {
   if (saved) {
     const parsed = JSON.parse(saved);
     const arr = Array.isArray(parsed) ? parsed : [parsed];
-    ticket = arr.find((t: any, index: number) => 
+    ticket = arr.find((t: any, index: number) =>
       String(t.ticket_id ?? index + 1) === id
     );
   }
@@ -27,7 +27,7 @@ function VendorDetail() {
     <section className="ticket-detail">
       <div className="ticket-info">
         <div>
-          <h2>Ticket #{id}</h2>
+          <h2>Ticket {id}</h2>
           <p><strong>Main Category:</strong> {ticket.mainCategory}</p>
           <p><strong>Sub Category:</strong> {ticket.subCategory}</p>
           <p><strong>Problem:</strong> {ticket.problem}</p>

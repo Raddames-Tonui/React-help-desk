@@ -23,3 +23,28 @@ LocalStorage save → fits into Form Submission section logic.
 LocalStorage user lookup checks for either username or email.
 
 SessionStorage stores user session
+
+
+
+hooks
+
+searchParams 
+useParams
+
+const params =Route.useParams();
+params.county = "";
+params.id = "";
+
+
+children
+
+
+monorepo
+ clients 
+ vendor
+lib 
+    shared
+
+
+
+    install pnpmgit 

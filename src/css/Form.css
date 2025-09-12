@@ -202,44 +202,42 @@ input[type="file"] {
   margin: 8px 0 16px 0;
   font-style: italic;
 }
-
-.uploaded-files {
-  margin-top: 8px;
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.uploaded-files a {
-  font-size: 14px;
-  color: #007acc;
+.file-list a {
+  color: #1C7ED6;
   text-decoration: none;
-  margin-right: 8px;
 }
 
-.uploaded-files a:hover {
+.file-list a:hover {
   text-decoration: underline;
 }
 
-.uploaded-files .remove {
+.file-list .remove {
   color: #dc3545;
   font-weight: bold;
   cursor: pointer;
   margin-left: 8px;
 }
 
-.file-list{
+.file-item {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin-bottom:1rem ;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.file-item {
-  display:flex; 
-  flex-direction: row;
-  gap: 1rem;
+.file-item .file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.file-item > a {
-  color: #1C7ED6;
-}
+
+
 
 /* Buttons */
 .form-actions {

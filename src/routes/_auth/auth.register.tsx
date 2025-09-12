@@ -2,10 +2,11 @@ import React from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "react-hot-toast";
 
-// React Hook Form + Yup
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import "@/css/register.css"
 
 export const Route = createFileRoute("/_auth/auth/register")({
   component: RegisterPage,

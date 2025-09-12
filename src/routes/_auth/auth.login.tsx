@@ -4,7 +4,10 @@ import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import * as yup from "yup"; 
+
+import "@/css/login.css"
+
 
 export const Route = createFileRoute("/_auth/auth/login")({
   component: LoginPage,

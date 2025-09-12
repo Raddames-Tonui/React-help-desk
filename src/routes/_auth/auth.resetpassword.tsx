@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
+import "@/css/register.css"
 
 export const Route = createFileRoute('/_auth/auth/resetpassword')({
   component: ResetPasswordPage,

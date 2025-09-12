@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { ColumnProps } from "./Table";
 
-type FilterRule = {
+export type FilterRule = {
   column: string;
   relation: string;
   value: string;
@@ -12,6 +12,7 @@ interface FilterModalProps<T> {
   isOpen: boolean;
   onClose: () => void;
   columns: ColumnProps<T>[];
+  initialRules?: FilterRule[];
   onApply: (filterString: string) => void;
 }
 
@@ -22,13 +23,20 @@ const relations = [
   { value: "endswith", label: "Ends With" },
 ];
 
-export default function Modalfilter<T>({
+export default function ModalFilter<T>({
   isOpen,
   onClose,
   columns,
+  initialRules = [],
   onApply,
 }: FilterModalProps<T>) {
   const [rules, setRules] = useState<FilterRule[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setRules(initialRules.length ? initialRules : []);
+    }
+  }, [isOpen, initialRules]);
 
   const updateRule = (i: number, field: keyof FilterRule, val: string) => {
     const updated = [...rules];
@@ -36,14 +44,10 @@ export default function Modalfilter<T>({
     setRules(updated);
   };
 
-  const addRule = () => {
+  const addRule = () =>
     setRules([...rules, { column: "", relation: "", value: "" }]);
-  };
-
-  const removeRule = (i: number) => {
+  const removeRule = (i: number) =>
     setRules(rules.filter((_, idx) => idx !== i));
-  };
-
   const reset = () => setRules([]);
 
   const handleSubmit = () => {
@@ -78,10 +82,7 @@ export default function Modalfilter<T>({
       body={
         <div>
           {rules.map((rule, i) => (
-            <div
-              key={i}
-              style={{ display: "flex", gap: "8px", marginBottom: "10px" }}
-            >
+            <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10 }}>
               <select
                 value={rule.column}
                 onChange={(e) => updateRule(i, "column", e.target.value)}
@@ -108,7 +109,6 @@ export default function Modalfilter<T>({
                 ))}
               </select>
 
-              {/* Value input */}
               <input
                 type="text"
                 value={rule.value}
@@ -116,17 +116,22 @@ export default function Modalfilter<T>({
                 onChange={(e) => updateRule(i, "value", e.target.value)}
               />
 
-              <button className="cancel" onClick={() => removeRule(i)}>✖</button>
+              <button className="cancel" onClick={() => removeRule(i)}>
+                ✖
+              </button>
             </div>
           ))}
-
-          <button onClick={addRule}> Add Filter</button>
+          <button onClick={addRule}>Add Filter</button>
         </div>
       }
       footer={
         <div>
-          <button className="cancel"  onClick={reset}>Reset</button>
-          <button className="modal-close-btn" onClick={handleSubmit}>Apply</button>
+          <button className="cancel" onClick={reset}>
+            Reset
+          </button>
+          <button className="modal-close-btn" onClick={handleSubmit}>
+            Apply
+          </button>
         </div>
       }
     />

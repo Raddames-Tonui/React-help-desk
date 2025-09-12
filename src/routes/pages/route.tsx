@@ -20,7 +20,8 @@ function PageLayout() {
       <main>
         <Outlet />
       </main>
-      <Footer/>
+      <Footer />
+      
     </div>
   )
 }

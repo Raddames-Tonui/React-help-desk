@@ -40,6 +40,8 @@ const columns: ColumnProps<Ticket>[] = [
         <button
           onClick={() =>
             navigate({ to: "/pages/vendor/$id", params: { id: String(id) } })
+            // $ticktid.$country.tsx
+            // navigate({ to: "/pages/vendor/$id", params: { id: encoded, ountry : "044" } })
           }
           style={{
             background: "none",
