@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect, useState } from "react";
-import Table from "../components/Table"; 
-import type { ColumnProps } from "../components/Table"; 
-import "../css/Table.css";
+import Table, { ColumnProps } from "../components/Table";
 import Loader from "../components/Loader";
-import Modal from "../components/Modal";
+import { buildFilterOptions, buildSortOptions } from "../utilities/tableUtils";
+import Modalfilter from "../components/ModalFilter";
+import Modalsort from "../components/Modalsort";
 
 function reducer(state: any, action: any) {
   switch (action.type) {
@@ -38,7 +38,31 @@ const baseUrl =
 
 const Odata: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isFilterModalOpen, setFilterModalOpen] = useState(false);
+  const [isSortModalOpen, setSortModalOpen] = useState(false);
+
+  const columns: ColumnProps<any>[] = [
+    { id: "FirstName", caption: "First Name", size: 150, isFilterable: true, isSortable: true },
+    { id: "LastName", caption: "Last Name", size: 150, isFilterable: true, isSortable: true },
+    { id: "UserName", caption: "Username", size: 200, isFilterable: true, isSortable: true },
+    { id: "Gender", caption: "Gender", size: 100, isFilterable: true, isSortable: true },
+    {
+      id: "Emails",
+      caption: "Emails",
+      size: 250,
+      render: (row, value) => (Array.isArray(value) ? value.join(" ") : "—"),
+      isFilterable: false,
+      isSortable: false,
+    },
+    {
+      id: "AddressInfo",
+      caption: "City",
+      size: 200,
+      render: (row) => row.AddressInfo?.[0]?.City?.Name || "—",
+      isFilterable: true,
+      isSortable: false,
+    },
+  ];
 
   async function fetchData() {
     dispatch({ type: "FETCH_START" });
@@ -54,9 +78,7 @@ const Odata: React.FC = () => {
     const url = `${baseUrl}?${params.toString()}`;
 
     try {
-      const res = await fetch(url, {
-        headers: { Accept: "application/json" },
-      });
+      const res = await fetch(url, { headers: { Accept: "application/json" } });
       const data = await res.json();
       dispatch({ type: "FETCH_SUCCESS", data: data.value });
     } catch (err: any) {
@@ -68,111 +90,44 @@ const Odata: React.FC = () => {
     fetchData();
   }, [state.filter, state.sort, state.page]);
 
-  const columns: ColumnProps<any>[] = [
-    { id: "FirstName", caption: "First Name", size: 150 },
-    { id: "LastName", caption: "Last Name", size: 150 },
-    { id: "UserName", caption: "Username", size: 200 },
-    { id: "Gender", caption: "Gender", size: 100 },
-    {
-      id: "Emails",
-      caption: "Emails",
-      size: 250,
-      render: (row, value) => (Array.isArray(value) ? value.join(" ") : "—"),
-    },
-    {
-      id: "AddressInfo",
-      caption: "City",
-      size: 200,
-      render: (row) => row.AddressInfo?.[0]?.City?.Name || "—",
-    },
-  ];
+  // Generate dynamic filter + sort fields
+  const filterableColumns = buildFilterOptions(columns);
+  const sortableColumns = buildSortOptions(columns);
 
   return (
     <div>
       <div className="page-header">
         <h3>OData People</h3>
         <div className="page-utils">
-          <button className="modal-close-btn" onClick={() => setModalOpen(true)}>
-            Filter & Sort
-          </button>
+          <button onClick={() => setFilterModalOpen(true)}>Filter</button>
+          <button onClick={() => setSortModalOpen(true)}>Sort</button>
         </div>
       </div>
 
       <section className="table-section">
-        {state.loading && (
-          <div className="loader">
-            <Loader />
-          </div>
-        )}
+        {state.loading && <Loader />}
         {state.error && <p style={{ color: "red" }}>{state.error}</p>}
-
-        {!state.loading && !state.error && (
-          <Table columns={columns} data={state.data} />
-        )}
+        {!state.loading && !state.error && <Table columns={columns} data={state.data} />}
       </section>
 
-      <div className="pagination">
-        <button
-          disabled={state.page === 1}
-          onClick={() => dispatch({ type: "SET_PAGE", page: state.page - 1 })}
-          className="pagination-btn prev-btn"
-        >
-          Prev
-        </button>
-        <span className="page-no">Page {state.page}</span>
-        <button
-          onClick={() => dispatch({ type: "SET_PAGE", page: state.page + 1 })}
-          className="pagination-btn next-btn"
-        >
-          Next
-        </button>
-      </div>
-
-      {/* Modal for filter + sort */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        title="Filter & Sort"
-        body={
-          <div className="filter-sort-body">
-            <input
-              type="text"
-              placeholder="Filter by first name..."
-              onChange={(e) =>
-                dispatch({
-                  type: "SET_FILTER",
-                  filter: e.target.value
-                    ? `contains(FirstName,'${e.target.value}')`
-                    : "",
-                })
-              }
-              style={{ width: "100%", marginBottom: "12px", padding: "8px" }}
-            />
-
-            <select
-              value={state.sort}
-              onChange={(e) =>
-                dispatch({ type: "SET_SORT", sort: e.target.value })
-              }
-              style={{ width: "100%", padding: "8px" }}
-            >
-              <option value="">Sort...</option>
-              <option value="FirstName asc">First Name (A-Z)</option>
-              <option value="FirstName desc">First Name (Z-A)</option>
-            </select>
-          </div>
-        }
-        footer={
-          <>
-            <button className="cancel" onClick={() => setModalOpen(false)}>
-              Cancel
-            </button>
-            <button className="modal-close-btn" onClick={() => setModalOpen(false)}>
-              Apply
-            </button>
-          </>
+      <Modalfilter
+        isOpen={isFilterModalOpen}
+        onClose={() => setFilterModalOpen(false)}
+        columns={columns}
+        onApply={(filterString) =>
+          dispatch({ type: "SET_FILTER", filter: filterString })
         }
       />
+
+      <Modalsort
+        isOpen={isSortModalOpen}
+        onClose={() => setSortModalOpen(false)}
+        columns={columns}
+        onApply={(sortString) =>
+          dispatch({ type: "SET_SORT", sort: sortString })
+        }
+      />
+
     </div>
   );
 };
