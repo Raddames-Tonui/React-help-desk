@@ -6,13 +6,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import "@/css/register.css"
+import "@/css/register.css";
 
 export const Route = createFileRoute("/auth/register")({
   component: RegisterPage,
 });
 
-// Yap validation schema 
+// Yup validation schema
 const schema = yup.object({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
@@ -37,7 +37,7 @@ function RegisterPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: { role: "client" },
@@ -65,94 +65,58 @@ function RegisterPage() {
     }, 1500);
   };
 
+  // 🔹 helper for styling
+  const getInputClass = (field: keyof FormData) => {
+    if (errors[field]) return "form-input error"; // red
+    if (touchedFields[field]) return "form-input success"; // green
+    return "form-input"; // default gray
+  };
+
+  // 🔹 helper for icons
+  const renderIcon = (field: keyof FormData) => {
+    if (errors[field]) return <span className="error-icon">❌</span>;
+    if (touchedFields[field]) return <span className="success-icon">✔️</span>;
+    return null;
+  };
+
   return (
     <div className="register-container">
       <form onSubmit={handleSubmit(onSubmit)} className="register-form">
         <h2 className="form-title">Sign Up</h2>
 
-        <label className="form-label" htmlFor="firstName">
-          First Name:
-        </label>
-        <input
-          id="firstName"
-          type="text"
-          {...register("firstName")}
-          className="form-input"
-          placeholder="Enter first name"
-        />
-        {errors.firstName && (
-          <p className="error-message">{errors.firstName.message}</p>
-        )}
-
-        <label className="form-label" htmlFor="lastName">
-          Last Name:
-        </label>
-        <input
-          id="lastName"
-          type="text"
-          {...register("lastName")}
-          className="form-input"
-          placeholder="Enter last name"
-        />
-        {errors.lastName && (
-          <p className="error-message">{errors.lastName.message}</p>
-        )}
-
-        <label className="form-label" htmlFor="username">
-          Username:
-        </label>
-        <input
-          id="username"
-          type="text"
-          {...register("username")}
-          className="form-input"
-          placeholder="Enter username"
-        />
-        {errors.username && (
-          <p className="error-message">{errors.username.message}</p>
-        )}
-
-        <label className="form-label" htmlFor="email">
-          Email:
-        </label>
-        <input
-          id="email"
-          type="email"
-          {...register("email")}
-          className="form-input"
-          placeholder="Enter email"
-        />
-        {errors.email && (
-          <p className="error-message">{errors.email.message}</p>
-        )}
-
-        <label className="form-label" htmlFor="password">
-          Password:
-        </label>
-        <input
-          id="password"
-          type="password"
-          {...register("password")}
-          className="form-input"
-          placeholder="Enter password"
-        />
-        {errors.password && (
-          <p className="error-message">{errors.password.message}</p>
-        )}
-
-        <label className="form-label" htmlFor="confirmPassword">
-          Confirm Password:
-        </label>
-        <input
-          id="confirmPassword"
-          type="password"
-          {...register("confirmPassword")}
-          className="form-input"
-          placeholder="Confirm password"
-        />
-        {errors.confirmPassword && (
-          <p className="error-message">{errors.confirmPassword.message}</p>
-        )}
+        {(
+          [
+            { id: "firstName", label: "First Name", type: "text" },
+            { id: "lastName", label: "Last Name", type: "text" },
+            { id: "username", label: "Username", type: "text" },
+            { id: "email", label: "Email", type: "email" },
+            { id: "password", label: "Password", type: "password" },
+            {
+              id: "confirmPassword",
+              label: "Confirm Password",
+              type: "password",
+            },
+          ] as const
+        ).map((field) => (
+          <div key={field.id} className="input-wrapper">
+            <label className="form-label" htmlFor={field.id}>
+              {field.label}:
+            </label>
+            <div className="input-with-icon">
+              <input
+                id={field.id}
+                type={field.type}
+                {...register(field.id)}
+                className={getInputClass(field.id)}
+                placeholder={`Enter ${field.label.toLowerCase()}`}
+              />
+              {renderIcon(field.id)}
+            </div>
+            {errors[field.id] && (
+              <p className="error-message">{errors[field.id]?.message}</p>
+            )}
+          </div>
+        ))}
 
         <label className="form-label" htmlFor="role">
           Role:

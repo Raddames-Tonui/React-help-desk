@@ -71,3 +71,36 @@
 .form-submit:hover {
   background-color: var(--primary-800);
 }
+
+
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon input {
+  flex: 1;
+  padding-right: 2rem; /* space for icon */
+}
+
+.error-icon {
+  position: absolute;
+  right: 0.5rem;
+  color: #dc3545;
+  font-size: 1rem;
+}
+
+.success-icon {
+  position: absolute;
+  right: 0.5rem;
+  color: #28a745;
+  font-size: 1rem;
+}

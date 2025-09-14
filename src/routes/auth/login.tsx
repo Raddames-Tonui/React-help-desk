@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup"; 
+import * as yup from "yup";
 
-import "@/css/login.css"
-
+import "@/css/login.css";
 
 export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
@@ -15,7 +14,10 @@ export const Route = createFileRoute("/auth/login")({
 
 const schema = yup.object({
   usernameOrEmail: yup.string().required("Username or Email is required"),
-  password: yup.string().required("Password is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -23,16 +25,19 @@ type FormData = yup.InferType<typeof schema>;
 function LoginPage() {
   const navigate = useNavigate();
   const router = useRouter();
+  const [authError, setAuthError] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields, isSubmitted },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
+    setAuthError(false);
+
     const users = JSON.parse(localStorage.getItem("users") || "[]") as {
       username: string;
       email: string;
@@ -50,11 +55,12 @@ function LoginPage() {
     );
 
     if (!matchedUser) {
-      return toast.error("Invalid credentials");
+      setAuthError(true);
+      toast.error("Invalid credentials");
+      return;
     }
 
     router.options.context.auth.login(matchedUser);
-
     toast.success("Login successful!", { duration: 1500 });
 
     setTimeout(() => {
@@ -62,6 +68,13 @@ function LoginPage() {
         to: matchedUser.role === "client" ? "/pages/client" : "/pages/vendor",
       });
     }, 1500);
+  };
+
+  const getInputClass = (field: keyof FormData) => {
+    if (errors[field]) return "form-input error"; // red
+    if (authError && isSubmitted) return "form-input neutral"; // neutral if wrong creds
+    if (touchedFields[field]) return "form-input success"; // green
+    return "form-input";
   };
 
   return (
@@ -76,11 +89,13 @@ function LoginPage() {
           id="usernameOrEmail"
           type="text"
           {...register("usernameOrEmail")}
-          className="form-input"
+          className={getInputClass("usernameOrEmail")}
           placeholder="Enter username or email"
         />
         {errors.usernameOrEmail && (
-          <p className="error-message">{errors.usernameOrEmail.message}</p>
+          <p className="error-message">
+            {errors.usernameOrEmail.message} ❌
+          </p>
         )}
 
         <label className="form-label" htmlFor="password">
@@ -90,16 +105,24 @@ function LoginPage() {
           id="password"
           type="password"
           {...register("password")}
-          className="form-input"
+          className={getInputClass("password")}
           placeholder="Enter password"
-        />
+        />        
         {errors.password && (
-          <p className="error-message">{errors.password.message}</p>
+          <p className="error-message"> {errors.password.message} ❌</p>
         )}
+
+        <a href="/auth/resetpassword" className="form-link">
+          Forgot your password?
+        </a>
 
         <button type="submit" className="form-submit">
           Login
         </button>
+
+        <div className="form-links">
+          <a href="/auth/register" className="form-link">Create account</a>
+        </div>
       </form>
     </div>
   );
