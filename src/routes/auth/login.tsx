@@ -9,7 +9,7 @@ import * as yup from "yup";
 import "@/css/login.css"
 
 
-export const Route = createFileRoute("/_auth/auth/login")({
+export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
 });
 

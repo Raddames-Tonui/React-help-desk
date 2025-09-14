@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { toast } from 'react-hot-toast';
 import "@/css/register.css"
 
-export const Route = createFileRoute('/_auth/auth/resetpassword')({
+export const Route = createFileRoute('/auth/auth/resetpassword')({
   component: ResetPasswordPage,
 });
 

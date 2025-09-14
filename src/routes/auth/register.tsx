@@ -8,7 +8,7 @@ import * as yup from "yup";
 
 import "@/css/register.css"
 
-export const Route = createFileRoute("/_auth/auth/register")({
+export const Route = createFileRoute("/auth/register")({
   component: RegisterPage,
 });
 

@@ -1,50 +1,175 @@
-Implementations done
+# Project README
 
-using react and typescript and external css using TipTap for text area in form using dynamic table for rendering. using usereducer and ODATA
+## Overview
 
-todo: - submit to local storage - display submitted - encrypt data in local storage - Filter and sort all rows and columns - Display success/ error toasts
+This project is a **React + TypeScript** application built with **Vite** and leveraging modern tools and libraries:
 
+* **TanStack Router** → for flexible, file-based routing.
+* **React Hook Form (RHF)** → for efficient form state management.
+* **Yup** → for schema-based form validation with RHF resolvers.
+* **LocalStorage & SessionStorage** → for persistence and session handling.
+* **TipTap** → for rich text area handling.
+* **Dynamic Tables** → for rendering interactive data views.
+* **useReducer** → for predictable state management.
+* **OData** → for structured data querying.
 
-react hook form 
-`npm install react-hook-form`
+This project follows a **monorepo structure** with:
 
-Yup
-`npm install yup @hookform/resolvers`
+* `clients`
+* `vendor`
+* `lib/shared`
 
-Key Things Highlighted:
+Package manager: **pnpm**
+Version control: **git**
 
-Schema Validation with Yup → replaces manual checks.
+---
 
-Basic Form with register + errors → maps directly to docs section.
+## Features Implemented
 
-LocalStorage save → fits into Form Submission section logic.
+* ✅ Routing with **TanStack Router**
+* ✅ Form handling with **React Hook Form**
+* ✅ Validation with **Yup** & `@hookform/resolvers`
+* ✅ LocalStorage for saving form data
+* ✅ SessionStorage for user session handling
+* ✅ TipTap integration for text area fields
+* ✅ Dynamic table rendering
+* ✅ useReducer for complex state management
+* ✅ OData integration for structured queries
 
+---
 
-LocalStorage user lookup checks for either username or email.
+## Installation
 
-SessionStorage stores user session
+```bash
+# Install dependencies
+pnpm install
 
+# Install form libraries
+pnpm add react-hook-form
+pnpm add yup @hookform/resolvers
+```
 
+---
 
-hooks
+## Usage
 
-searchParams 
-useParams
+### Form Setup
 
-const params =Route.useParams();
-params.county = "";
-params.id = "";
+```tsx
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
+// Schema validation with Yup
+const schema = yup.object().shape({
+  username: yup.string().required(),
+  email: yup.string().email().required(),
+});
 
-children
+const Form = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
 
+  const onSubmit = (data: any) => {
+    localStorage.setItem("formData", JSON.stringify(data));
+  };
 
-monorepo
- clients 
- vendor
-lib 
-    shared
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("username")} placeholder="Username" />
+      {errors.username && <span>{errors.username.message}</span>}
 
+      <input {...register("email")} placeholder="Email" />
+      {errors.email && <span>{errors.email.message}</span>}
 
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+```
 
-    install pnpmgit 
+---
+
+## To-Do
+
+* [ ] Submit to **LocalStorage**
+* [ ] Display submitted data
+* [ ] Encrypt LocalStorage data
+* [ ] Filter and sort rows/columns in dynamic table
+* [ ] Display **success/error toasts** on form submission
+
+---
+
+## Routing Example
+
+```tsx
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/pages/vendor/$id")({
+  component: VendorPage,
+});
+
+function VendorPage() {
+  const params = Route.useParams();
+  // params.county, params.id available
+}
+```
+
+---
+
+## Hooks in Use
+
+* `useParams` → fetch route params
+* `searchParams` → query string management
+* `useReducer` → structured state updates
+
+---
+
+## Storage
+
+* **LocalStorage** → stores form submissions, user lookups (by username or email).
+* **SessionStorage** → stores session information.
+
+---
+
+## Development Workflow
+
+1. Clone repository
+2. Run `pnpm install`
+3. Start dev server:
+
+   ```bash
+   pnpm dev
+   ```
+
+---
+
+## Monorepo Structure
+
+```
+root/
+ ├─ clients/
+ ├─ vendor/
+ ├─ lib/
+ │   └─ shared/
+ └─ package.json
+```
+
+---
+
+## Next Steps
+
+* Integrate encryption for stored data.
+* Add toast notifications (success/error).
+* Implement advanced filtering/sorting on tables.
+* Improve TipTap editor features.
+
+---
+
+## Key Takeaways
+
+* **Schema Validation with Yup** → eliminates manual checks.
+* **RHF + Yup** → smooth form handling & validation.
+* **Storage Strategy** → LocalStorage for persistence, SessionStorage for sessions.
+* **TanStack Router** → flexible, modern routing for React apps.
