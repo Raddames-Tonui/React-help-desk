@@ -17,6 +17,38 @@ body {
 }
 
 
+.button {
+  background: var(--primary-700);
+  color: var(--bg-default);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+  margin-left: 0.5rem;
+}
+
+.button:hover {
+    background: var(--primary-800);
+}
+
+.button-sec {
+  border: 1px solid var(--primary-700);
+  background: var(--bg-default);
+  color: var(--primary-800);
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+}
+
+.button-sec:hover {
+  background: var(--primary-50);
+  color: var(--primary-700);
+}
 
 /* Hide scrollbars but keep scrolling */
 ::-webkit-scrollbar {

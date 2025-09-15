@@ -26,9 +26,11 @@ header {
     border-bottom: 1px solid white;
     width: 48px;
     min-height: 48px;
-    max-width: 48px;
+    max-width: 240px;
     flex-shrink: 0;
 }
+
+
 
 .header-wrapper {
     display: flex;
@@ -150,30 +152,83 @@ header {
   color: white;
 }
 
-
-
-
 aside {
-    grid-area: aside;
-    background-color: var(--primary-700);  
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
+    background-color: var(--primary-700);
     padding: 24px 0;
+    overflow: hidden;
+    position: relative; 
+    transition: width 0.3s ease;
 }
 
 .aside-icons {
-    display: flex;   
+    display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
+    width: 100%;
 }
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: start; 
+    gap: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.sidebar-item:hover {
+    background-color: var(--primary-800);
+    color: white;
+}
+
+.sidebar-label {
+    display: inline-block;
+    font-size: 14px;
+    color: white;
+}
+
+/* Tooltip */
+.sidebar-item[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 50px;
+    /* background-color: var(--primary-700); */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* Fixed close/open icon */
+.close-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    position: sticky;
+    bottom: 24px; 
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+
 
 main {
     grid-area: main;
     background-color: var(--primary-50);
     overflow:auto ;
     height: 100%;
+    transition: width 0.3s ease;
+    
 }
 
 footer {

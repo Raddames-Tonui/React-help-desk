@@ -1,6 +1,6 @@
 @import url(./variables.css);
 
-.login-container {
+.loginContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,8 +9,7 @@
   padding: 1rem;
 }
 
-/* Form box */
-.login-form {
+.loginForm {
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 4px;
@@ -22,7 +21,7 @@
   gap: 0.5rem;
 }
 
-.form-title {
+.formTitle {
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
@@ -30,15 +29,14 @@
   color: #333;
 }
 
-.form-label {
-  font-weight: 500;
+.formLabel {
+  font-weight: 600;
   margin-bottom: 0.2rem;
   color: #555;
 }
 
-/* Inputs */
-.form-input {
-  padding: 0.75rem 1rem;
+.formInput {
+  padding: 0.65rem 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
@@ -46,59 +44,40 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-input:focus {
+.formInput:focus {
   border-color: var(--primary-800);
   outline: none;
   border: 1px solid #4cb9d333;
 }
 
-.input-success {
-  border-color: #28a745;
-}
-
-.input-error {
-  border-color: #dc3545;
-}
-
-.error-message {
-  color: #dc3545;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  display: flex;
-  align-items: center;
-}
-
-
-
-
-.form-input.error {
+.error {
   border: 1px solid #dc3545;
 }
 
-.form-input.success {
-  border: 1px solid #28a745; 
+.success {
+  border: 1px solid #28a745;
 }
 
-.form-input.neutral {
-  border: 1px solid #ccc; 
+.neutral {
+  border: 1px solid #ccc;
 }
 
-.error-message {
-  color: #dc3545;
+.errorMessage {
+  min-height: 0.6rem;
   font-size: 0.875rem;
-  margin-top: 0.25rem;
+  margin-top: 0.1rem;
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  color: #dc3545;
+  visibility: hidden;
 }
 
-
-.error-icon {
-  margin-right: 4px;
-  font-weight: bold;
+.active {
+  visibility: visible;
 }
 
-.form-submit {
+.formSubmit {
   padding: 0.75rem;
   background-color: var(--primary-700);
   color: #fff;
@@ -110,23 +89,21 @@
   transition: background-color 0.2s;
 }
 
-.form-submit:hover {
+.formSubmit:hover {
   background-color: var(--primary-800);
 }
 
-/* Links */
-.form-link {
+.formLink {
   font-size: 0.9rem;
   color: var(--primary-700);
   text-decoration: none;
 }
 
-.form-link:hover {
+.formLink:hover {
   text-decoration: underline;
 }
 
-.form-links {
+.formLinks {
   display: flex;
   justify-content: space-between;
 }
-

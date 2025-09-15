@@ -6,14 +6,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import "@/css/login.css";
+import styles from "@/css/login.module.css";
 
 export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
 });
 
+// ✅ Schema only for email + password
 const schema = yup.object({
-  usernameOrEmail: yup.string().required("Username or Email is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()
     .required("Password is required")
@@ -39,7 +40,6 @@ function LoginPage() {
     setAuthError(false);
 
     const users = JSON.parse(localStorage.getItem("users") || "[]") as {
-      username: string;
       email: string;
       firstname: string;
       lastname: string;
@@ -48,10 +48,7 @@ function LoginPage() {
     }[];
 
     const matchedUser = users.find(
-      (user) =>
-        (user.username === data.usernameOrEmail ||
-          user.email === data.usernameOrEmail) &&
-        user.password === data.password
+      (user) => user.email === data.email && user.password === data.password
     );
 
     if (!matchedUser) {
@@ -70,35 +67,40 @@ function LoginPage() {
     }, 1500);
   };
 
+  // ✅ Updated to check email instead of username
   const getInputClass = (field: keyof FormData) => {
-    if (errors[field]) return "form-input error"; // red
-    if (authError && isSubmitted) return "form-input neutral"; // neutral if wrong creds
-    if (touchedFields[field]) return "form-input success"; // green
-    return "form-input";
+    if (errors[field]) return `${styles.formInput} ${styles.error}`;
+    if (authError && isSubmitted) return `${styles.formInput} ${styles.neutral}`;
+    if (touchedFields[field]) return `${styles.formInput} ${styles.success}`;
+    return styles.formInput;
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit(onSubmit)} className="login-form">
-        <h2 className="form-title">Login</h2>
+    <div className={styles.loginContainer}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
+        <h2 className={styles.formTitle}>Login</h2>
 
-        <label className="form-label" htmlFor="usernameOrEmail">
-          Username or Email:
+        {/* Email input */}
+        <label className={styles.formLabel} htmlFor="email">
+          Email:
         </label>
         <input
-          id="usernameOrEmail"
-          type="text"
-          {...register("usernameOrEmail")}
-          className={getInputClass("usernameOrEmail")}
-          placeholder="Enter username or email"
+          id="email"
+          type="email"
+          {...register("email")}
+          className={getInputClass("email")}
+          placeholder="Enter email"
         />
-        {errors.usernameOrEmail && (
-          <p className="error-message">
-            {errors.usernameOrEmail.message} ❌
-          </p>
-        )}
+        <p
+          className={`${styles.errorMessage} ${
+            errors.email ? styles.active : ""
+          }`}
+        >
+          {errors.email?.message ? `${errors.email.message} ❌` : ""}
+        </p>
 
-        <label className="form-label" htmlFor="password">
+        {/* Password input */}
+        <label className={styles.formLabel} htmlFor="password">
           Password:
         </label>
         <input
@@ -107,21 +109,27 @@ function LoginPage() {
           {...register("password")}
           className={getInputClass("password")}
           placeholder="Enter password"
-        />        
-        {errors.password && (
-          <p className="error-message"> {errors.password.message} ❌</p>
-        )}
+        />
+        <p
+          className={`${styles.errorMessage} ${
+            errors.password ? styles.active : ""
+          }`}
+        >
+          {errors.password?.message ? `${errors.password.message} ❌` : ""}
+        </p>
 
-        <a href="/auth/resetpassword" className="form-link">
+        <a href="/auth/resetpassword" className={styles.formLink}>
           Forgot your password?
         </a>
 
-        <button type="submit" className="form-submit">
+        <button type="submit" className={styles.formSubmit}>
           Login
         </button>
 
-        <div className="form-links">
-          <a href="/auth/register" className="form-link">Create account</a>
+        <div className={styles.formLinks}>
+          <a href="/auth/register" className={styles.formLink}>
+            Create account
+          </a>
         </div>
       </form>
     </div>

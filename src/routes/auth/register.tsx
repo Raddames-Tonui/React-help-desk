@@ -1,22 +1,20 @@
-import React from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import React, { useState } from "react";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import "@/css/register.css";
+import styles from "@/css/login.module.css";
 
 export const Route = createFileRoute("/auth/register")({
   component: RegisterPage,
 });
 
-// Yup validation schema
 const schema = yup.object({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
-  username: yup.string().required("Username is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
     .string()
@@ -33,102 +31,148 @@ type FormData = yup.InferType<typeof schema>;
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const router = useRouter();
+  const [authError, setAuthError] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields },
+    formState: { errors, touchedFields, isSubmitted },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: { role: "client" },
   });
 
-  const onSubmit = (data: FormData) => {
-    const existingUsers =
-      JSON.parse(localStorage.getItem("users") || "[]") as FormData[];
+  const getInputClass = (field: keyof FormData) => {
+    if (errors[field]) return `${styles.formInput} ${styles.error}`;
+    if (authError && isSubmitted) return `${styles.formInput} ${styles.neutral}`;
+    if (touchedFields[field]) return `${styles.formInput} ${styles.success}`;
+    return styles.formInput;
+  };
 
-    if (existingUsers.find((user) => user.username === data.username)) {
-      return toast.error("Username already exists");
-    }
+  const onSubmit = (data: FormData) => {
+    setAuthError(false);
+
+    const existingUsers =
+      JSON.parse(localStorage.getItem("users") || "[]") as Omit<
+        FormData,
+        "confirmPassword"
+      >[];
 
     if (existingUsers.find((user) => user.email === data.email)) {
+      setAuthError(true);
       return toast.error("Email already exists");
     }
 
-    const updatedUsers = [...existingUsers, data];
+    const { confirmPassword, ...userData } = data;
+    const updatedUsers = [...existingUsers, userData];
     localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    toast.success("Registration successful!");
+    toast.success("Registration successful!", { duration: 1500 });
 
     setTimeout(() => {
       navigate({ to: "/auth/login" });
     }, 1500);
   };
 
-  // 🔹 helper for styling
-  const getInputClass = (field: keyof FormData) => {
-    if (errors[field]) return "form-input error"; // red
-    if (touchedFields[field]) return "form-input success"; // green
-    return "form-input"; // default gray
-  };
-
-  // 🔹 helper for icons
-  const renderIcon = (field: keyof FormData) => {
-    if (errors[field]) return <span className="error-icon">❌</span>;
-    if (touchedFields[field]) return <span className="success-icon">✔️</span>;
-    return null;
-  };
-
   return (
-    <div className="register-container">
-      <form onSubmit={handleSubmit(onSubmit)} className="register-form">
-        <h2 className="form-title">Sign Up</h2>
+    <div className={styles.loginContainer}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
+        <h2 className={styles.formTitle}>Register</h2>
 
-        {(
-          [
-            { id: "firstName", label: "First Name", type: "text" },
-            { id: "lastName", label: "Last Name", type: "text" },
-            { id: "username", label: "Username", type: "text" },
-            { id: "email", label: "Email", type: "email" },
-            { id: "password", label: "Password", type: "password" },
-            {
-              id: "confirmPassword",
-              label: "Confirm Password",
-              type: "password",
-            },
-          ] as const
-        ).map((field) => (
-          <div key={field.id} className="input-wrapper">
-            <label className="form-label" htmlFor={field.id}>
-              {field.label}:
-            </label>
-            <div className="input-with-icon">
-              <input
-                id={field.id}
-                type={field.type}
-                {...register(field.id)}
-                className={getInputClass(field.id)}
-                placeholder={`Enter ${field.label.toLowerCase()}`}
-              />
-              {renderIcon(field.id)}
-            </div>
-            {errors[field.id] && (
-              <p className="error-message">{errors[field.id]?.message}</p>
-            )}
-          </div>
-        ))}
+        {/* First Name */}
+        <label className={styles.formLabel} htmlFor="firstName">
+          First Name:
+        </label>
+        <input
+          id="firstName"
+          type="text"
+          {...register("firstName")}
+          className={getInputClass("firstName")}
+          placeholder="Enter first name"
+        />
+        <p className={`${styles.errorMessage} ${errors.firstName ? styles.active : ""}`}>
+          {errors.firstName?.message ? `${errors.firstName.message} ❌` : ""}
+        </p>
 
-        <label className="form-label" htmlFor="role">
+        {/* Last Name */}
+        <label className={styles.formLabel} htmlFor="lastName">
+          Last Name:
+        </label>
+        <input
+          id="lastName"
+          type="text"
+          {...register("lastName")}
+          className={getInputClass("lastName")}
+          placeholder="Enter last name"
+        />
+        <p className={`${styles.errorMessage} ${errors.lastName ? styles.active : ""}`}>
+          {errors.lastName?.message ? `${errors.lastName.message} ❌` : ""}
+        </p>
+
+        {/* Email */}
+        <label className={styles.formLabel} htmlFor="email">
+          Email:
+        </label>
+        <input
+          id="email"
+          type="email"
+          {...register("email")}
+          className={getInputClass("email")}
+          placeholder="Enter email"
+        />
+        <p className={`${styles.errorMessage} ${errors.email ? styles.active : ""}`}>
+          {errors.email?.message ? `${errors.email.message} ❌` : ""}
+        </p>
+
+        {/* Password */}
+        <label className={styles.formLabel} htmlFor="password">
+          Password:
+        </label>
+        <input
+          id="password"
+          type="password"
+          {...register("password")}
+          className={getInputClass("password")}
+          placeholder="Enter password"
+        />
+        <p className={`${styles.errorMessage} ${errors.password ? styles.active : ""}`}>
+          {errors.password?.message ? `${errors.password.message} ❌` : ""}
+        </p>
+
+        {/* Confirm Password */}
+        <label className={styles.formLabel} htmlFor="confirmPassword">
+          Confirm Password:
+        </label>
+        <input
+          id="confirmPassword"
+          type="password"
+          {...register("confirmPassword")}
+          className={getInputClass("confirmPassword")}
+          placeholder="Confirm password"
+        />
+        <p className={`${styles.errorMessage} ${errors.confirmPassword ? styles.active : ""}`}>
+          {errors.confirmPassword?.message ? `${errors.confirmPassword.message} ❌` : ""}
+        </p>
+
+        {/* Role */}
+        <label className={styles.formLabel} htmlFor="role">
           Role:
         </label>
-        <select id="role" {...register("role")} className="form-select">
+        <select id="role" {...register("role")} className={styles.formInput}>
           <option value="client">Client</option>
           <option value="vendor">Vendor</option>
         </select>
 
-        <button type="submit" className="form-submit">
+        <button type="submit" className={styles.formSubmit}>
           Register
         </button>
+
+        <div className={styles.formLinks}>
+          <a href="/auth/login" className={styles.formLink}>
+            Already have an account? Login
+          </a>
+        </div>
       </form>
     </div>
   );

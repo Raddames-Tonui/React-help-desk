@@ -45,9 +45,11 @@ export default function ModalFilter<T>({
   };
 
   const addRule = () =>
-    setRules([...rules, { column: "", relation: "", value: "" }]);
+  setRules(prev => [...prev, { column: "", relation: "", value: "" }]);
+
   const removeRule = (i: number) =>
-    setRules(rules.filter((_, idx) => idx !== i));
+    setRules(prev => prev.filter((_, idx) => idx !== i));
+
   const reset = () => setRules([]);
 
   const handleSubmit = () => {

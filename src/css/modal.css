@@ -114,6 +114,7 @@
   padding: 8px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
+  margin-right: 0.5rem;
 }
 
 .cancel:hover {

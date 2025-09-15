@@ -95,8 +95,8 @@ const Odata: React.FC = () => {
       <div className="page-header">
         <h3>OData People</h3>
         <div className="page-utils">
-          <button  onClick={() => setFilterModalOpen(true)}>Filter</button>
-          <button onClick={() => setSortModalOpen(true)}>Sort</button>
+          <button className="button" onClick={() => setFilterModalOpen(true)}>Filter</button>
+          <button className="button" onClick={() => setSortModalOpen(true)}>Sort</button>
         </div>
       </div>
 

@@ -1,90 +1,155 @@
-import React, { useState } from 'react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { toast } from 'react-hot-toast';
-import "@/css/register.css"
+import React, { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { toast } from "react-hot-toast";
 
-export const Route = createFileRoute('/auth/resetpassword')({
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+import styles from "@/css/login.module.css";
+
+export const Route = createFileRoute("/auth/resetpassword")({
   component: ResetPasswordPage,
 });
 
+// ✅ Email-only schema
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  newPassword: yup
+    .string()
+    .required("New password is required")
+    .min(6, "Password must be at least 6 characters"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("newPassword")], "Passwords must match")
+    .required("Confirm Password is required"),
+});
+
+type FormData = yup.InferType<typeof schema>;
+
 function ResetPasswordPage() {
   const navigate = useNavigate();
-  const [usernameOrEmail, setUsernameOrEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [authError, setAuthError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, touchedFields, isSubmitted },
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+  });
 
-    if (!usernameOrEmail) return toast.error('Username or Email required');
-    if (!newPassword) return toast.error('New password required');
-    if (newPassword !== confirmPassword)
-      return toast.error('Passwords do not match');
+  const onSubmit = (data: FormData) => {
+    setAuthError(false);
 
-    const users = JSON.parse(localStorage.getItem('users') || '[]') as {
-      username: string;
+    const users = JSON.parse(localStorage.getItem("users") || "[]") as {
       email: string;
       password: string;
-      role: 'client' | 'vendor';
+      role: "client" | "vendor";
     }[];
 
-    const userIndex = users.findIndex(
-      user => user.username === usernameOrEmail || user.email === usernameOrEmail
-    );
+    const userIndex = users.findIndex((user) => user.email === data.email);
 
     if (userIndex === -1) {
-      return toast.error('User not found');
+      setAuthError(true);
+      return toast.error("User not found");
     }
 
-    users[userIndex].password = newPassword;
-    localStorage.setItem('users', JSON.stringify(users));
+    users[userIndex].password = data.newPassword;
+    localStorage.setItem("users", JSON.stringify(users));
 
-    toast.success('Password reset successful!', { duration: 1500 });
+    toast.success("Password reset successful!", { duration: 1500 });
 
     setTimeout(() => {
-      navigate({ to: '/auth/login' });
+      navigate({ to: "/auth/login" });
     }, 1500);
   };
 
+  const getInputClass = (field: keyof FormData) => {
+    if (errors[field]) return `${styles.formInput} ${styles.error}`;
+    if (authError && isSubmitted) return `${styles.formInput} ${styles.neutral}`;
+    if (touchedFields[field]) return `${styles.formInput} ${styles.success}`;
+    return styles.formInput;
+  };
+
   return (
-    <div className="reset-wrapper">
-      <form onSubmit={handleSubmit} className="reset-form">
-        <h2 className="reset-title">Reset Password</h2>
+    <div className={styles.loginContainer}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
+        <h2 className={styles.formTitle}>Reset Password</h2>
 
-        <label className="form-label">Username or Email:</label>
+        {/* Email field */}
+        <label className={styles.formLabel} htmlFor="email">
+          Email:
+        </label>
         <input
-          type="text"
-          value={usernameOrEmail}
-          onChange={e => setUsernameOrEmail(e.target.value)}
-          className="form-input"
-          placeholder="Enter username or email"
-          required
+          id="email"
+          type="email"
+          {...register("email")}
+          className={getInputClass("email")}
+          placeholder="Enter email"
         />
+        <p
+          className={`${styles.errorMessage} ${
+            errors.email ? styles.active : ""
+          }`}
+        >
+          {errors.email?.message ? `${errors.email.message} ❌` : ""}
+        </p>
 
-        <label className="form-label">New Password:</label>
+        {/* New Password */}
+        <label className={styles.formLabel} htmlFor="newPassword">
+          New Password:
+        </label>
         <input
+          id="newPassword"
           type="password"
-          value={newPassword}
-          onChange={e => setNewPassword(e.target.value)}
-          className="form-input"
+          {...register("newPassword")}
+          className={getInputClass("newPassword")}
           placeholder="Enter new password"
-          required
         />
+        <p
+          className={`${styles.errorMessage} ${
+            errors.newPassword ? styles.active : ""
+          }`}
+        >
+          {errors.newPassword?.message
+            ? `${errors.newPassword.message} ❌`
+            : ""}
+        </p>
 
-        <label className="form-label">Confirm Password:</label>
+        {/* Confirm Password */}
+        <label className={styles.formLabel} htmlFor="confirmPassword">
+          Confirm Password:
+        </label>
         <input
+          id="confirmPassword"
           type="password"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
-          className="form-input"
+          {...register("confirmPassword")}
+          className={getInputClass("confirmPassword")}
           placeholder="Confirm new password"
-          required
         />
+        <p
+          className={`${styles.errorMessage} ${
+            errors.confirmPassword ? styles.active : ""
+          }`}
+        >
+          {errors.confirmPassword?.message
+            ? `${errors.confirmPassword.message} ❌`
+            : ""}
+        </p>
 
-        <button type="submit" className="reset-btn">
+        <button type="submit" className={styles.formSubmit}>
           Reset Password
         </button>
+
+        <div className={styles.formLinks}>
+          <a href="/auth/login" className={styles.formLink}>
+            Remembered password? Login
+          </a>
+        </div>
       </form>
     </div>
   );
 }
+
+export default ResetPasswordPage;

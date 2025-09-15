@@ -2,46 +2,61 @@ import Icon from "../utilities/Icon";
 import { useState } from "react";
 import { useRouter } from "@tanstack/react-router";
 
-const Navbar = () => {
+interface NavbarProps {
+  isSidebarOpen: boolean;
+  toggleSidebar?: () => void; 
+}
+
+
+const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen }) => {
   const [selectedValue, setSelectedValue] = useState("default");
   const [showDropdown, setShowDropdown] = useState(false);
 
   const router = useRouter();
-
   const user = router.options.context.auth.getUser();
-  const role = user?.role || "client"; 
+  const role = user?.role || "client";
 
   const handleLogout = () => {
     router.options.context.auth.logout();
     router.navigate({ to: "/auth/login" });
   };
 
+  const iconClass = `navbar-icon ${isSidebarOpen ? "open" : "collapsed"}`;
+
   return (
     <header>
-      <div className="mic-icon">
+      <div
+        className="mic-icon"
+        style={{
+          width: isSidebarOpen ? "240px" : "48px",
+          transition: "width 0.3s ease",
+        }}
+      >
         <Icon iconName="microphone" />
       </div>
 
       <div className="header-wrapper">
         <div className="logo">
-          <h1>Help Desk - Sky World Limited</h1>
+          <h1 className="responsive-hide">Help Desk - Sky World Limited</h1>
           <h2
             style={{
               color: role === "vendor" ? "var(--text-blue)" : "#FD7E14",
             }}
+            className="responsive-hide"
           >
             {role.toUpperCase()}
           </h2>
         </div>
 
         <div className="icon-search">
-          <Icon iconName="add" />
-          <Icon iconName="search" />
+          <div className={iconClass}><Icon iconName="add" /></div>
+          <div className={iconClass}><Icon iconName="search" /></div>
           <select
             name="search"
             id="select-institution"
             value={selectedValue}
             onChange={(e) => setSelectedValue(e.target.value)}
+            className="responsive-hide"
           >
             <option value="default" disabled>
               Select Institution
@@ -50,13 +65,12 @@ const Navbar = () => {
             <option value="another">Another Institution</option>
           </select>
 
-          <Icon iconName="notification" />
+          <div className={iconClass}><Icon iconName="notification" /></div>
 
           <div className="avatar-dropdown">
             <div
-              className="avatar-icon"
-              onClick={() => setShowDropdown((prev) => !prev)}
-              style={{ cursor: "pointer" }}
+              className={iconClass + " avatar-icon"}
+              onClick={() => setShowDropdown(prev => !prev)}
             >
               <Icon iconName="avatar" />
             </div>
