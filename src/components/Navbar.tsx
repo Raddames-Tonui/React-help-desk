@@ -14,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen }) => {
 
   const router = useRouter();
   const user = router.options.context.auth.getUser();
-  const role = user?.role || "client";
+  const role = user?.role || "";
 
   const handleLogout = () => {
     router.options.context.auth.logout();

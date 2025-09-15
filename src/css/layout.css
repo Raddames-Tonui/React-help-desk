@@ -53,8 +53,6 @@ header {
     color: white;
 }
 .logo > h1 {
-    
-    font-family: Inter;
     font-weight: 400;
     font-style: Regular;
     font-size: 16px;
@@ -163,7 +161,7 @@ aside {
     justify-content: space-between;
     align-items: start;
     background-color: var(--primary-700);
-    padding: 24px 0;
+    padding: 1rem 0;
     overflow: hidden;
     position: relative; 
     transition: width 0.3s ease;
@@ -172,7 +170,7 @@ aside {
 .aside-icons {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1rem;
     width: 100%;
 }
 
@@ -212,7 +210,6 @@ aside {
     z-index: 100;
 }
 
-/* Fixed close/open icon */
 .close-icon {
     display: flex;
     justify-content: center;
@@ -220,9 +217,8 @@ aside {
     width: 48px;
     height: 48px;
     position: sticky;
-    bottom: 24px; 
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.3s;
 }
 
 
@@ -264,4 +260,14 @@ footer {
     font-weight: 500;
     white-space: nowrap;
     opacity: 1;
+}
+
+.responsive-hide {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .responsive-hide {
+    display: flex; 
+  }
 }
