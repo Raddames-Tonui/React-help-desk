@@ -17,6 +17,11 @@ body {
 }
 
 
+.page-utils-buttons{
+  display: flex;
+  gap: 1rem;
+}
+
 .button {
   background: var(--primary-700);
   color: var(--bg-default);
@@ -26,7 +31,6 @@ body {
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s ease;
-  margin-left: 0.5rem;
 }
 
 .button:hover {
@@ -38,8 +42,8 @@ body {
   background: var(--bg-default);
   color: var(--primary-800);
   font-weight: 600;
-  border-radius: 6px;
-  padding: 8px 16px;
+  border-radius: 4px;
+  padding: 6px 6px;
   cursor: pointer;
   transition: all 0.2s ease;
   margin-right: 0.5rem;
@@ -49,6 +53,9 @@ body {
   background: var(--primary-50);
   color: var(--primary-700);
 }
+
+
+
 
 /* Hide scrollbars but keep scrolling */
 ::-webkit-scrollbar {

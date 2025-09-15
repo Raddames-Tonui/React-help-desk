@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { ColumnProps } from "./Table";
+import Icon from "../utilities/Icon";
 
 export type FilterRule = {
   column: string;
@@ -132,10 +133,11 @@ export default function ModalFilter<T>({
       body={
         <div>
           {rules.map((rule, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+            <div key={i} style={{ display: "flex",  marginBottom: 10 }}>
               <select
                 value={rule.column}
                 onChange={(e) => updateRule(i, "column", e.target.value)}
+                className="button-sec"
               >
                 <option value="">Select Column</option>
                 {columns.filter((c) => c.isFilterable).map((col) => (
@@ -148,6 +150,7 @@ export default function ModalFilter<T>({
               <select
                 value={rule.operator}
                 onChange={(e) => updateRule(i, "operator", e.target.value)}
+                className="button-sec"
               >
                 {relations.map((r) => (
                   <option key={r.value} value={r.value}>
@@ -161,10 +164,11 @@ export default function ModalFilter<T>({
                 value={rule.value}
                 onChange={(e) => updateRule(i, "value", e.target.value)}
                 placeholder="Value"
+                className="button-sec"
               />
 
-              <button className="cancel" onClick={() => removeRule(i)}>
-                ✖
+              <button style={{border: "none", background: "none" }} onClick={() => removeRule(i)}>
+                  <Icon iconName="delete" />
               </button>
             </div>
           ))}
@@ -174,15 +178,16 @@ export default function ModalFilter<T>({
           </button>
         </div>
       }
+
       footer={
-        <>
+        <div>
           <button className="cancel" onClick={reset}>
             Reset
           </button>
           <button className="modal-close-btn" onClick={handleSubmit}>
             Apply
           </button>
-        </>
+        </div>
       }
     />
   );
