@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { ColumnProps } from "./Table";
 
-export type FilterRule = {
+type FilterRule = {
   column: string;
   relation: string;
   value: string;
@@ -12,7 +12,7 @@ interface FilterModalProps<T> {
   isOpen: boolean;
   onClose: () => void;
   columns: ColumnProps<T>[];
-  initialRules?: FilterRule[];
+  initialRule?: FilterRule;
   onApply: (filterString: string) => void;
 }
 
@@ -27,50 +27,51 @@ export default function ModalFilter<T>({
   isOpen,
   onClose,
   columns,
-  initialRules = [],
+  initialRule,
   onApply,
 }: FilterModalProps<T>) {
-  const [rules, setRules] = useState<FilterRule[]>([]);
+  const [rule, setRule] = useState<FilterRule>({
+    column: "",
+    relation: "eq",
+    value: "",
+  });
 
+  // Prepopulate with initial rule if provided
   useEffect(() => {
-    if (isOpen) {
-      setRules(initialRules.length ? initialRules : []);
+    if (isOpen && initialRule) {
+      setRule(initialRule);
     }
-  }, [isOpen, initialRules]);
+  }, [isOpen, initialRule]);
 
-  const updateRule = (i: number, field: keyof FilterRule, val: string) => {
-    const updated = [...rules];
-    updated[i][field] = val;
-    setRules(updated);
+  const updateRule = (field: keyof FilterRule, val: string) => {
+    setRule((prev) => ({ ...prev, [field]: val }));
   };
 
-  const addRule = () =>
-  setRules(prev => [...prev, { column: "", relation: "", value: "" }]);
-
-  const removeRule = (i: number) =>
-    setRules(prev => prev.filter((_, idx) => idx !== i));
-
-  const reset = () => setRules([]);
+  const reset = () =>
+    setRule({ column: "", relation: "eq", value: "" });
 
   const handleSubmit = () => {
-    const filterString = rules
-      .filter((r) => r.column && r.relation && r.value)
-      .map((r) => {
-        switch (r.relation) {
-          case "eq":
-            return `${r.column} eq '${r.value}'`;
-          case "contains":
-            return `contains(${r.column},'${r.value}')`;
-          case "startswith":
-            return `startswith(${r.column},'${r.value}')`;
-          case "endswith":
-            return `endswith(${r.column},'${r.value}')`;
-          default:
-            return "";
-        }
-      })
-      .filter(Boolean)
-      .join(" and ");
+    if (!rule.column || !rule.relation || !rule.value) {
+      onApply(""); // No filter
+      onClose();
+      return;
+    }
+
+    let filterString = "";
+    switch (rule.relation) {
+      case "eq":
+        filterString = `${rule.column} eq '${rule.value}'`;
+        break;
+      case "contains":
+        filterString = `contains(${rule.column},'${rule.value}')`;
+        break;
+      case "startswith":
+        filterString = `startswith(${rule.column},'${rule.value}')`;
+        break;
+      case "endswith":
+        filterString = `endswith(${rule.column},'${rule.value}')`;
+        break;
+    }
 
     onApply(filterString);
     onClose();
@@ -82,48 +83,41 @@ export default function ModalFilter<T>({
       onClose={onClose}
       title="Filter"
       body={
-        <div>
-          {rules.map((rule, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-              <select
-                value={rule.column}
-                onChange={(e) => updateRule(i, "column", e.target.value)}
-              >
-                <option value="">Select Column</option>
-                {columns
-                  .filter((c) => c.isFilterable)
-                  .map((col) => (
-                    <option key={col.id} value={col.id}>
-                      {col.caption}
-                    </option>
-                  ))}
-              </select>
+        <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+          {/* Column select */}
+          <select
+            value={rule.column}
+            onChange={(e) => updateRule("column", e.target.value)}
+          >
+            <option value="">Select Column</option>
+            {columns
+              .filter((c) => c.isFilterable)
+              .map((col) => (
+                <option key={col.id} value={col.id}>
+                  {col.caption}
+                </option>
+              ))}
+          </select>
 
-              <select
-                value={rule.relation}
-                onChange={(e) => updateRule(i, "relation", e.target.value)}
-              >
-                <option value="">Relation</option>
-                {relations.map((r) => (
-                  <option key={r.value} value={r.value}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
+          {/* Relation select */}
+          <select
+            value={rule.relation}
+            onChange={(e) => updateRule("relation", e.target.value)}
+          >
+            {relations.map((r) => (
+              <option key={r.value} value={r.value}>
+                {r.label}
+              </option>
+            ))}
+          </select>
 
-              <input
-                type="text"
-                value={rule.value}
-                placeholder="Value"
-                onChange={(e) => updateRule(i, "value", e.target.value)}
-              />
-
-              <button className="cancel" onClick={() => removeRule(i)}>
-                ✖
-              </button>
-            </div>
-          ))}
-          <button onClick={addRule}>Add Filter</button>
+          {/* Input value */}
+          <input
+            type="text"
+            value={rule.value}
+            placeholder="Value"
+            onChange={(e) => updateRule("value", e.target.value)}
+          />
         </div>
       }
       footer={

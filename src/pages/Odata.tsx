@@ -2,8 +2,8 @@ import React, { useReducer, useEffect, useState } from "react";
 import { useSearch, useNavigate } from "@tanstack/react-router";
 import Table, { ColumnProps } from "../components/Table";
 import Loader from "../components/Loader";
-import Modalfilter from "../components/ModalFilter";
 import Modalsort from "../components/Modalsort";
+import ModalFilter from "../components/Modalfilter";
 
 function reducer(state: any, action: any) {
   switch (action.type) {
@@ -106,7 +106,7 @@ const Odata: React.FC = () => {
         sort: state.sort || undefined,
         page: state.page > 1 ? state.page : undefined,
       },
-      replace: true, // so back/forward works smoothly
+      replace: true, 
     });
   }, [state.filter, state.sort, state.page]);
 
@@ -115,6 +115,7 @@ const Odata: React.FC = () => {
       <div className="page-header">
         <h3>OData People</h3>
         <div className="page-utils">
+          <input type="search" />
           <button className="button" onClick={() => setFilterModalOpen(true)}>Filter</button>
           <button className="button" onClick={() => setSortModalOpen(true)}>Sort</button>
         </div>
@@ -126,11 +127,11 @@ const Odata: React.FC = () => {
         {!state.loading && !state.error && <Table columns={columns} data={state.data} />}
       </section>
 
-      <Modalfilter
+      <ModalFilter
         isOpen={isFilterModalOpen}
         onClose={() => setFilterModalOpen(false)}
         columns={columns}
-        
+        initalFilter = {state.filter}
         onApply={(filterString) =>
           dispatch({ type: "SET_FILTER", filter: filterString })
         }

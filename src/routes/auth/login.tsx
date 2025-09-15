@@ -12,7 +12,6 @@ export const Route = createFileRoute("/auth/login")({
   component: LoginPage,
 });
 
-// ✅ Schema only for email + password
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
   password: yup
@@ -67,7 +66,6 @@ function LoginPage() {
     }, 1500);
   };
 
-  // ✅ Updated to check email instead of username
   const getInputClass = (field: keyof FormData) => {
     if (errors[field]) return `${styles.formInput} ${styles.error}`;
     if (authError && isSubmitted) return `${styles.formInput} ${styles.neutral}`;
@@ -80,7 +78,6 @@ function LoginPage() {
       <form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>
         <h2 className={styles.formTitle}>Login</h2>
 
-        {/* Email input */}
         <label className={styles.formLabel} htmlFor="email">
           Email:
         </label>
@@ -99,7 +96,6 @@ function LoginPage() {
           {errors.email?.message ? `${errors.email.message} ❌` : ""}
         </p>
 
-        {/* Password input */}
         <label className={styles.formLabel} htmlFor="password">
           Password:
         </label>
