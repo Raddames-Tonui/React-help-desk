@@ -131,7 +131,7 @@ const Odata: React.FC = () => {
         isOpen={isFilterModalOpen}
         onClose={() => setFilterModalOpen(false)}
         columns={columns}
-        initalFilter = {state.filter}
+        initialFilter = {state.filter}
         onApply={(filterString) =>
           dispatch({ type: "SET_FILTER", filter: filterString })
         }
