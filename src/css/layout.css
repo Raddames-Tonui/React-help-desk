@@ -179,14 +179,17 @@ aside {
     align-items: center;
     justify-content: start; 
     gap: 12px;
-    padding: 8px 16px;
+    padding: 8px 13px;
     cursor: pointer;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .sidebar-item:hover {
     background-color: var(--primary-800);
     color: white;
+    text-decoration: none;
+
 }
 
 .sidebar-label {

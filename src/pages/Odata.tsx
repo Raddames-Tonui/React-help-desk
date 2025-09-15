@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect, useState } from "react";
+import { useSearch, useNavigate } from "@tanstack/react-router";
 import Table, { ColumnProps } from "../components/Table";
 import Loader from "../components/Loader";
 import Modalfilter from "../components/ModalFilter";
@@ -36,7 +37,16 @@ const baseUrl =
   "https://services.odata.org/TripPinRESTierService/(S(5jzojegqtqbpb0lmngwn0x0f))/People";
 
 const Odata: React.FC = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const search = useSearch({ from: "/pages/odata/" }); 
+  const navigate = useNavigate();
+
+  const [state, dispatch] = useReducer(reducer, {
+    ...initialState,
+    filter: search.filter || "",
+    sort: search.sort || "",
+    page: search.page ? Number(search.page) : 1,
+  });
+
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
   const [isSortModalOpen, setSortModalOpen] = useState(false);
 
@@ -85,10 +95,20 @@ const Odata: React.FC = () => {
     }
   }
 
+  // Fetch whenever state changes
   useEffect(() => {
     fetchData();
-  }, [state.filter, state.sort, state.page]);
 
+    // sync URL params
+    navigate({
+      search: {
+        filter: state.filter || undefined,
+        sort: state.sort || undefined,
+        page: state.page > 1 ? state.page : undefined,
+      },
+      replace: true, // so back/forward works smoothly
+    });
+  }, [state.filter, state.sort, state.page]);
 
   return (
     <div>
@@ -110,6 +130,7 @@ const Odata: React.FC = () => {
         isOpen={isFilterModalOpen}
         onClose={() => setFilterModalOpen(false)}
         columns={columns}
+        
         onApply={(filterString) =>
           dispatch({ type: "SET_FILTER", filter: filterString })
         }
@@ -119,12 +140,13 @@ const Odata: React.FC = () => {
         isOpen={isSortModalOpen}
         onClose={() => setSortModalOpen(false)}
         columns={columns}
+        initialSort={state.sort}
         onApply={(sortString) =>
           dispatch({ type: "SET_SORT", sort: sortString })
         }
       />
 
-       <div className="pagination" >
+      <div className="pagination">
         <button
           disabled={state.page === 1}
           onClick={() => dispatch({ type: "SET_PAGE", page: state.page - 1 })}
@@ -132,7 +154,7 @@ const Odata: React.FC = () => {
         >
           Prev
         </button>
-        <span className="page-no" >Page {state.page}</span>
+        <span className="page-no">Page {state.page}</span>
         <button
           onClick={() => dispatch({ type: "SET_PAGE", page: state.page + 1 })}
           className="pagination-btn next-btn"
@@ -140,7 +162,6 @@ const Odata: React.FC = () => {
           Next
         </button>
       </div>
-
     </div>
   );
 };

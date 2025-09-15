@@ -84,6 +84,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   localStorage.setItem("ticketForm", JSON.stringify(storageState));
 
+  // console.log("Saved to localStorage:", storageState);
+
   dispatch({ type: "RESET" });
 };
 
