@@ -65,3 +65,14 @@
 .tiptap-editor h2 { font-size: 1.75rem; font-weight: bold; }
 .tiptap-editor h3 { font-size: 1.5rem; font-weight: bold; }
 .tiptap-editor h4 { font-size: 1.25rem; font-weight: bold; }
+
+
+
+/* Active button for Tiptap toolbar */
+.tiptap-toolbar button.active {
+  background-color: #d1d1d1;
+  border-color: #999;        
+}
+.tiptap-toolbar button:not(.active):hover {
+  background-color: #f0f0f0; 
+}

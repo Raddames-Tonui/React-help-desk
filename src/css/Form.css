@@ -87,20 +87,6 @@ form {
     /* border-color: 1px solid var(--form-required-color); */
 }
 
-/* Valid required fields (when filled) */
-/* .form-group > input:required:valid,
-.form-group > textarea:required:valid {
-    border-color: var(--form-border-valid);
-    background-color: var(--form-bg-valid);
-} */
-
-/* Invalid required fields */
-/* .form-group > input:required:invalid:not(:placeholder-shown),
-.form-group > textarea:required:invalid:not(:placeholder-shown) {
-    border-color: var(--form-required-color);
-    background: var(--form-bg-default);
-} */
-
 
 /* Error focus states */
 .form-group > input[type="text"].has-error:focus,
@@ -275,6 +261,19 @@ input[type="file"] {
 
 .form-actions .cancel:hover {
   background: #ffe6e6;
+}
+
+
+
+.errorMessage {
+  min-height: 0.6rem;
+  font-size: 0.875rem;
+  margin-top: 0.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #dc3545;
+  visibility: hidden;
 }
 
 
