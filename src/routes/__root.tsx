@@ -1,8 +1,3 @@
-// import { createRootRoute } from "@tanstack/react-router";
-// import "@css/global.css"
-
-// export const Route = createRootRoute();
-
 
 
 import { createRootRoute, Outlet } from "@tanstack/react-router";
@@ -19,16 +14,16 @@ export const Route = createRootRoute({
     </>
   ),
 
-  errorComponent: ({ error }) => (
-    <div style={{ padding: "1rem", color: "red" }}>
-      <h2>Something went wrong</h2>
-      <pre>{error.message}</pre>
-    </div>
-  ),
+//   errorComponent: ({ error }) => (
+//     <div style={{ padding: "1rem", color: "red" }}>
+//       <h2>Something went wrong</h2>
+//       <pre>{error.message}</pre>
+//     </div>
+//   ),
 
-  pendingComponent: () => (
-    <div style={{ padding: "1rem" }}>
-      <p>Loading...</p>
-    </div>
-  ),
+//   pendingComponent: () => (
+//     <div style={{ padding: "1rem" }}>
+//       <p>Loading...</p>
+//     </div>
+//   ),
 })

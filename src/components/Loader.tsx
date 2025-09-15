@@ -1,6 +1,6 @@
 
 export default function Loader({
-  size = "3.75em",
+  size = "2em",
   speed = 1.5,
   className = "",
   ariaLabel = "Loading",
@@ -29,12 +29,12 @@ export default function Loader({
 
         .ring {
           fill: none;
-          stroke: hsla(192, 97%, 59%, 0.30);
+          stroke: #29a3c28f;
           stroke-width: 2;
         }
 
         .ball {
-          fill: #2f81fcff;
+          fill: #2fbbfcff;
           stroke: none;
         }
       `}</style>

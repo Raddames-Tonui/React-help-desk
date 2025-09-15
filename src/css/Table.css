@@ -17,6 +17,7 @@ table, tr {
 th {
     color: var(--color-header);
     padding: 0.5rem;
+    text-align: left;
 }
 
 
