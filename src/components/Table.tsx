@@ -23,7 +23,7 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
     <table>
       <thead>
         <tr>
-          {columns.map(
+          {columns?.map(
             (col) =>
               !col.hide && (
                 <th
@@ -36,7 +36,7 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((row, rowIndex) => (
+        {data?.map((row, rowIndex) => (
           <tr key={rowIndex}>
             {columns.map((col) =>
               !col.hide ? (

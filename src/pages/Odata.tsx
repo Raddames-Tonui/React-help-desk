@@ -34,7 +34,8 @@ const initialState = {
 };
 
 const baseUrl =
-  "https://services.odata.org/TripPinRESTierService/(S(5jzojegqtqbpb0lmngwn0x0f))/People";
+  "https://services.odata.org/TripPinRESTierService/(S(dxf2htextemw1l4jt34dzsa0))/People";
+  
 
 const Odata: React.FC = () => {
   const search = useSearch({ from: "/pages/odata/" }); 
@@ -95,11 +96,9 @@ const Odata: React.FC = () => {
     }
   }
 
-  // Fetch whenever state changes
   useEffect(() => {
     fetchData();
 
-    // sync URL params
     navigate({
       search: {
         filter: state.filter || undefined,
@@ -115,7 +114,7 @@ const Odata: React.FC = () => {
       <div className="page-header">
         <h3>OData People</h3>
         <div className="page-utils-buttons">
-          <input type="search" />
+          <input className="button-sec" placeholder="Search..." type="search" />
           <button className="button" onClick={() => setFilterModalOpen(true)}>Filter</button>
           <button className="button" onClick={() => setSortModalOpen(true)}>Sort</button>
         </div>

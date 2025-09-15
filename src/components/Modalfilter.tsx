@@ -55,7 +55,7 @@ function parseCondition(cond: string): FilterRule | null {
 function parseFilterString(filterString?: string): FilterRule[] {
   if (!filterString) return [];
 
-  // decode URL-encoded filter if needed
+  // decode URL-encoded filter 
   try {
     filterString = decodeURIComponent(filterString);
   } catch {
@@ -82,7 +82,7 @@ export default function ModalFilter<T>({
 }: ModalFilterProps<T>) {
   const [rules, setRules] = useState<FilterRule[]>([]);
 
-  // Prepopulate whenever modal opens (or when initialFilter changes)
+  // Prepopulate whenmodal opens
   useEffect(() => {
     if (!isOpen) return;
     if (initialFilter) {
