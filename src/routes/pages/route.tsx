@@ -18,8 +18,8 @@ function PageLayout() {
     <div
       className="body-wrapper"
       style={{
-        gridTemplateColumns: isSidebarOpen ? "240px 1fr" : "48px 1fr"
-      }}
+        "--sidebar-width" : isSidebarOpen ? "240px" : "48px",
+      } as React.CSSProperties} 
     >
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />

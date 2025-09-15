@@ -1,14 +1,19 @@
 @import url(./variables.css);
 
+:root {
+    --sidebar-width: 48p;
+}
+
 .body-wrapper {
     display: grid;
     grid-template-areas:
         "header header "
         "aside main "
         "footer footer"  ;
-    grid-template-columns: 48px 1fr;
+    grid-template-columns: var(--sidebar-width) 1fr;
     grid-template-rows: 48px 1fr 36px;
     height: 100vh;
+    transition: grid-template-columns 0.3s ease;
 }
 
 header {
