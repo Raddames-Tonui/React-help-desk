@@ -36,7 +36,6 @@ export default function ModalFilter<T>({
     value: "",
   });
 
-  // Prepopulate with initial rule if provided
   useEffect(() => {
     if (isOpen && initialRule) {
       setRule(initialRule);
@@ -52,7 +51,7 @@ export default function ModalFilter<T>({
 
   const handleSubmit = () => {
     if (!rule.column || !rule.relation || !rule.value) {
-      onApply(""); // No filter
+      onApply(""); 
       onClose();
       return;
     }
@@ -84,7 +83,6 @@ export default function ModalFilter<T>({
       title="Filter"
       body={
         <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-          {/* Column select */}
           <select
             value={rule.column}
             onChange={(e) => updateRule("column", e.target.value)}
@@ -111,7 +109,6 @@ export default function ModalFilter<T>({
             ))}
           </select>
 
-          {/* Input value */}
           <input
             type="text"
             value={rule.value}
