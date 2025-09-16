@@ -29,47 +29,49 @@ const relations = [
   { value: "le", label: "Less or equal" },
 ];
 
-// parse a single condition into a FilterRule (returns null on no match)
+/**
+ * Parse a single OData condition like:
+ *   contains(FirstName,'John')
+ *   LastName eq "Doe"
+ */
 function parseCondition(cond: string): FilterRule | null {
   cond = cond.trim();
 
-  // contains(col,'val')
-  let m = cond.match(/^contains\(\s*([^,\s)]+)\s*,\s*'((?:[^']|\\')*)'\s*\)$/i);
-  if (m) return { column: m[1], operator: "contains", value: m[2] };
+  // Normalize URL-encoded quotes back to ' or "
+  cond = cond.replace(/%27/g, "'").replace(/%22/g, '"');
 
-  // startswith(col,'val') or endswith(...)
-  m = cond.match(/^startswith\(\s*([^,\s)]+)\s*,\s*'((?:[^']|\\')*)'\s*\)$/i);
-  if (m) return { column: m[1], operator: "startswith", value: m[2] };
-
-  m = cond.match(/^endswith\(\s*([^,\s)]+)\s*,\s*'((?:[^']|\\')*)'\s*\)$/i);
-  if (m) return { column: m[1], operator: "endswith", value: m[2] };
+  // contains/startswith/endswith
+  let m = cond.match(/^(contains|startswith|endswith)\(\s*([^,\s)]+)\s*,\s*['"]([^'"]+)['"]\s*\)$/i);
+  if (m) return { column: m[2], operator: m[1], value: m[3] };
 
   // comparators: col eq 'val'
-  m = cond.match(/^([^ \s]+)\s+(eq|ne|gt|lt|ge|le)\s+'((?:[^']|\\')*)'$/i);
+  m = cond.match(/^([^ \s]+)\s+(eq|ne|gt|lt|ge|le)\s+['"]([^'"]+)['"]$/i);
   if (m) return { column: m[1], operator: m[2], value: m[3] };
 
   return null;
 }
 
-// parse whole filter string (handles multiple " and " clauses)
+/**
+ * Parse a full filter string: "col1 eq 'a' and contains(col2,'b')"
+ */
 function parseFilterString(filterString?: string): FilterRule[] {
   if (!filterString) return [];
 
-  // decode URL-encoded filter 
+  let decoded = filterString;
   try {
-    filterString = decodeURIComponent(filterString);
+    decoded = decodeURIComponent(filterString);
   } catch {
-    // if decode fails, keep original
+    // fallback if already decoded
   }
 
-  // naive split on " and " (works for typical OData usage where values are quoted)
-  const parts = filterString.split(/\s+and\s+/i);
+  const parts = decoded.split(/\s+and\s+/i);
   const rules: FilterRule[] = [];
 
   for (const p of parts) {
     const r = parseCondition(p);
     if (r) rules.push(r);
   }
+
   return rules;
 }
 
@@ -82,7 +84,7 @@ export default function ModalFilter<T>({
 }: ModalFilterProps<T>) {
   const [rules, setRules] = useState<FilterRule[]>([]);
 
-  // Prepopulate whenmodal opens
+  // Prepopulate when modal opens
   useEffect(() => {
     if (!isOpen) return;
     if (initialFilter) {
@@ -113,7 +115,6 @@ export default function ModalFilter<T>({
     const filterString = rules
       .filter((r) => r.column && r.operator && r.value !== "")
       .map((r) => {
-        // choose appropriate formatting
         if (r.operator === "contains" || r.operator === "startswith" || r.operator === "endswith") {
           return `${r.operator}(${r.column},'${r.value}')`;
         }
@@ -133,7 +134,7 @@ export default function ModalFilter<T>({
       body={
         <div>
           {rules.map((rule, i) => (
-            <div key={i} style={{ display: "flex",  marginBottom: 10 }}>
+            <div key={i} style={{ display: "flex", marginBottom: 10 }}>
               <select
                 value={rule.column}
                 onChange={(e) => updateRule(i, "column", e.target.value)}
@@ -167,8 +168,11 @@ export default function ModalFilter<T>({
                 className="button-sec"
               />
 
-              <button style={{border: "none", background: "none" }} onClick={() => removeRule(i)}>
-                  <Icon iconName="delete" />
+              <button
+                style={{ border: "none", background: "none" }}
+                onClick={() => removeRule(i)}
+              >
+                <Icon iconName="delete" />
               </button>
             </div>
           ))}
@@ -178,7 +182,6 @@ export default function ModalFilter<T>({
           </button>
         </div>
       }
-
       footer={
         <div>
           <button className="cancel" onClick={reset}>

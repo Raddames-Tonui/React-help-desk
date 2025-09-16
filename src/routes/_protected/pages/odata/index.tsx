@@ -6,12 +6,13 @@ export const Route = createFileRoute('/_protected/pages/odata/')({
   validateSearch: (search: Record<string, unknown>) => {
     return {
       page: Number(search.page) || 1,
-      pageSize: Number(search.pageSize) || 5,
+      pageSize: Number(search.pageSize) || 5, 
       sortBy: (search.sortBy as string) ?? '',
-      filter: (search.filter) as string ?? '',
-      search: (search.search) as string ?? '',
+      filter: (search.filter as string) ?? '',
+      search: (search.search as string) ?? '',
     }
-  },
+  }
+
 })
 
 function RouteComponent() {

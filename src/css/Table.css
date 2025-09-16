@@ -7,7 +7,7 @@ table{
     background-color:var(--bg-color-primary) ;
     margin: 1rem;
     border-collapse: collapse;
-    width: 100%;
+    width: 98%;
 }
 
 table, tr {
@@ -16,7 +16,7 @@ table, tr {
 
 th {
     color: var(--color-header);
-    padding: 0.5rem;
+    padding: 0.8rem ;
     text-align: left;
 }
 

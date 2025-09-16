@@ -1,16 +1,23 @@
 // _protected/pages/odata/index.tsx
-import React, { useState, useEffect } from 'react'
-import { usePeople } from './usePeople'
+import React, { useState } from 'react'
+import { usePeople, Person } from './usePeople'
 import { Route } from '../../routes/_protected/pages/odata/index'
+import type { ColumnProps } from '../../components/Table'
+import Table from '../../components/Table'
+import Modalsort from '../../components/Modalsort'
+import ModalFilter from '../../components/Modalfilter'
 
 const Odata: React.FC = () => {
   const searchParams = Route.useSearch()
   const navigate = Route.useNavigate()
 
+  const [isFilterModalOpen, setFilterModalOpen] = useState(false)
+  const [isSortModalOpen, setSortModalOpen] = useState(false)
+
   const page = searchParams.page ?? 1
   const pageSize = searchParams.pageSize ?? 5
   const sortBy = searchParams.sortBy ?? ''
-  const filter = searchParams.filter ?? ''
+  const filter = searchParams.filter ?? ''   // 🟢 pass this into ModalFilter
   const freeSearch = searchParams.search ?? ''
 
   const { data, error, isLoading } = usePeople(
@@ -21,152 +28,108 @@ const Odata: React.FC = () => {
     freeSearch
   )
 
-  // 🔍 Debounced search state
-  const [localSearch, setLocalSearch] = useState(freeSearch)
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      navigate({
-        search: { page: 1, pageSize, sortBy, filter, search: localSearch },
-      })
-    }, 400) // 400ms debounce
-    return () => clearTimeout(delay)
-  }, [localSearch])
-
-  // 🧹 Multi-filter state
-  const [gender, setGender] = useState(filter.includes('Gender') ? filter.split("'")[1] : '')
-  const [firstName, setFirstName] = useState('')
-  const [city, setCity] = useState('')
-
-  const applyFilters = () => {
-    const filters: string[] = []
-    if (gender) filters.push(`Gender eq '${gender}'`)
-    if (firstName) filters.push(`startswith(FirstName,'${firstName}')`)
-    if (city) filters.push(`AddressInfo/any(a:a/City/Name eq '${city}')`)
-    const combined = filters.join(' and ')
-    navigate({ search: { page: 1, pageSize, sortBy, filter: combined, search: freeSearch } })
-  }
-
   const handlePageChange = (newPage: number) => {
-    navigate({ search: { page: newPage, pageSize, sortBy, filter, search: freeSearch } })
+    navigate({
+      search: { page: newPage, pageSize, sortBy, filter, search: freeSearch }
+    })
   }
 
   const handlePageSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    navigate({ search: { page: 1, pageSize: Number(e.target.value), sortBy, filter, search: freeSearch } })
+    navigate({
+      search: { page: 1, pageSize: Number(e.target.value), sortBy, filter, search: freeSearch }
+    })
   }
 
-  const handleSort = (column: string) => {
-    let newSort: string
-    if (!sortBy.startsWith(column)) {
-      newSort = `${column} asc`
-    } else if (sortBy.endsWith('asc')) {
-      newSort = `${column} desc`
-    } else {
-      newSort = ''
-    }
-    navigate({ search: { page: 1, pageSize, sortBy: newSort, filter, search: freeSearch } })
+  const handleSortApply = (sortString: string) => {
+    navigate({
+      search: { page: 1, pageSize, sortBy: sortString, filter, search: freeSearch }
+    })
+  }
+
+  const handleFilterApply = (filterString: string) => {
+    navigate({
+      search: { page: 1, pageSize, sortBy, filter: filterString, search: freeSearch }
+    })
   }
 
   if (isLoading) return <div className="p-4">Loading people...</div>
   if (error) return <div className="p-4 text-red-500">Error: {error.message}</div>
 
+  const columns: ColumnProps<Person>[] = [
+    { id: 'UserName', caption: 'Username', size: 100, align: 'left', isSortable: true, isFilterable: true },
+    { id: 'FirstName', caption: 'First Name', size: 100, isSortable: true, isFilterable: true },
+    { id: 'LastName', caption: 'Last Name', size: 150, isSortable: true, isFilterable: true },
+    { id: 'Gender', caption: 'Gender', size: 100, isSortable: true, isFilterable: true },
+    {
+      id: 'Emails',
+      caption: 'Emails',
+      size: 250,
+      render: (row, value) => (value ? value.join(', ') : '—'),
+      hide: true,
+      isFilterable: true,
+    },
+    {
+      id: 'AddressInfo',
+      caption: 'City',
+      size: 150,
+      render: (row) => row.AddressInfo?.[0]?.City?.Name ?? '—',
+      hide: true,
+      isFilterable: true,
+    },
+  ]
+
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-bold mb-4">OData People (Full Controls)</h1>
-
-      {/* 🔍 Search */}
-      <div className="flex items-center gap-4 mb-4">
-        <input
-          type="text"
-          placeholder="Global search..."
-          value={localSearch}
-          onChange={(e) => setLocalSearch(e.target.value)}
-          className="border px-3 py-1 rounded"
-        />
-        <select value={pageSize} onChange={handlePageSize} className="border px-3 py-1 rounded">
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-        </select>
+    <div>
+      <div className="page-header">
+        <h3>OData People</h3>
+        <div className="page-utils-buttons">
+          <input className="button-sec" placeholder="Search..." type="search" />
+          <button className="button" onClick={() => setFilterModalOpen(true)}>Filter</button>
+          <button className="button" onClick={() => setSortModalOpen(true)}>Sort</button>
+        </div>
       </div>
 
-      {/* 🎛 Multi Filters */}
-      <div className="flex items-center gap-4 mb-4">
-        <select value={gender} onChange={(e) => setGender(e.target.value)} className="border px-3 py-1 rounded">
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-        <input
-          type="text"
-          placeholder="First name starts with..."
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          className="border px-3 py-1 rounded"
-        />
-        <input
-          type="text"
-          placeholder="City equals..."
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          className="border px-3 py-1 rounded"
-        />
-        <button onClick={applyFilters} className="px-3 py-1 border rounded bg-blue-500 text-white">
-          Apply Filters
-        </button>
-      </div>
+      <Table<Person> columns={columns} data={data?.value ?? []} />
 
-      {/* Table */}
-      <table className="table-auto w-full border-collapse border border-gray-300 mb-4">
-        <thead>
-          <tr className="bg-gray-100">
-            {['UserName', 'FirstName', 'LastName', 'Gender'].map((col) => (
-              <th
-                key={col}
-                className="border px-4 py-2 cursor-pointer hover:bg-gray-200"
-                onClick={() => handleSort(col)}
-              >
-                {col}
-                {sortBy.startsWith(col) && (
-                  <span className="ml-1">{sortBy.endsWith('asc') ? '⬆️' : '⬇️'}</span>
-                )}
-              </th>
-            ))}
-            <th className="border px-4 py-2">Emails</th>
-            <th className="border px-4 py-2">City</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.value.map((person) => (
-            <tr key={person.UserName} className="hover:bg-gray-50">
-              <td className="border px-4 py-2">{person.UserName}</td>
-              <td className="border px-4 py-2">{person.FirstName}</td>
-              <td className="border px-4 py-2">{person.LastName}</td>
-              <td className="border px-4 py-2">{person.Gender}</td>
-              <td className="border px-4 py-2">{person.Emails?.join(', ')}</td>
-              <td className="border px-4 py-2">
-                {person.AddressInfo[0]?.City?.Name || '—'}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Sorting modal */}
+      <Modalsort
+        isOpen={isSortModalOpen}
+        onClose={() => setSortModalOpen(false)}
+        columns={columns}
+        onApply={handleSortApply}
+        initialSort={sortBy}
+      />
 
-      {/* Pagination */}
-      <div className="flex items-center gap-4">
+      {/* Filtering modal */}
+      <ModalFilter
+        isOpen={isFilterModalOpen}
+        onClose={() => setFilterModalOpen(false)}
+        columns={columns}
+        onApply={handleFilterApply}
+        initialFilter={filter}
+      />
+
+      <div className="pagination">
         <button
-          className="px-3 py-1 border rounded disabled:opacity-50"
+          className="pagination-btn prev-btn"
           disabled={page === 1}
           onClick={() => handlePageChange(page - 1)}
         >
           Prev
         </button>
-        <span>
+        <span className="page-no">
           Page {page}{' '}
-          {data?.['@odata.count'] ? `of ${Math.ceil(data['@odata.count'] / pageSize)}` : ''}
+          {data?.['@odata.count']
+            ? `of ${Math.ceil(data['@odata.count'] / pageSize)}`
+            : ''}
         </span>
         <button
-          className="px-3 py-1 border rounded disabled:opacity-50"
-          disabled={data?.['@odata.count'] ? page >= Math.ceil(data['@odata.count'] / pageSize) : false}
+          className="pagination-btn next-btn"
+          disabled={
+            data?.['@odata.count']
+              ? page >= Math.ceil(data['@odata.count'] / pageSize)
+              : false
+          }
           onClick={() => handlePageChange(page + 1)}
         >
           Next
