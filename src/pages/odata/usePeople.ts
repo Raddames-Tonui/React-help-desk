@@ -28,7 +28,49 @@ interface OdataResponse<T> {
   ['@odata.count']?: number
 }
 
-const fetchPeople = async (page: number, pageSize: number): Promise<OdataResponse<Person>> => {
+// ------ 3.Sorting, Filtering and Search support
+const fetchPeople = async (
+  page: number,
+  pageSize: number,
+  sortBy: string,
+  filter: string,
+  search: string
+): Promise<ODataResponse<Person>> => {
+  const skip = (page - 1) * pageSize
+
+   // Build query params dynamically
+  const params = new URLSearchParams({
+    $top: pageSize.toString(),
+    $skip: page.toString(),
+    $count: 'true',
+  })
+  if (sortBy) params.set('$orderby', sortBy)
+  if (filter) params.set('$filter', filter)
+  if (search) params.set('$search', search)
+    
+  const url = `https://services.odata.org/TripPinRESTierService/(S(readwrite))/People?${params.toString()}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error('Failed to fetch people')
+  return res.json()
+}
+
+export function usePeople(
+  page: number,
+  pageSize: number,
+  sortBy: string,
+  filter: string,
+  search: string
+) {
+  return useQuery<OdataResponse<Person>, Error>({
+    queryKey: ['people', page, pageSize, sortBy, filter, search],
+    queryFn: () => fetchPeople(page, pageSize, sortBy, filter, search),
+    keepPreviousData: true
+  })
+}
+
+/** 
+ *  --------------- 2. PAGINATION ---------------------
+const fetchPeople = async (page: number, pageSize: number, ): Promise<OdataResponse<Person>> => {
   const skip = (page - 1) * pageSize
   
   const url = `https://services.odata.org/TripPinRESTierService/(S(readwrite))/People?$top=${pageSize}&$skip=${skip}&$count=true`
@@ -48,7 +90,7 @@ export function usePeople(page: number, pageSize: number) {
 }
 
 
-
+*/
 
 
 
