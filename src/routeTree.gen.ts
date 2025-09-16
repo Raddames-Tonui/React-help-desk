@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as ProtectedPagesIndexRouteImport } from './routes/_protected/pages/index'
 import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
 import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
@@ -33,6 +34,11 @@ const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PublicRoute,
+} as any)
+const ProtectedPagesIndexRoute = ProtectedPagesIndexRouteImport.update({
+  id: '/pages/',
+  path: '/pages/',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const PublicAuthResetpasswordRoute = PublicAuthResetpasswordRouteImport.update({
   id: '/auth/resetpassword',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
+  '/pages': typeof ProtectedPagesIndexRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
+  '/pages': typeof ProtectedPagesIndexRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/_public/auth/login': typeof PublicAuthLoginRoute
   '/_public/auth/register': typeof PublicAuthRegisterRoute
   '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
+  '/_protected/pages/': typeof ProtectedPagesIndexRoute
   '/_protected/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/_protected/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/_protected/pages/client/': typeof ProtectedPagesClientIndexRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
+    | '/pages'
     | '/pages/vendor/$id'
     | '/pages/vendor/dummy'
     | '/pages/client'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
+    | '/pages'
     | '/pages/vendor/$id'
     | '/pages/vendor/dummy'
     | '/pages/client'
@@ -146,6 +157,7 @@ export interface FileRouteTypes {
     | '/_public/auth/login'
     | '/_public/auth/register'
     | '/_public/auth/resetpassword'
+    | '/_protected/pages/'
     | '/_protected/pages/vendor/$id'
     | '/_protected/pages/vendor/dummy'
     | '/_protected/pages/client/'
@@ -180,6 +192,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof PublicIndexRouteImport
       parentRoute: typeof PublicRoute
+    }
+    '/_protected/pages/': {
+      id: '/_protected/pages/'
+      path: '/pages'
+      fullPath: '/pages'
+      preLoaderRoute: typeof ProtectedPagesIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_public/auth/resetpassword': {
       id: '/_public/auth/resetpassword'
@@ -241,6 +260,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface ProtectedRouteChildren {
+  ProtectedPagesIndexRoute: typeof ProtectedPagesIndexRoute
   ProtectedPagesVendorIdRoute: typeof ProtectedPagesVendorIdRoute
   ProtectedPagesVendorDummyRoute: typeof ProtectedPagesVendorDummyRoute
   ProtectedPagesClientIndexRoute: typeof ProtectedPagesClientIndexRoute
@@ -249,6 +269,7 @@ interface ProtectedRouteChildren {
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedPagesIndexRoute: ProtectedPagesIndexRoute,
   ProtectedPagesVendorIdRoute: ProtectedPagesVendorIdRoute,
   ProtectedPagesVendorDummyRoute: ProtectedPagesVendorDummyRoute,
   ProtectedPagesClientIndexRoute: ProtectedPagesClientIndexRoute,
