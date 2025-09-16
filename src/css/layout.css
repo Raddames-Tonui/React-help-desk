@@ -215,13 +215,15 @@ aside {
 
 .close-icon {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
-    width: 48px;
+    width: 100%;
     height: 48px;
     position: sticky;
     cursor: pointer;
     transition: background 0.3s;
+    gap: 12px;
+    padding: 8px 13px;
 }
 
 

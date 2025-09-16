@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       label: role === "client" ? "Create Ticket" : "Existing Tickets",
       path: role === "client" ? "/pages/client" : "/pages/vendor",
     },
-    { icon: "notepad", label: "Notes" },
+    { icon: "notepad", label: "Dummy Tickets", path: "/pages/vendor/dummy" },
     { icon: "notes", label: "Tasks" },
     { icon: "users", label: "Users" },
     { icon: "settings", label: "Settings" },
@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       </div>
 
       <div className="close-icon" onClick={toggleSidebar}>
-        <Icon iconName={isOpen ? "close" : "open"} />
+        <Icon iconName={isOpen ? "close" : "open"} /> <span className="sidebar-label">Close</span>
       </div>
     </aside>
   );

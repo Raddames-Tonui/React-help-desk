@@ -18,6 +18,7 @@ import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login
 import { Route as ProtectedPagesVendorIndexRouteImport } from './routes/_protected/pages/vendor/index'
 import { Route as ProtectedPagesOdataIndexRouteImport } from './routes/_protected/pages/odata/index'
 import { Route as ProtectedPagesClientIndexRouteImport } from './routes/_protected/pages/client/index'
+import { Route as ProtectedPagesVendorDummyRouteImport } from './routes/_protected/pages/vendor/dummy'
 import { Route as ProtectedPagesVendorIdRouteImport } from './routes/_protected/pages/vendor/$id'
 
 const PublicRoute = PublicRouteImport.update({
@@ -66,6 +67,12 @@ const ProtectedPagesClientIndexRoute =
     path: '/pages/client/',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedPagesVendorDummyRoute =
+  ProtectedPagesVendorDummyRouteImport.update({
+    id: '/pages/vendor/dummy',
+    path: '/pages/vendor/dummy',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedPagesVendorIdRoute = ProtectedPagesVendorIdRouteImport.update({
   id: '/pages/vendor/$id',
   path: '/pages/vendor/$id',
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
   '/pages/odata': typeof ProtectedPagesOdataIndexRoute
   '/pages/vendor': typeof ProtectedPagesVendorIndexRoute
@@ -88,6 +96,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
   '/pages/odata': typeof ProtectedPagesOdataIndexRoute
   '/pages/vendor': typeof ProtectedPagesVendorIndexRoute
@@ -101,6 +110,7 @@ export interface FileRoutesById {
   '/_public/auth/register': typeof PublicAuthRegisterRoute
   '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
   '/_protected/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/_protected/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/_protected/pages/client/': typeof ProtectedPagesClientIndexRoute
   '/_protected/pages/odata/': typeof ProtectedPagesOdataIndexRoute
   '/_protected/pages/vendor/': typeof ProtectedPagesVendorIndexRoute
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/resetpassword'
     | '/pages/vendor/$id'
+    | '/pages/vendor/dummy'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/auth/resetpassword'
     | '/pages/vendor/$id'
+    | '/pages/vendor/dummy'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
@@ -135,6 +147,7 @@ export interface FileRouteTypes {
     | '/_public/auth/register'
     | '/_public/auth/resetpassword'
     | '/_protected/pages/vendor/$id'
+    | '/_protected/pages/vendor/dummy'
     | '/_protected/pages/client/'
     | '/_protected/pages/odata/'
     | '/_protected/pages/vendor/'
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedPagesClientIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/pages/vendor/dummy': {
+      id: '/_protected/pages/vendor/dummy'
+      path: '/pages/vendor/dummy'
+      fullPath: '/pages/vendor/dummy'
+      preLoaderRoute: typeof ProtectedPagesVendorDummyRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/pages/vendor/$id': {
       id: '/_protected/pages/vendor/$id'
       path: '/pages/vendor/$id'
@@ -222,6 +242,7 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteChildren {
   ProtectedPagesVendorIdRoute: typeof ProtectedPagesVendorIdRoute
+  ProtectedPagesVendorDummyRoute: typeof ProtectedPagesVendorDummyRoute
   ProtectedPagesClientIndexRoute: typeof ProtectedPagesClientIndexRoute
   ProtectedPagesOdataIndexRoute: typeof ProtectedPagesOdataIndexRoute
   ProtectedPagesVendorIndexRoute: typeof ProtectedPagesVendorIndexRoute
@@ -229,6 +250,7 @@ interface ProtectedRouteChildren {
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedPagesVendorIdRoute: ProtectedPagesVendorIdRoute,
+  ProtectedPagesVendorDummyRoute: ProtectedPagesVendorDummyRoute,
   ProtectedPagesClientIndexRoute: ProtectedPagesClientIndexRoute,
   ProtectedPagesOdataIndexRoute: ProtectedPagesOdataIndexRoute,
   ProtectedPagesVendorIndexRoute: ProtectedPagesVendorIndexRoute,
