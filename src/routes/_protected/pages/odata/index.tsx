@@ -1,12 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Client from '@/pages/Client'
+import Odata from '@/pages/Odata'
 
-export const Route = createFileRoute('/pages/client/')({
+export const Route = createFileRoute('/_protected/pages/odata/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return (
-    <Client />
-  )
+    <Odata />
+    )
 }

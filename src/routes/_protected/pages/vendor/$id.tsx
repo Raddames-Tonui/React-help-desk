@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import React, { useState } from 'react';
 import '@/css/VendorDetail.css';
 
-export const Route = createFileRoute('/pages/vendor/$id')({
+export const Route = createFileRoute('/_protected/pages/vendor/$id')({
   component: VendorDetail,
 });
 

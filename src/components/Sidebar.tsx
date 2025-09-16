@@ -12,7 +12,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const role = user.role || "guest";
 
   const menuItems = [
-    { icon: "pie", label: "Odata Dashboard", path: "/pages/odata" },
+    { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
     {
       icon: "razor",
       label: role === "client" ? "Create Ticket" : "Existing Tickets",

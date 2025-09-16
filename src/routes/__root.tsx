@@ -13,17 +13,4 @@ export const Route = createRootRoute({
       <TanStackRouterDevtools />
     </>
   ),
-
-//   errorComponent: ({ error }) => (
-//     <div style={{ padding: "1rem", color: "red" }}>
-//       <h2>Something went wrong</h2>
-//       <pre>{error.message}</pre>
-//     </div>
-//   ),
-
-//   pendingComponent: () => (
-//     <div style={{ padding: "1rem" }}>
-//       <p>Loading...</p>
-//     </div>
-//   ),
 })

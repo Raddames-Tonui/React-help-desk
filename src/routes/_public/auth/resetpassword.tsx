@@ -8,11 +8,10 @@ import * as yup from "yup";
 
 import styles from "@/css/login.module.css";
 
-export const Route = createFileRoute("/auth/resetpassword")({
+export const Route = createFileRoute("/_public/auth/resetpassword")({
   component: ResetPasswordPage,
 });
 
-// ✅ Email-only schema
 const schema = yup.object({
   email: yup.string().email("Invalid email").required("Email is required"),
   newPassword: yup

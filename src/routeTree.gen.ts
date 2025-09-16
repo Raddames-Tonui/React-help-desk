@@ -9,123 +9,109 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PagesRouteRouteImport } from './routes/pages/route'
-import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as PagesIndexRouteImport } from './routes/pages/index'
-import { Route as AuthResetpasswordRouteImport } from './routes/auth/resetpassword'
-import { Route as AuthRegisterRouteImport } from './routes/auth/register'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as PagesVendorIndexRouteImport } from './routes/pages/vendor/index'
-import { Route as PagesOdataIndexRouteImport } from './routes/pages/odata/index'
-import { Route as PagesClientIndexRouteImport } from './routes/pages/client/index'
-import { Route as PagesVendorIdRouteImport } from './routes/pages/vendor/$id'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
+import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
+import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
+import { Route as ProtectedPagesVendorIndexRouteImport } from './routes/_protected/pages/vendor/index'
+import { Route as ProtectedPagesOdataIndexRouteImport } from './routes/_protected/pages/odata/index'
+import { Route as ProtectedPagesClientIndexRouteImport } from './routes/_protected/pages/client/index'
+import { Route as ProtectedPagesVendorIdRouteImport } from './routes/_protected/pages/vendor/$id'
 
-const PagesRouteRoute = PagesRouteRouteImport.update({
-  id: '/pages',
-  path: '/pages',
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const ProtectedRoute = ProtectedRouteImport.update({
+  id: '/_protected',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => PublicRoute,
 } as any)
-const PagesIndexRoute = PagesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => PagesRouteRoute,
+const PublicAuthResetpasswordRoute = PublicAuthResetpasswordRouteImport.update({
+  id: '/auth/resetpassword',
+  path: '/auth/resetpassword',
+  getParentRoute: () => PublicRoute,
 } as any)
-const AuthResetpasswordRoute = AuthResetpasswordRouteImport.update({
-  id: '/resetpassword',
-  path: '/resetpassword',
-  getParentRoute: () => AuthRouteRoute,
+const PublicAuthRegisterRoute = PublicAuthRegisterRouteImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => PublicRoute,
 } as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AuthRouteRoute,
+const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => PublicRoute,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
-const PagesVendorIndexRoute = PagesVendorIndexRouteImport.update({
-  id: '/vendor/',
-  path: '/vendor/',
-  getParentRoute: () => PagesRouteRoute,
-} as any)
-const PagesOdataIndexRoute = PagesOdataIndexRouteImport.update({
-  id: '/odata/',
-  path: '/odata/',
-  getParentRoute: () => PagesRouteRoute,
-} as any)
-const PagesClientIndexRoute = PagesClientIndexRouteImport.update({
-  id: '/client/',
-  path: '/client/',
-  getParentRoute: () => PagesRouteRoute,
-} as any)
-const PagesVendorIdRoute = PagesVendorIdRouteImport.update({
-  id: '/vendor/$id',
-  path: '/vendor/$id',
-  getParentRoute: () => PagesRouteRoute,
+const ProtectedPagesVendorIndexRoute =
+  ProtectedPagesVendorIndexRouteImport.update({
+    id: '/pages/vendor/',
+    path: '/pages/vendor/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesOdataIndexRoute =
+  ProtectedPagesOdataIndexRouteImport.update({
+    id: '/pages/odata/',
+    path: '/pages/odata/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesClientIndexRoute =
+  ProtectedPagesClientIndexRouteImport.update({
+    id: '/pages/client/',
+    path: '/pages/client/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesVendorIdRoute = ProtectedPagesVendorIdRouteImport.update({
+  id: '/pages/vendor/$id',
+  path: '/pages/vendor/$id',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/pages': typeof PagesRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/auth/resetpassword': typeof AuthResetpasswordRoute
-  '/pages/': typeof PagesIndexRoute
-  '/pages/vendor/$id': typeof PagesVendorIdRoute
-  '/pages/client': typeof PagesClientIndexRoute
-  '/pages/odata': typeof PagesOdataIndexRoute
-  '/pages/vendor': typeof PagesVendorIndexRoute
+  '/': typeof PublicIndexRoute
+  '/auth/login': typeof PublicAuthLoginRoute
+  '/auth/register': typeof PublicAuthRegisterRoute
+  '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
+  '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/pages/client': typeof ProtectedPagesClientIndexRoute
+  '/pages/odata': typeof ProtectedPagesOdataIndexRoute
+  '/pages/vendor': typeof ProtectedPagesVendorIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/auth/resetpassword': typeof AuthResetpasswordRoute
-  '/pages': typeof PagesIndexRoute
-  '/pages/vendor/$id': typeof PagesVendorIdRoute
-  '/pages/client': typeof PagesClientIndexRoute
-  '/pages/odata': typeof PagesOdataIndexRoute
-  '/pages/vendor': typeof PagesVendorIndexRoute
+  '/': typeof PublicIndexRoute
+  '/auth/login': typeof PublicAuthLoginRoute
+  '/auth/register': typeof PublicAuthRegisterRoute
+  '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
+  '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/pages/client': typeof ProtectedPagesClientIndexRoute
+  '/pages/odata': typeof ProtectedPagesOdataIndexRoute
+  '/pages/vendor': typeof ProtectedPagesVendorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRouteRouteWithChildren
-  '/pages': typeof PagesRouteRouteWithChildren
-  '/auth/login': typeof AuthLoginRoute
-  '/auth/register': typeof AuthRegisterRoute
-  '/auth/resetpassword': typeof AuthResetpasswordRoute
-  '/pages/': typeof PagesIndexRoute
-  '/pages/vendor/$id': typeof PagesVendorIdRoute
-  '/pages/client/': typeof PagesClientIndexRoute
-  '/pages/odata/': typeof PagesOdataIndexRoute
-  '/pages/vendor/': typeof PagesVendorIndexRoute
+  '/_protected': typeof ProtectedRouteWithChildren
+  '/_public': typeof PublicRouteWithChildren
+  '/_public/': typeof PublicIndexRoute
+  '/_public/auth/login': typeof PublicAuthLoginRoute
+  '/_public/auth/register': typeof PublicAuthRegisterRoute
+  '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
+  '/_protected/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/_protected/pages/client/': typeof ProtectedPagesClientIndexRoute
+  '/_protected/pages/odata/': typeof ProtectedPagesOdataIndexRoute
+  '/_protected/pages/vendor/': typeof ProtectedPagesVendorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
-    | '/pages'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
-    | '/pages/'
     | '/pages/vendor/$id'
     | '/pages/client'
     | '/pages/odata'
@@ -133,158 +119,145 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
-    | '/pages'
     | '/pages/vendor/$id'
     | '/pages/client'
     | '/pages/odata'
     | '/pages/vendor'
   id:
     | '__root__'
-    | '/'
-    | '/auth'
-    | '/pages'
-    | '/auth/login'
-    | '/auth/register'
-    | '/auth/resetpassword'
-    | '/pages/'
-    | '/pages/vendor/$id'
-    | '/pages/client/'
-    | '/pages/odata/'
-    | '/pages/vendor/'
+    | '/_protected'
+    | '/_public'
+    | '/_public/'
+    | '/_public/auth/login'
+    | '/_public/auth/register'
+    | '/_public/auth/resetpassword'
+    | '/_protected/pages/vendor/$id'
+    | '/_protected/pages/client/'
+    | '/_protected/pages/odata/'
+    | '/_protected/pages/vendor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  PagesRouteRoute: typeof PagesRouteRouteWithChildren
+  ProtectedRoute: typeof ProtectedRouteWithChildren
+  PublicRoute: typeof PublicRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/pages': {
-      id: '/pages'
-      path: '/pages'
-      fullPath: '/pages'
-      preLoaderRoute: typeof PagesRouteRouteImport
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteRouteImport
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/pages/': {
-      id: '/pages/'
-      path: '/'
-      fullPath: '/pages/'
-      preLoaderRoute: typeof PagesIndexRouteImport
-      parentRoute: typeof PagesRouteRoute
-    }
-    '/auth/resetpassword': {
-      id: '/auth/resetpassword'
-      path: '/resetpassword'
+    '/_public/auth/resetpassword': {
+      id: '/_public/auth/resetpassword'
+      path: '/auth/resetpassword'
       fullPath: '/auth/resetpassword'
-      preLoaderRoute: typeof AuthResetpasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof PublicAuthResetpasswordRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/register'
+    '/_public/auth/register': {
+      id: '/_public/auth/register'
+      path: '/auth/register'
       fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof PublicAuthRegisterRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
+    '/_public/auth/login': {
+      id: '/_public/auth/login'
+      path: '/auth/login'
       fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRouteRoute
+      preLoaderRoute: typeof PublicAuthLoginRouteImport
+      parentRoute: typeof PublicRoute
     }
-    '/pages/vendor/': {
-      id: '/pages/vendor/'
-      path: '/vendor'
+    '/_protected/pages/vendor/': {
+      id: '/_protected/pages/vendor/'
+      path: '/pages/vendor'
       fullPath: '/pages/vendor'
-      preLoaderRoute: typeof PagesVendorIndexRouteImport
-      parentRoute: typeof PagesRouteRoute
+      preLoaderRoute: typeof ProtectedPagesVendorIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
-    '/pages/odata/': {
-      id: '/pages/odata/'
-      path: '/odata'
+    '/_protected/pages/odata/': {
+      id: '/_protected/pages/odata/'
+      path: '/pages/odata'
       fullPath: '/pages/odata'
-      preLoaderRoute: typeof PagesOdataIndexRouteImport
-      parentRoute: typeof PagesRouteRoute
+      preLoaderRoute: typeof ProtectedPagesOdataIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
-    '/pages/client/': {
-      id: '/pages/client/'
-      path: '/client'
+    '/_protected/pages/client/': {
+      id: '/_protected/pages/client/'
+      path: '/pages/client'
       fullPath: '/pages/client'
-      preLoaderRoute: typeof PagesClientIndexRouteImport
-      parentRoute: typeof PagesRouteRoute
+      preLoaderRoute: typeof ProtectedPagesClientIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
-    '/pages/vendor/$id': {
-      id: '/pages/vendor/$id'
-      path: '/vendor/$id'
+    '/_protected/pages/vendor/$id': {
+      id: '/_protected/pages/vendor/$id'
+      path: '/pages/vendor/$id'
       fullPath: '/pages/vendor/$id'
-      preLoaderRoute: typeof PagesVendorIdRouteImport
-      parentRoute: typeof PagesRouteRoute
+      preLoaderRoute: typeof ProtectedPagesVendorIdRouteImport
+      parentRoute: typeof ProtectedRoute
     }
   }
 }
 
-interface AuthRouteRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute
-  AuthRegisterRoute: typeof AuthRegisterRoute
-  AuthResetpasswordRoute: typeof AuthResetpasswordRoute
+interface ProtectedRouteChildren {
+  ProtectedPagesVendorIdRoute: typeof ProtectedPagesVendorIdRoute
+  ProtectedPagesClientIndexRoute: typeof ProtectedPagesClientIndexRoute
+  ProtectedPagesOdataIndexRoute: typeof ProtectedPagesOdataIndexRoute
+  ProtectedPagesVendorIndexRoute: typeof ProtectedPagesVendorIndexRoute
 }
 
-const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthLoginRoute: AuthLoginRoute,
-  AuthRegisterRoute: AuthRegisterRoute,
-  AuthResetpasswordRoute: AuthResetpasswordRoute,
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedPagesVendorIdRoute: ProtectedPagesVendorIdRoute,
+  ProtectedPagesClientIndexRoute: ProtectedPagesClientIndexRoute,
+  ProtectedPagesOdataIndexRoute: ProtectedPagesOdataIndexRoute,
+  ProtectedPagesVendorIndexRoute: ProtectedPagesVendorIndexRoute,
 }
 
-const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
-  AuthRouteRouteChildren,
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
 )
 
-interface PagesRouteRouteChildren {
-  PagesIndexRoute: typeof PagesIndexRoute
-  PagesVendorIdRoute: typeof PagesVendorIdRoute
-  PagesClientIndexRoute: typeof PagesClientIndexRoute
-  PagesOdataIndexRoute: typeof PagesOdataIndexRoute
-  PagesVendorIndexRoute: typeof PagesVendorIndexRoute
+interface PublicRouteChildren {
+  PublicIndexRoute: typeof PublicIndexRoute
+  PublicAuthLoginRoute: typeof PublicAuthLoginRoute
+  PublicAuthRegisterRoute: typeof PublicAuthRegisterRoute
+  PublicAuthResetpasswordRoute: typeof PublicAuthResetpasswordRoute
 }
 
-const PagesRouteRouteChildren: PagesRouteRouteChildren = {
-  PagesIndexRoute: PagesIndexRoute,
-  PagesVendorIdRoute: PagesVendorIdRoute,
-  PagesClientIndexRoute: PagesClientIndexRoute,
-  PagesOdataIndexRoute: PagesOdataIndexRoute,
-  PagesVendorIndexRoute: PagesVendorIndexRoute,
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicIndexRoute: PublicIndexRoute,
+  PublicAuthLoginRoute: PublicAuthLoginRoute,
+  PublicAuthRegisterRoute: PublicAuthRegisterRoute,
+  PublicAuthResetpasswordRoute: PublicAuthResetpasswordRoute,
 }
 
-const PagesRouteRouteWithChildren = PagesRouteRoute._addFileChildren(
-  PagesRouteRouteChildren,
-)
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthRouteRoute: AuthRouteRouteWithChildren,
-  PagesRouteRoute: PagesRouteRouteWithChildren,
+  ProtectedRoute: ProtectedRouteWithChildren,
+  PublicRoute: PublicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

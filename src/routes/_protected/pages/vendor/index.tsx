@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Vendor2 from '../../../pages/Vendor2'
+import Vendor2 from '@/pages/Vendor'
 
-export const Route = createFileRoute('/pages/vendor/')({
+export const Route = createFileRoute('/_protected/pages/vendor/')({
   component: RouteComponent,
 })
 
