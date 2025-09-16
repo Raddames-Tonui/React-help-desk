@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query"
 
 export interface Address {
   Address: string
@@ -25,34 +25,34 @@ export interface Person {
 
 interface OdataResponse<T> {
   value: T[]
-  ['@odata.count']?: number
+  ["@odata.count"]?: number
 }
 
-
-
-// ------ 3.Sorting, Filtering and Search support--------
+// ------ Sorting, Filtering, and Search support --------
 const fetchPeople = async (
   page: number,
   pageSize: number,
   sortBy: string,
   filter: string,
   search: string
-): Promise<ODataResponse<Person>> => {
+): Promise<OdataResponse<Person>> => {
   const skip = (page - 1) * pageSize
 
-   // Build query params dynamically
+  // Build query params dynamically
   const params = new URLSearchParams({
     $top: pageSize.toString(),
-    $skip: page.toString(),
-    $count: 'true',
+    $skip: skip.toString(),
+    $count: "true",
   })
-  if (sortBy) params.set('$orderby', sortBy)
-  if (filter) params.set('$filter', filter)
-  if (search) params.set('$search', search)
-    
+
+  if (sortBy) params.set("$orderby", sortBy)
+  if (filter) params.set("$filter", filter)
+  if (search) params.set("$search", search)
+
   const url = `https://services.odata.org/TripPinRESTierService/(S(readwrite))/People?${params.toString()}`
   const res = await fetch(url)
-  if (!res.ok) throw new Error('Failed to fetch people')
+
+  if (!res.ok) throw new Error("Failed to fetch people")
   return res.json()
 }
 
@@ -64,9 +64,9 @@ export function usePeople(
   search: string
 ) {
   return useQuery<OdataResponse<Person>, Error>({
-    queryKey: ['people', page, pageSize, sortBy, filter, search],
+    queryKey: ["people", page, pageSize, sortBy, filter, search],
     queryFn: () => fetchPeople(page, pageSize, sortBy, filter, search),
-    keepPreviousData: true
+    keepPreviousData: true,
   })
 }
 
