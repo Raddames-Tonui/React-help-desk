@@ -14,12 +14,9 @@ export function TableBody<T>() {
 
     return (
         <>
-            {data.map((row, rowIndex) => {
-                <Row key={rowIndex}
-                    row={row}
-                    rowIndex={rowIndex}
-                />
-            })}
+            {data.map((row, rowIndex) => (
+                <Row key={rowIndex} row={row} rowIndex={rowIndex} />
+            ))}
         </>
     )
 }
@@ -31,7 +28,7 @@ function Row<T>({ row, rowIndex, subRows }: RowProps<T>) {
     const defaultCells = columns.map((col: ColumnProps<T>) => {
         if (col.hide) return null;
 
-        const value = row[col.id]
+        const value = row[col.id] as any;
         return (
             <td
                 key={String(col.id)}
@@ -52,28 +49,19 @@ function Row<T>({ row, rowIndex, subRows }: RowProps<T>) {
             >
                 {rowContent}
             </tr>
-            {expanded && subRows && subRows.map((subRow, subIndex) => {
-                <tr
-                    key={`${rowIndex}-sub-${subIndex}`} 
-                    className="sub-row"
-                >
-                    {columns.map((col: ColumnProps<T>) => {
-                        if (col.hide) return null;
-                        const value = subRow[col.id];
-                        return (
-                            <td
-                                key={String(col.id)}
-                                className={`align-${col.align} || "left"`}
-                            >
-                                {col.renderCell ? col.renderCell(value, subRow) : String(value ?? "")}
-                            </td>
-                        );
-                        })
-                    }
-                </tr>
-            })
-
-            }
+                {expanded && subRows && subRows.map((subRow, subIndex) => (
+                    <tr key={`${rowIndex}-sub-${subIndex}`} className="sub-row">
+                        {columns.map((col: ColumnProps<T>) => {
+                            if (col.hide) return null;
+                            const value = subRow[col.id];
+                            return (
+                                <td key={String(col.id)} className={`align-${col.align || "left"}`}>
+                                    {col.renderCell ? col.renderCell(value, subRow) : String(value ?? "")}
+                                </td>
+                            );
+                        })}
+                    </tr>
+                ))}
         </>
     )
 }

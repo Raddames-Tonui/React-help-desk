@@ -1,18 +1,12 @@
-// _protected/pages/oda/index.tsx
-import React, { useState } from 'react'
+import React from 'react'
 import { usePeople, Person } from './usePeople'
 import { Route } from '../../routes/_protected/pages/odata/index'
-import type { ColumnProps } from '../../components/Table'
-import Table from '../../components/Table'
-import Modalsort from '../../components/Modalsort'
-import ModalFilter from '../../components/Modalfilter'
+import type { ColumnProps } from '../../components/table/DataTable'
+import { DataTable } from '../../components/table/DataTable'
 
 const Odata: React.FC = () => {
   const searchParams = Route.useSearch()
   const navigate = Route.useNavigate()
-
-  const [isFilterModalOpen, setFilterModalOpen] = useState(false)
-  const [isSortModalOpen, setSortModalOpen] = useState(false)
 
   const page = searchParams.page ?? 1
   const pageSize = searchParams.pageSize ?? 5
@@ -34,24 +28,6 @@ const Odata: React.FC = () => {
     })
   }
 
-  const handlePageSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    navigate({
-      search: { page: 1, pageSize: Number(e.target.value), sortBy, filter, search: freeSearch }
-    })
-  }
-
-  const handleSortApply = (sortString: string) => {
-    navigate({
-      search: { page: 1, pageSize, sortBy: sortString, filter, search: freeSearch }
-    })
-  }
-
-  const handleFilterApply = (filterString: string) => {
-    navigate({
-      search: { page: 1, pageSize, sortBy, filter: filterString, search: freeSearch }
-    })
-  }
-
   if (isLoading) return <div className="p-4">Loading people...</div>
   if (error) return <div className="p-4 text-red-500">Error: {error.message}</div>
 
@@ -65,7 +41,7 @@ const Odata: React.FC = () => {
       size: 100,
       isSortable: true,
       isFilterable: true,
-      render: (row, value) => (
+      renderCell: (value) => (
         <span
           style={{
             color: value === 'Male' ? 'red' : value === 'Female' ? 'blue' : 'inherit',
@@ -76,21 +52,19 @@ const Odata: React.FC = () => {
         </span>
       )
     },
-
     {
       id: 'Emails',
       caption: 'Emails',
       size: 250,
-      render: (row, value) => (value ? value.join(', ') : '—'),
+      renderCell: (value) => (value ? value.join(', ') : '—'),
       hide: true,
       isFilterable: true,
-
     },
     {
       id: 'AddressInfo',
       caption: 'City',
       size: 150,
-      render: (row) => row.AddressInfo?.[0]?.City?.Name ?? '—',
+      renderCell: (row) => row.AddressInfo?.[0]?.City?.Name ?? '—',
       hide: true,
       isFilterable: true,
     },
@@ -100,71 +74,18 @@ const Odata: React.FC = () => {
     <div>
       <div className="page-header">
         <h3>OData People</h3>
-        <div className="page-utils-buttons">
-          <input className="button-sec" placeholder="Search..." type="search" />
-          <button className="button" onClick={() => setFilterModalOpen(true)}>Filter</button>
-          <button className="button" onClick={() => setSortModalOpen(true)}>Sort</button>
-          {/* <div>
-            <label >
-              Page Size:
-              <select value={pageSize} onChange={handlePageSize}>
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-              </select>
-            </label>
-          </div> */}
-
-        </div>
       </div>
 
-      <Table<Person> columns={columns} data={data?.value ?? []} />
-
-      {/* Sorting modal */}
-      <Modalsort
-        isOpen={isSortModalOpen}
-        onClose={() => setSortModalOpen(false)}
+      <DataTable<Person>
         columns={columns}
-        onApply={handleSortApply}
-        initialSort={sortBy}
+        data={data?.value ?? []}
+        pagination={{
+          page,
+          pageSize,
+          total: data?.['@odata.count'] ?? 0,
+          onPageChange: handlePageChange
+        }}
       />
-
-      {/* Filtering modal */}
-      <ModalFilter
-        isOpen={isFilterModalOpen}
-        onClose={() => setFilterModalOpen(false)}
-        columns={columns}
-        onApply={handleFilterApply}
-        initialFilter={filter}
-      />
-
-      <div className="pagination">
-        <button
-          className="pagination-btn prev-btn"
-          disabled={page === 1}
-          onClick={() => handlePageChange(page - 1)}
-        >
-          Prev
-        </button>
-        <span className="page-no">
-          Page {page}{' '}
-          {data?.['@odata.count']
-            ? `of ${Math.ceil(data['@odata.count'] / pageSize)}`
-            : ''}
-        </span>
-        <button
-          className="pagination-btn next-btn"
-          disabled={
-            data?.['@odata.count']
-              ? page >= Math.ceil(data['@odata.count'] / pageSize)
-              : false
-          }
-          onClick={() => handlePageChange(page + 1)}
-        >
-          Next
-        </button>
-      </div>
     </div>
   )
 }

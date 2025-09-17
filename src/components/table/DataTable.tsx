@@ -1,5 +1,9 @@
 import React, { createContext, useContext } from "react";
-import "./DataTable.css"
+import "./css/DataTable.css"
+import { TableActions } from "./TableActions";
+import { TableHeader } from "./TableHeader";
+import { TableBody } from "./TableBody";
+import { Pagination, TableFooter } from "./Pagination";
 
 export interface ColumnProps<T, K extends keyof T = keyof T> {
     id: K;
@@ -55,6 +59,7 @@ interface DataTableContextType<T> {
     columns: ColumnProps<T>[];
     data: T[];
     rowRender?: (row: T, defaultCells: React.ReactNode) => React.ReactNode;
+    pagination?: PaginationProps;
 }
 
 const DataTableContext = createContext<DataTableContextType<any> | undefined>(undefined);
@@ -67,21 +72,22 @@ export const useDataTable = <T,>() => {
 
 export function DataTable<T>({ columns, data, tableActionsLeft, tableActionsRight, rowRender, pagination }: DataTableProps<T>) {
     return (
-        <DataTableContext.Provider value={{ columns, data, rowRender }}>
-            <div className="data-table w-full overflow-auto">
-                {/** Table Actions **/}
-                {(tableActionsLeft || tableActionsRight) && (
-                    <div className="flex justify-between mb-2">
-                        <div>{tableActionsLeft}</div>
-                        <div>{tableActionsRight}</div>
-                    </div>
-                )}
-                {/** Table placeholder, will build TableHeader, TableBody, TableFooter next **/}
-                <table className="w-full border-collapse">
-                    <thead>{/* TableHeader will go here */}</thead>
-                    <tbody>{/* TableBody will go here */}</tbody>
-                    <tfoot>{/* TableFooter will go here */}</tfoot>
+        <DataTableContext.Provider value={{ columns, data, rowRender, pagination }}>
+            <div className="data-table">
+                <TableActions />             
+                <table className="">
+                    <thead>
+                        <TableHeader />
+                    </thead>
+                    <tbody>
+                        <TableBody />
+                    </tbody>
+                    <tfoot className="table-footer">
+                    </tfoot>
                 </table>
+                <div className="pagination">
+                    <Pagination />
+                </div>
             </div>
         </DataTableContext.Provider>
     );
