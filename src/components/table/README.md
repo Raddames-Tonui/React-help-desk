@@ -1,182 +1,166 @@
-# Dynamic DataTable Component
+# DataTable Component Documentation
 
-This document explains the creation of a **dynamic, expandable DataTable** in React with TypeScript, from start to finish, using context to avoid prop drilling and raw CSS for styling.
+## Overview
 
-## Component Tree
-
-```
-DataTable
- ├─ TableActions
- ├─ TableHeader
- ├─ TableBody
- │   └─ Row
- │       └─ SubRows (expandable)
- ├─ TableFooter
- └─ DataTable.css   // styling is centralized here
-```
+The `DataTable` component is a highly reusable React table that provides context-based state management for child components like `TableActions`, `TableHeader`, `TableBody`, `TableFooter`, and `Pagination`. It acts as a "dummy" wrapper, storing state in context for easy access and manipulation by its children without prop-drilling.
 
 ---
 
-## 1. DataTable (Parent Component)
+DataTable
 
-`DataTable` is the main component that holds the table data, columns, actions, and optional pagination. It provides a **context** (`DataTableContext`) so all child components can access table state without prop drilling.
+&#x20;├─ TableActions
 
-### Props
+&#x20;├─ TableHeader
+
+&#x20;├─ TableBody
+
+│      └─ Row
+
+&#x20;│       └─ SubRows (expandable)
+
+&#x20;├─ TableFooter
+
+&#x20;├─ Pagination
+
+&#x20;├─css/DataTable.css                      // styling is centralized here
+
+&#x20;└─ Modals
+
+&#x20;│       └─ Modal filter
+
+&#x20;│       └─ Modal Sort
+
+│       └─ Modal\\
+
+## Props
+
+| Prop                | Type                                                         | Description                                                                                      |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `columns`           | `ColumnProps<T>[]`                                           | Column definitions, including caption, size, alignment, render functions, and sort/filter flags. |
+| `data`              | `T[]`                                                        | Array of rows to render in the table.                                                            |
+| `tableActionsLeft`  | `React.ReactNode`                                            | Custom buttons or actions to show above the table, left-aligned.                                 |
+| `tableActionsRight` | `React.ReactNode`                                            | Custom buttons or actions to show above the table, right-aligned.                                |
+| `rowRender`         | `(row: T, defaultCells: React.ReactNode) => React.ReactNode` | Optional custom row rendering function.                                                          |
+| `pagination`        | `PaginationProps`                                            | Pagination configuration (`page`, `pageSize`, `total`, `onPageChange`).                          |
+| `initialSort`       | `string`                                                     | Initial sort string or array serialized as string. Passed to context as `SortRule[]`.            |
+| `initialFilter`     | `string`                                                     | Initial filter string or array serialized as string. Passed to context as `FilterRule[]`.        |
+| `initialSearch`     | `string`                                                     | Initial search string or array serialized as string. Passed to context as `string[]`.            |
+| `onSortApply`       | `(rules: SortRule[]) => void`                                | Callback when sort rules are applied. Updates context state.                                     |
+| `onFilterApply`     | `(rules: FilterRule[]) => void`                              | Callback when filter rules are applied. Updates context state.                                   |
+| `onSearchApply`     | `(arr: string[]) => void`                                    | Callback when search is applied. Updates context state.                                          |
+| `onRefresh`         | `() => void`                                                 | Optional refresh handler.                                                                        |
+
+---
+
+## Context / React State
+
+The `DataTable` component stores key UI state in context for child components to consume:
 
 ```ts
-interface DataTableProps<T> {
-    columns: ColumnProps<T>[];
-    data: T[];
-    tableActionsLeft?: React.ReactNode;
-    tableActionsRight?: React.ReactNode;
-    rowRender?: (row: T, defaultCells: React.ReactNode) => React.ReactNode;
-    pagination?: PaginationProps;
-}
+      const [sortBy, setSortBy] = useState<SortRule[]>([]);
+const [filter, setFilter] = useState<FilterRule[]>([]);
+const [search, setSearch] = useState<string[]>([]);
 ```
 
-### Features
+**Why arrays?**
 
-* Context-based state sharing
-* Row-level custom rendering (`rowRender`)
-* Table actions support (left & right)
-* Optional pagination support
+* Easier to manipulate programmatically (add, remove, reorder).
+* Type-safe (`SortRule[]`, `FilterRule[]`, `string[]`).
+* Works seamlessly with TableActions, Modals, and other children components.
 
-### Example Usage
+---
+
+## URL Persistence
+
+Since URLs only store strings, we serialize arrays before saving to the URL.
+
+### Options for serialization:
+
+**1. Comma-separated simple arrays**
+
+```ts
+const urlValue = search.join(",");
+const searchArray = urlValue ? urlValue.split(",") : [];
+```
+
+* Simple, works for strings without commas.
+
+**2. JSON encoding (safe for any string)**
+
+```ts
+const urlValue = encodeURIComponent(JSON.stringify(search));
+const searchArray = JSON.parse(decodeURIComponent(urlValue));
+```
+
+* Handles commas, quotes, spaces safely.
+* Slightly longer URLs.
+
+**3. OData-style for complex rules (recommended for sort/filter)**
+
+```text
+sort=Name asc,Age desc
+filter=contains(Name,'John') and Age gt 25
+```
+
+* Human-readable.
+* Backend-compatible.
+* Can parse back into arrays when reading from the URL.
+
+---
+
+## Best Practices
+
+| Location        | Data Type                                        | Notes                                                                                          |
+| --------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| Context / State | Array (`SortRule[]`, `FilterRule[]`, `string[]`) | Type-safe, easy for components to manipulate.                                                  |
+| URL             | String (serialize array)                         | Parse back to array on mount. Use OData style for sort/filter, JSON/comma for simple searches. |
+| Backend         | Array / OData Query                              | Convert URL string to proper array/OData format before sending API requests.                   |
+
+---
+
+## Flow Example
+
+1. User sets filters in the modal → context/state updated (`filter: FilterRule[]`).
+2. Update URL by serializing array → `filter=contains(Name,'John') and Age gt 25`.
+3. On page load or refresh:
+
+   * Read URL → parse string → update context arrays.
+4. Context arrays are used for rendering, table actions, or sending API requests.
+
+**Advantages:**
+
+* State arrays make UI logic easy.
+* URL strings make state persistent across refresh or sharing.
+* Backend always gets a properly formatted query.
+
+---
+
+## Example Usage
 
 ```tsx
-<DataTable
-    columns={columns}
-    data={data}
-    tableActionsLeft={<button>Add Row</button>}
-    tableActionsRight={<button>Export</button>}
-    rowRender={(row, defaultCells) => (
-        <>{defaultCells}</>
-    )}
-    pagination={{ page: 1, pageSize: 10, total: 100, onPageChange: handlePageChange }}
+import { DataTable, ColumnProps, SortRule, FilterRule } from './DataTable';
+
+const columns: ColumnProps<Person>[] = [
+  { id: 'UserName', caption: 'Username', size: 150, isSortable: true },
+  { id: 'FirstName', caption: 'First Name', size: 150, isSortable: true },
+  { id: 'LastName', caption: 'Last Name', size: 150 },
+];
+
+<DataTable<Person>
+  columns={columns}
+  data={people}
+  pagination={{ page: 1, pageSize: 10, total: totalCount, onPageChange: setPage }}
+  initialSort={"UserName asc"}
+  initialFilter={"contains(FirstName,'John')"}
+  initialSearch={"John"}
+  onSortApply={(rules: SortRule[]) => console.log(rules)}
+  onFilterApply={(rules: FilterRule[]) => console.log(rules)}
+  onSearchApply={(arr: string[]) => console.log(arr)}
 />
 ```
 
----
+This ensures:
 
-## 2. TableHeader
-
-`TableHeader` reads columns from context and renders `<th>` for each visible column. It supports column-level custom rendering via `renderColumn`.
-
-### Features
-
-* Dynamic column rendering
-* Hide columns using `hide` prop
-* Supports alignment (`left`, `center`, `right`)
-
-```tsx
-<TableHeader />
-```
-
----
-
-## 3. TableBody
-
-`TableBody` renders all rows using `Row` component. Each `Row` can optionally have expandable `SubRows`.
-
-### Row Component
-
-* Reads columns & rowRender from context
-* Renders default cells or uses `rowRender` for full row customization
-* Handles expandable sub-rows
-
-```tsx
-<TableBody />
-```
-
-### Features
-
-* Row-level custom rendering
-* Expandable sub-rows
-* Dynamic cell rendering based on `renderCell`
-* Hidden columns respected
-
----
-
-## 4. TableFooter
-
-`TableFooter` renders pagination controls if `pagination` prop is provided.
-
-### Features
-
-* Previous/Next navigation
-* Displays current page and total pages
-* Fully raw CSS styling
-
-```tsx
-<TableFooter />
-```
-
----
-
-## 5. DataTable.css
-
-All styling is centralized here. Example:
-
-```css
-.table-header { background-color: #f0f0f0; font-weight: bold; }
-.table-row { border-bottom: 1px solid #ddd; cursor: pointer; }
-.sub-row { background-color: #fafafa; }
-.align-left { text-align: left; }
-.align-center { text-align: center; }
-.align-right { text-align: right; }
-.table-footer { background-color: #f9f9f9; font-weight: bold; }
-.pagination-cell { text-align: center; padding: 10px 0; }
-.pagination-btn { padding: 5px 10px; margin: 0 5px; cursor: pointer; }
-.pagination-btn:disabled { cursor: not-allowed; opacity: 0.5; }
-.pagination-info { margin: 0 10px; }
-```
-
----
-
-## 6. Example Full Use Case
-
-```tsx
-import React, { useState } from 'react';
-import { DataTable, TableHeader, TableBody, TableFooter } from './DataTable';
-
-const columns = [
-  { id: 'id', caption: 'ID', size: 50 },
-  { id: 'name', caption: 'Name', size: 150 },
-  { id: 'age', caption: 'Age', size: 50, align: 'center' },
-];
-
-const data = [
-  { id: 1, name: 'Alice', age: 25 },
-  { id: 2, name: 'Bob', age: 30 },
-];
-
-function App() {
-  const [page, setPage] = useState(1);
-
-  return (
-    <DataTable
-      columns={columns}
-      data={data}
-      tableActionsLeft={<button>Add</button>}
-      tableActionsRight={<button>Export</button>}
-      pagination={{ page, pageSize: 10, total: data.length, onPageChange: setPage }}
-    >
-      <thead><TableHeader /></thead>
-      <tbody><TableBody /></tbody>
-      <TableFooter />
-    </DataTable>
-  );
-}
-```
-
-### Features in this example
-
-* Two table actions (Add, Export)
-* Pagination support
-* Column alignment and dynamic rendering
-* Ready for expandable sub-rows
-* Styling controlled via `DataTable.css`
-
----
-
-This setup is **fully type-safe, flexible, and context-driven**, making it easy to extend with sorting, filtering, or advanced row rendering.
+* Sorting, filtering, and search states are managed centrally in context.
+* Child components like modals and table headers can consume and update state.
+* State persists via URL serialization and can be rehydrated on page refresh.
