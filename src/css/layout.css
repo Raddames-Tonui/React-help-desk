@@ -233,8 +233,7 @@ main {
     background-color: var(--primary-50);
     overflow:auto ;
     height: 100%;
-    transition: width 0.3s ease;
-    
+    transition: width 0.3s ease;    
 }
 
 footer {

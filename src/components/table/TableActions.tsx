@@ -29,52 +29,71 @@ export function TableActions<T>() {
             <div className="table-actions-left">
                 {tableActionsLeft}
             </div>
-            <div className="table-action-default">
-                {/* Filter button */}
-                <button
-                    onClick={() => setFilterOpen(true)}
-                    className={`action-btn ${filter.length > 0 ? "active" : ""}`}
-                    style={{ color: filter.length > 0 ? "red" : undefined }}
-                >
-                    {filter.length > 0 ? `Filter (${filter.length})` : "Filter"}
-                    {filter.length > 0 && (
-                        <span className="clear-action" onClick={handleFilterReset}>X</span>
-                    )}
-                </button>
 
-                {/* Sort button */}
-                <button
-                    onClick={() => setSortOpen(true)}
-                    className={`action-btn ${sortBy.length > 0 ? "active" : ""}`}
-                    style={{ color: sortBy.length > 0 ? "red" : undefined }}
-                >
-                    {sortBy.length > 0 ? `Sort (${sortBy.length})` : "Sort"}
-                    {sortBy.length > 0 && (
-                        <span className="clear-action" onClick={handleSortReset}>X</span>
-                    )}
-                </button>
+            <div className="table-action-default">
+                {/* Filter */}
+                {filter.length > 0 ? (
+                    <div className="open-action active">
+                        <span
+                            className="chip-label"
+                            onClick={() => setFilterOpen(true)}
+                        >
+                            {filter.length} Filter
+                        </span>
+                        <button
+                            className="clear-action"
+                            onClick={handleFilterReset}
+                        >
+                            X
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => setFilterOpen(true)}
+                        className="action-btn"
+                    >
+                        Filter
+                    </button>
+                )}
+
+                {/* Sort */}
+                {sortBy.length > 0 ? (
+                    <div className="open-action active">
+                        <span
+                            className="chip-label"
+                            onClick={() => setSortOpen(true)}
+                        >
+                            {sortBy.length} Sort
+                        </span>
+                        <button
+                            className="clear-action"
+                            onClick={handleSortReset}
+                        >
+                            X
+                        </button>
+                    </div>
+                ) : (
+                    <button
+                        onClick={() => setSortOpen(true)}
+                        className="action-btn"
+                    >
+                        Sort
+                    </button>
+                )}
 
                 {/* Refresh */}
-                <button
-                    onClick={() => onRefresh?.()}
-                    className="action-btn"
-                >
+                <button onClick={() => onRefresh?.()} className="action-btn">
                     Refresh
                 </button>
             </div>
+
             <div className="table-actions-right">
                 {tableActionsRight}
             </div>
 
             {/* Modals */}
-            <ModalSort
-                isOpen={isSortOpen}
-                onClose={() => setSortOpen(false)}
-            />
-            <ModalFilter
-                isOpen={isFilterOpen}
-                onClose={() => setFilterOpen(false)}
-            />
+            <ModalSort isOpen={isSortOpen} onClose={() => setSortOpen(false)} />
+            <ModalFilter isOpen={isFilterOpen} onClose={() => setFilterOpen(false)} />
         </div>
     );
 }
