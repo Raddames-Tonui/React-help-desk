@@ -20,7 +20,16 @@ interface TableProps<T> {
 
 const Table = <T extends object>({ columns, data }: TableProps<T>) => {
   return (
-    <table>
+    <div>
+      {/* table actions here 
+        renderActionsLeft (enabled or hidden)
+        search
+        filter
+        sort 
+        refresh
+        renderActionsright (enabled or hidden)
+      */}
+          <table>
       <thead>
         <tr>
           {columns?.map(
@@ -56,10 +65,15 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
             )}
           </tr>
         ))}
-      </tbody>
+        </tbody>
+        <tfoot>
+          {/* dynamic Pagination here */}
+        </tfoot>
 
       
     </table>
+    </div>
+
   );
 };
 

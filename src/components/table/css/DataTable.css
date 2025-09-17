@@ -1,0 +1,74 @@
+/* Table Actions */
+.table-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.table-actions-left,
+.table-actions-right {
+  display: flex;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+
+
+/* TableHeader */
+.table-header {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.table-row {
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.sub-row {
+    background-color: #fafafa;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
+
+
+/* TableFooter */
+.table-footer {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+.pagination-cell {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.pagination-btn {
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.pagination-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.pagination-info {
+    margin: 0 10px;
+}

@@ -1,4 +1,4 @@
-// _protected/pages/odata/index.tsx
+// _protected/pages/oda/index.tsx
 import React, { useState } from 'react'
 import { usePeople, Person } from './usePeople'
 import { Route } from '../../routes/_protected/pages/odata/index'
@@ -17,7 +17,7 @@ const Odata: React.FC = () => {
   const page = searchParams.page ?? 1
   const pageSize = searchParams.pageSize ?? 5
   const sortBy = searchParams.sortBy ?? ''
-  const filter = searchParams.filter ?? ''   // 🟢 pass this into ModalFilter
+  const filter = searchParams.filter ?? ''
   const freeSearch = searchParams.search ?? ''
 
   const { data, error, isLoading } = usePeople(
@@ -59,7 +59,24 @@ const Odata: React.FC = () => {
     { id: 'UserName', caption: 'Username', size: 100, align: 'left', isSortable: true, isFilterable: true },
     { id: 'FirstName', caption: 'First Name', size: 100, isSortable: true, isFilterable: true },
     { id: 'LastName', caption: 'Last Name', size: 150, isSortable: true, isFilterable: true },
-    { id: 'Gender', caption: 'Gender', size: 100, isSortable: true, isFilterable: true },
+    {
+      id: 'Gender',
+      caption: 'Gender',
+      size: 100,
+      isSortable: true,
+      isFilterable: true,
+      render: (row, value) => (
+        <span
+          style={{
+            color: value === 'Male' ? 'red' : value === 'Female' ? 'blue' : 'inherit',
+            fontWeight: 'bold'
+          }}
+        >
+          {value}
+        </span>
+      )
+    },
+
     {
       id: 'Emails',
       caption: 'Emails',
@@ -67,6 +84,7 @@ const Odata: React.FC = () => {
       render: (row, value) => (value ? value.join(', ') : '—'),
       hide: true,
       isFilterable: true,
+
     },
     {
       id: 'AddressInfo',
@@ -86,6 +104,18 @@ const Odata: React.FC = () => {
           <input className="button-sec" placeholder="Search..." type="search" />
           <button className="button" onClick={() => setFilterModalOpen(true)}>Filter</button>
           <button className="button" onClick={() => setSortModalOpen(true)}>Sort</button>
+          {/* <div>
+            <label >
+              Page Size:
+              <select value={pageSize} onChange={handlePageSize}>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+            </label>
+          </div> */}
+
         </div>
       </div>
 
