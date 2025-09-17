@@ -1,64 +1,140 @@
-# Project README
+# Advanced React Project Documentation: TanStack Router Integration
 
-## Overview
+## Project Overview
 
-This project is a **React + TypeScript** application built with **Vite** and leveraging modern tools and libraries:
-
-* **TanStack Router** → for flexible, file-based routing.
-* **React Hook Form (RHF)** → for efficient form state management.
-* **Yup** → for schema-based form validation with RHF resolvers.
-* **LocalStorage & SessionStorage** → for persistence and session handling.
-* **TipTap** → for rich text area handling.
-* **Dynamic Tables** → for rendering interactive data views.
-* **useReducer** → for predictable state management.
-* **OData** → for structured data querying.
-
-This project follows a **monorepo structure** with:
-
-* `clients`
-* `vendor`
-* `lib/shared`
-
-Package manager: **pnpm**
-Version control: **git**
+This project demonstrates a fully implemented React application using **TanStack Router**, **useReducer for state management**, **OData data fetching**, a **rich text Ticket Form with TipTap**, and **React Hook Form (RHF) with Yup validation**. All major features have been implemented, including routing for public and protected pages, dynamic nested routes, and state management for both tables and forms.
 
 ---
 
-## Features Implemented
+## Project Structure with TanStack Router
 
-* ✅ Routing with **TanStack Router**
-* ✅ Form handling with **React Hook Form**
-* ✅ Validation with **Yup** & `@hookform/resolvers`
-* ✅ LocalStorage for saving form data
-* ✅ SessionStorage for user session handling
-* ✅ TipTap integration for text area fields
-* ✅ Dynamic table rendering
-* ✅ useReducer for complex state management
-* ✅ OData integration for structured queries
+The project uses a structured folder layout for **public** and **protected** routes:
+
+```
+/src/routes
+  |_ _protected
+      |_ vendor/index.tsx
+      |_ client/index.tsx
+          |_ $vendor.tsx
+      |_ odata/index.tsx
+  |_ _public
+      |_ login/index.tsx
+      |_ register/index.tsx
+  |_ _protected.tsx  // file for protected layout/routes
+```
+
+### Key Points:
+
+* `_protected` folder: Contains pages only accessible to authenticated users.
+* `_public` folder: Contains pages available to all users.
+* `vendor$` and `client/$vendor` routes: Illustrate dynamic nested routing.
+* `_protected.tsx`: Central layout file that wraps all protected pages.
+* `__root`: Root route that initializes the router and sets up layouts.
 
 ---
 
-## Installation
+## Routing Concepts in TanStack Router
 
-```bash
-# Install dependencies
-pnpm install
+### Route Definition
 
-# Install form libraries
-pnpm add react-hook-form
-pnpm add yup @hookform/resolvers
+Routes are structured hierarchically and can be nested for modularity:
+
+```ts
+import { createRouter, Route } from '@tanstack/router';
+
+const rootRoute = new Route({ path: '/', component: RootLayout });
+const protectedRoute = new Route({ path: 'protected', parent: rootRoute, component: ProtectedLayout });
+const vendorRoute = new Route({ path: 'vendor', parent: protectedRoute, component: VendorPage });
+const odataRoute = new Route({ path: 'odata', parent: protectedRoute, component: OdataPage });
+```
+
+### Layouts
+
+* **RootLayout (`__root`)**: Provides the global wrapper (header, footer, nav).
+* **ProtectedLayout (`_protected.tsx`)**: Wraps all protected pages and ensures authentication.
+* Public routes can have a separate `PublicLayout`.
+
+### Dynamic Routes (`$` syntax)
+
+* `$vendor.tsx` inside `client` represents a dynamic route parameter.
+* Accessed via hooks like `useSearch()` to read query params.
+* Example URL: `/client/vendor123` maps to `$vendor.tsx` with `vendor` param.
+
+---
+
+## TanStack Router Hooks
+
+### `useNavigate`
+
+* Used to programmatically navigate to another route.
+* Can include **path parameters** and **search params**.
+
+#### Example: Navigate to vendor page with parameters
+
+```ts
+import { useNavigate } from '@tanstack/router';
+
+const navigate = useNavigate();
+
+navigate({
+  to: '/protected/client/vendor123',
+  params: { vendor: 'vendor123' },
+  search: { ref: 'dashboard', page: '1' }
+});
+```
+
+### `useSearch`
+
+* Retrieves query parameters from the URL.
+* Example:
+
+```ts
+import { useSearch } from '@tanstack/router';
+
+const search = useSearch();
+console.log(search.ref); // 'dashboard'
+console.log(search.page); // '1'
+```
+
+* Useful for filtering, sorting, or handling dynamic data fetches based on URL parameters.
+
+---
+
+## Integration with useReducer and Data Fetching
+
+* **OData Table**: Uses `useReducer` to handle state for filtering, sorting, pagination.
+* State dispatch actions update the URL search parameters, allowing deep linking and bookmarking.
+* **Ticket Form**: Also uses `useReducer` to manage input fields, file uploads, and TipTap content.
+
+### Example of useReducer with Route Params
+
+```ts
+const [state, dispatch] = useReducer(reducer, initialState);
+const search = useSearch();
+
+useEffect(() => {
+  if(search.vendor) {
+    dispatch({ type: 'SET_FILTER', filter: `VendorId eq '${search.vendor}'` });
+  }
+}, [search.vendor]);
 ```
 
 ---
 
-## Usage
+## React Hook Form (RHF) and Yup Integration
 
-### Form Setup
+### Purpose
 
-```tsx
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+* **React Hook Form (RHF)**: Efficient form state management, minimal re-renders.
+* **Yup**: Schema-based validation.
+* **@hookform/resolvers**: Connects Yup with RHF for declarative validation.
+
+### Example Usage
+
+```ts
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 // Schema validation with Yup
 const schema = yup.object().shape({
@@ -72,104 +148,40 @@ const Form = () => {
   });
 
   const onSubmit = (data: any) => {
-    localStorage.setItem("formData", JSON.stringify(data));
+    localStorage.setItem('formData', JSON.stringify(data));
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register("username")} placeholder="Username" />
+      <input {...register('username')} placeholder='Username' />
       {errors.username && <span>{errors.username.message}</span>}
 
-      <input {...register("email")} placeholder="Email" />
+      <input {...register('email')} placeholder='Email' />
       {errors.email && <span>{errors.email.message}</span>}
 
-      <button type="submit">Submit</button>
+      <button type='submit'>Submit</button>
     </form>
   );
 };
 ```
 
----
+### Benefits
 
-## To-Do
-
-* [ ] Submit to **LocalStorage**
-* [ ] Display submitted data
-* [ ] Encrypt LocalStorage data
-* [ ] Filter and sort rows/columns in dynamic table
-* [ ] Display **success/error toasts** on form submission
+* Declarative and centralized validation.
+* Efficient state handling without re-rendering the entire form.
+* Easy integration with other UI libraries and custom inputs.
 
 ---
 
-## Routing Example
+## Summary
 
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
+This project demonstrates:
 
-export const Route = createFileRoute("/pages/vendor/$id")({
-  component: VendorPage,
-});
+1. **TanStack Router**: Advanced routing with nested routes, dynamic params, protected layouts, and public layouts.
+2. **useNavigate & useSearch**: Programmatic navigation with path and query parameters.
+3. **useReducer**: Centralized state management for forms and tables.
+4. **OData Fetching & Pagination**: Fetching from OData endpoints with filters and sorting.
+5. **TipTap Editor**: Rich text editor integrated into forms.
+6. **React Hook Form & Yup**: Efficient form state management with schema-based validation.
 
-function VendorPage() {
-  const params = Route.useParams();
-  // params.county, params.id available
-}
-```
-
----
-
-## Hooks in Use
-
-* `useParams` → fetch route params
-* `searchParams` → query string management
-* `useReducer` → structured state updates
-
----
-
-## Storage
-
-* **LocalStorage** → stores form submissions, user lookups (by username or email).
-* **SessionStorage** → stores session information.
-
----
-
-## Development Workflow
-
-1. Clone repository
-2. Run `pnpm install`
-3. Start dev server:
-
-   ```bash
-   pnpm dev
-   ```
-
----
-
-## Monorepo Structure
-
-```
-root/
- ├─ clients/
- ├─ vendor/
- ├─ lib/
- │   └─ shared/
- └─ package.json
-```
-
----
-
-## Next Steps
-
-* Integrate encryption for stored data.
-* Add toast notifications (success/error).
-* Implement advanced filtering/sorting on tables.
-* Improve TipTap editor features.
-
----
-
-## Key Takeaways
-
-* **Schema Validation with Yup** → eliminates manual checks.
-* **RHF + Yup** → smooth form handling & validation.
-* **Storage Strategy** → LocalStorage for persistence, SessionStorage for sessions.
-* **TanStack Router** → flexible, modern routing for React apps.
+The combination of these tools ensures a scalable, maintainable, and robust architecture for complex React applications.
