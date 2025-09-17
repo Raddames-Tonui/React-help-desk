@@ -1,3 +1,29 @@
+:root {
+    --bg-color-primary: #ffffff;
+    --color-header: #484F56;   
+}
+
+table{
+    background-color:var(--bg-color-primary) ;
+    margin: 1rem;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, tr {
+    border: 1px solid #ddd;
+}
+
+th {
+    color: var(--color-header);
+    padding: 0.8rem ;
+    text-align: left;
+}
+
+tr {
+    padding: 10px;
+}
+
 .table-wrapper{
     display: flex;
     flex-direction: column;
@@ -63,25 +89,47 @@
 }
 
 
-.table-pagination{
+/* Pagination */
+.table-pagination {
+    margin: 16px 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
 }
 
-.pagination-cell {
-    text-align: center;
+
+.table-pagination-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: var(--primary-700);
+  color: white;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
-.pagination-btn {
-    margin: 0 5px;
-    cursor: pointer;
+.table-pagination-btn:hover {
+  background-color: var(--primary-800);
+  color: white;
+  cursor: pointer;
 }
 
-.pagination-btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+.table-pagination-btn:disabled {
+  background-color:#fff;
+  cursor: not-allowed;
+  color: var(--color-text);
 }
 
-.pagination-info {
-    margin: 0 10px;
+.next-btn{
+  margin-left: 1rem;
+}
+
+.prev-btn{
+  margin-right: 1rem;
+}
+
+.page-no {
+  margin: 0 2px;
+  background-color: transparent;
+  color: #484F56;
 }

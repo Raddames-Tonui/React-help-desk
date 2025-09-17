@@ -21,26 +21,26 @@ export function Pagination<T>() {
     }
 
     return (
-        <div>
+        <>
             <button
                 onClick={handlePrev}
                 disabled={page === 1}
-                className="pagination-btn"
+                className="table-pagination-btn"
             >
-                Previous
+                Prev
             </button>
             <span
-                className="pagination-info"
+                className="table-pagination-info"
             >
                 Page {page} of {totalPages}
             </span>
             <button
                 onClick={handleNext}
                 disabled={page === totalPages}
-                className="pagination-btn"
+                className="table-pagination-btn"
             >
                 Next
             </button>
-        </div>
+        </>
     )
 }
