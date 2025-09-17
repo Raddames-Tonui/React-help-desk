@@ -40,7 +40,7 @@ export function TableActions<T>() {
             <div className="table-actions-left">
                 {tableActionsLeft}
             </div>
-            <div>
+            <div className="table-action-default">
                 {/* Filter button */}
                 <button
                     onClick={() => setFilterOpen(true)}

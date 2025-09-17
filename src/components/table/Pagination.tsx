@@ -19,33 +19,28 @@ export function Pagination<T>() {
     const handleNext = () => {
         if (page < totalPages) onPageChange(page + 1)
     }
-    
-    return (
-            <div>
-                <td colSpan={100}
-                    className="pagination-cell"
-                >
-                    <button
-                        onClick={handlePrev}
-                        disabled={page === 1}
-                        className="pagination-btn"
-                    >
-                        Previous
-                    </button>
-                    <span
-                        className="pagination-info"
-                    >
-                        Page {page} of {totalPages}
-                    </span>
-                    <button
-                        onClick={handleNext}
-                        disabled={page === totalPages}
-                        className="pagination-btn"
-                    >
-                        Next
-                    </button>
 
-                </td>
-            </div>
+    return (
+        <div>
+            <button
+                onClick={handlePrev}
+                disabled={page === 1}
+                className="pagination-btn"
+            >
+                Previous
+            </button>
+            <span
+                className="pagination-info"
+            >
+                Page {page} of {totalPages}
+            </span>
+            <button
+                onClick={handleNext}
+                disabled={page === totalPages}
+                className="pagination-btn"
+            >
+                Next
+            </button>
+        </div>
     )
 }

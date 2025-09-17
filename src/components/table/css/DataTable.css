@@ -1,8 +1,14 @@
+.table-wrapper{
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
 /* Table Actions */
 .table-actions {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
 .table-actions-left,
@@ -11,12 +17,15 @@
   gap: 10px;
 }
 
+.table-action-default{
+    display: flex;
+    gap:10px;
+}
+
 .action-btn {
   padding: 5px 10px;
   cursor: pointer;
 }
-
-
 
 /* TableHeader */
 .table-header {
@@ -53,13 +62,17 @@
     font-weight: bold;
 }
 
+
+.table-pagination{
+    display: flex;
+    justify-content: flex-end;
+}
+
 .pagination-cell {
     text-align: center;
-    padding: 10px 0;
 }
 
 .pagination-btn {
-    padding: 5px 10px;
     margin: 0 5px;
     cursor: pointer;
 }

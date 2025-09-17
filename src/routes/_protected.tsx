@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 import "@css/layout.css";
 import { useState } from 'react';
+import { ODataProvider } from '../context/ODataContext';
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: ({ context }) => {
@@ -41,7 +42,9 @@ function PageLayout() {
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>
-        <Outlet />
+        <ODataProvider>
+          <Outlet />
+        </ODataProvider>
       </main>
       <Footer />
     </div>
