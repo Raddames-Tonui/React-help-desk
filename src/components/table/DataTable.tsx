@@ -34,17 +34,17 @@ export interface RowRenderProps<T> {
     };
 }
 
-/**
-Works well with React props spreading: <tr {...getProps(row)} className={className} style={style}></tr>
-Type-safe for unforeseen props (limited to valid row HTML attributes).
-
-export interface RowRender<T> {
-  className?: (row: T, rowIndex: number) => string;
-  style?: (row: T, rowIndex: number) => React.CSSProperties;
-  render?: (row: T, rowIndex: number) => React.ReactNode;
-  getProps?: (row: T, rowIndex: number) => React.HTMLAttributes<HTMLTableRowElement>;
+/** ---- Sort & Filter Rules ---- */
+export interface SortRule {
+    column: string;
+    direction: "asc" | "desc";
 }
-*/
+
+export interface FilterRule {
+    column: string;
+    operator: string;
+    value: string;
+}
 
 interface PaginationProps {
     page: number;
@@ -65,20 +65,16 @@ export interface DataTableProps<T> {
     pagination?: PaginationProps;
 
     // Sort/Filter/Search (initial + handlers)
-    initialSort?: string;
-    initialFilter?: string;
-    initialSearch?: string;
-    onSortApply?: (sortString: string) => void;
-    onFilterApply?: (filterString: string) => void;
-    onSearchApply?: (searchString: string) => void;
+    initialSort?: SortRule[];
+    initialFilter?: FilterRule[];
+    initialSearch?: string[];
+    onSortApply?: (sortRules: SortRule[]) => void;
+    onFilterApply?: (filterRules: FilterRule[]) => void;
+    onSearchApply?: (searchArr: string[]) => void;
     onRefresh?: () => void;
 }
 
-/** ---- Context for table state ----
-    This makes DataTable subcomponents reusable without prop-drilling.
-    Instead of passing `sortBy`, `filter`, etc. into *every* child (TableActions, ModalSort, ModalFilter),
-    we just provide them here once, and children read/update with `useDataTable`.
- */
+/** ---- Context for table state ---- */
 interface DataTableContextType<T> {
     columns: ColumnProps<T>[];
     data: T[];
@@ -88,12 +84,12 @@ interface DataTableContextType<T> {
     tableActionsRight?: React.ReactNode;
 
     // State for Actions
-    sortBy: string;
-    filter: string;
-    search: string;
-    onSortApply?: (sortString: string) => void;
-    onFilterApply?: (filterString: string) => void;
-    onSearchApply?: (searchString: string) => void;
+    sortBy: SortRule[];
+    filter: FilterRule[];
+    search: string[];
+    onSortApply?: (sortRules: SortRule[]) => void;
+    onFilterApply?: (filterRules: FilterRule[]) => void;
+    onSearchApply?: (searchArr: string[]) => void;
     onRefresh?: () => void;
 }
 
@@ -126,19 +122,19 @@ export function DataTable<T>({
     tableActionsRight,
     rowRender,
     pagination,
-    initialSort = "",
-    initialFilter = "",
-    initialSearch = "",
+    initialSort = [],
+    initialFilter = [],
+    initialSearch = [],
     onSortApply,
     onFilterApply,
     onSearchApply,
     onRefresh,
 }: DataTableProps<T>) {
-    // Local state for search/sort/filter
-    // This makes DataTable self-contained; children always read the *current* state
-    const [sortBy, setSortBy] = useState(initialSort);
-    const [filter, setFilter] = useState(initialFilter);
-    const [search, setSearch] = useState(initialSearch);
+    // ---- Local state for search/sort/filter ----
+    // Arrays make it easier to manage multiple rules and persist them
+    const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
+    const [filter, setFilter] = useState<FilterRule[]>(initialFilter);
+    const [search, setSearch] = useState<string[]>(initialSearch);
 
     return (
         <DataTableContext.Provider
@@ -152,9 +148,9 @@ export function DataTable<T>({
                 sortBy,
                 filter,
                 search,
-                onSortApply: (s) => { setSortBy(s); onSortApply?.(s); },
-                onFilterApply: (f) => { setFilter(f); onFilterApply?.(f); },
-                onSearchApply: (q) => { setSearch(q); onSearchApply?.(q); },
+                onSortApply: (rules: SortRule[]) => { setSortBy(rules); onSortApply?.(rules); },
+                onFilterApply: (rules: FilterRule[]) => { setFilter(rules); onFilterApply?.(rules); },
+                onSearchApply: (arr: string[]) => { setSearch(arr); onSearchApply?.(arr); },
                 onRefresh,
             }}
         >

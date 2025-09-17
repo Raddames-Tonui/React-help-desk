@@ -1,40 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Modal from "./Modal";
 import Icon from "../../../utilities/Icon";
 import { useDataTable } from "../DataTable";
 import type { ColumnProps } from "../DataTable";
+import type { SortRule } from "../DataTable"; // now using the array type
 
-type SortRule = {
-  column: string;
-  direction: "asc" | "desc";
-};
+export default function ModalSort<T>({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const { columns, sortBy, onSortApply } = useDataTable<T>();
+  const [rules, setRules] = React.useState<SortRule[]>([]);
 
-interface SortModalProps<T> {
-  isOpen: boolean;
-  onClose: () => void;
-  onApply: (sortString: string) => void;
-  initialSort?: string;
-}
-
-export default function ModalSort<T>({
-  isOpen,
-  onClose,
-  onApply,
-  initialSort,
-}: SortModalProps<T>) {
-  const { columns } = useDataTable<T>();
-  const [rules, setRules] = useState<SortRule[]>([]);
-
-  // Only parse initialSort when it exists; do not reset otherwise
-  useEffect(() => {
-    if (isOpen && initialSort) {
-      const parsed = initialSort.split(",").map((rule) => {
-        const [col, dir = "asc"] = rule.trim().split(" ");
-        return { column: col, direction: dir as "asc" | "desc" };
-      });
-      setRules(parsed);
+  // Sync modal state with context whenever opened
+  React.useEffect(() => {
+    if (isOpen) {
+      setRules(sortBy);
     }
-  }, [isOpen, initialSort]);
+  }, [isOpen, sortBy]);
 
   const updateRule = (i: number, field: keyof SortRule, val: string) => {
     const updated = [...rules];
@@ -42,20 +22,12 @@ export default function ModalSort<T>({
     setRules(updated);
   };
 
-  const addRule = () => {
-    setRules([...rules, { column: "", direction: "asc" }]);
-  }
-  const removeRule = (i: number) => {
-    setRules(rules.filter((_, idx) => idx !== i));
-  }
-  const reset = () => setRules([]); 
+  const addRule = () => setRules([...rules, { column: "", direction: "asc" }]);
+  const removeRule = (i: number) => setRules(rules.filter((_, idx) => idx !== i));
+  const reset = () => setRules([]);
 
   const handleSubmit = () => {
-    const sortString = rules
-      .filter((r) => r.column)
-      .map((r) => `${r.column} ${r.direction}`)
-      .join(", ");
-    onApply(sortString);
+    onSortApply?.(rules.filter((r) => r.column));
     onClose();
   };
 
@@ -69,10 +41,7 @@ export default function ModalSort<T>({
       body={
         <div>
           {rules.map((rule, i) => (
-            <div
-              key={i}
-              style={{ display: "flex", gap: "8px", marginBottom: "10px" }}
-            >
+            <div key={i} style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
               <select
                 value={rule.column}
                 className="button-sec"
@@ -80,7 +49,7 @@ export default function ModalSort<T>({
               >
                 <option value="">Select Column</option>
                 {sortableColumns.map((col) => (
-                  <option key={col.id} value={col.id}>
+                  <option key={col.id} value={String(col.id)}>
                     {col.caption}
                   </option>
                 ))}
@@ -89,18 +58,13 @@ export default function ModalSort<T>({
               <select
                 value={rule.direction}
                 className="button-sec"
-                onChange={(e) =>
-                  updateRule(i, "direction", e.target.value as "asc" | "desc")
-                }
+                onChange={(e) => updateRule(i, "direction", e.target.value as "asc" | "desc")}
               >
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
               </select>
 
-              <button
-                style={{ border: "none", background: "none" }}
-                onClick={() => removeRule(i)}
-              >
+              <button style={{ border: "none", background: "none" }} onClick={() => removeRule(i)}>
                 <Icon iconName="delete" />
               </button>
             </div>

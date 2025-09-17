@@ -1,39 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDataTable } from "./DataTable";
 import ModalSort from "./modals/ModalSort";
 import ModalFilter from "./modals/ModalFilter";
 
 export function TableActions<T>() {
-    const { tableActionsLeft, tableActionsRight, onSortApply, onFilterApply, refresh } = useDataTable<T>();
+    const { tableActionsLeft, tableActionsRight, onSortApply, onFilterApply, onRefresh, sortBy, filter } = useDataTable<T>();
     const [isSortOpen, setSortOpen] = useState(false);
     const [isFilterOpen, setFilterOpen] = useState(false);
-    const [activeSort, setActiveSort] = useState<string | null>(null);  // Track active sort
-    const [activeFilter, setActiveFilter] = useState<string | null>(null);  // Track active filter
-
-    // Reset sort or filter when cleared
-    const handleSortReset = () => {
-        setActiveSort(null);
-        onSortApply?.("");
-    };
-
-    const handleFilterReset = () => {
-        setActiveFilter(null);
-        onFilterApply?.("");
-    };
 
     // Handle sort apply
-    const handleSortApply = (sortString: string) => {
-        setActiveSort(sortString);  // Update active sort state
-        onSortApply?.(sortString);
+    const handleSortApply = (rules: any[]) => {
+        onSortApply?.(rules);
         setSortOpen(false);
     };
 
     // Handle filter apply
-    const handleFilterApply = (filterString: string) => {
-        setActiveFilter(filterString);  // Update active filter state
-        onFilterApply?.(filterString);
+    const handleFilterApply = (rules: any[]) => {
+        onFilterApply?.(rules);
         setFilterOpen(false);
     };
+
+    // Reset handlers
+    const handleSortReset = () => onSortApply?.([]);
+    const handleFilterReset = () => onFilterApply?.([]);
 
     return (
         <div className="table-actions">
@@ -44,43 +33,47 @@ export function TableActions<T>() {
                 {/* Filter button */}
                 <button
                     onClick={() => setFilterOpen(true)}
-                    className={`action-btn ${activeFilter ? "active" : ""}`}
+                    className={`action-btn ${filter.length > 0 ? "active" : ""}`}
+                    style={{ color: filter.length > 0 ? "red" : undefined }}
                 >
-                    {activeFilter ? `${activeFilter} Filter` : "Filter"}
-                    {activeFilter && (
+                    {filter.length > 0 ? `Filter (${filter.length})` : "Filter"}
+                    {filter.length > 0 && (
                         <span className="clear-action" onClick={handleFilterReset}>X</span>
                     )}
                 </button>
+
                 {/* Sort button */}
                 <button
                     onClick={() => setSortOpen(true)}
-                    className={`action-btn ${activeSort ? "active" : ""}`}
+                    className={`action-btn ${sortBy.length > 0 ? "active" : ""}`}
+                    style={{ color: sortBy.length > 0 ? "red" : undefined }}
                 >
-                    {activeSort ? `${activeSort} Sort` : "Sort"}
-                    {activeSort && (
+                    {sortBy.length > 0 ? `Sort (${sortBy.length})` : "Sort"}
+                    {sortBy.length > 0 && (
                         <span className="clear-action" onClick={handleSortReset}>X</span>
                     )}
                 </button>
+
+                {/* Refresh */}
                 <button
-                    onClick={() => refresh?.()}
+                    onClick={() => onRefresh?.()}
                     className="action-btn"
                 >
                     Refresh
                 </button>
             </div>
-            <div>
+            <div className="table-actions-right">
                 {tableActionsRight}
             </div>
 
+            {/* Modals */}
             <ModalSort
                 isOpen={isSortOpen}
                 onClose={() => setSortOpen(false)}
-                onApply={handleSortApply}
-            />    
-            <ModalFilter 
+            />
+            <ModalFilter
                 isOpen={isFilterOpen}
                 onClose={() => setFilterOpen(false)}
-                onApply={handleFilterApply}
             />
         </div>
     );
