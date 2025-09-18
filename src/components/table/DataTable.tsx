@@ -5,6 +5,7 @@ import { TableHeader } from "./TableHeader";
 import { TableBody } from "./TableBody";
 import TableFooter from "./TableFooter";
 import { Pagination } from "./Pagination";
+import Loader from "../Loader";
 
 /**
  * Column config for Datatable
@@ -73,13 +74,13 @@ export interface DataTableProps<T> {
     onSearchApply?: (searchArr: string[]) => void;
     onRefresh?: () => void;
 
-    error?: string | null; 
-    isLoading?: boolean;   
+    error?: string | null;
+    isLoading?: boolean;
 }
 
 /** ---- Context for table state ---- */
 interface DataTableContextType<T> {
-    columns: ColumnProps<T, any>[]; 
+    columns: ColumnProps<T, any>[];
     data: T[];
     rowRender?: (row: T, defaultCells: React.ReactNode) => React.ReactNode;
     pagination?: PaginationProps;
@@ -137,7 +138,6 @@ export function DataTable<T>({
     error,
     isLoading,
 }: DataTableProps<T>) {
-    // ---- Local state for search/sort/filter ----
     const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
     const [filter, setFilter] = useState<FilterRule[]>(initialFilter);
     const [search, setSearch] = useState<string[]>(initialSearch);
@@ -167,21 +167,23 @@ export function DataTable<T>({
                     <TableActions />
                 </div>
 
-                <table className="table">
-                    <thead>
-                        <TableHeader />
-                    </thead>
-                    <tbody>
-                        <TableBody />
-                    </tbody>
-                    <tfoot className="table-footer">
-                        <TableFooter />
-                    </tfoot>
-                </table>
+                {error ? (
+                    <div className="table-error">{error}</div>
+                ) : isLoading ? (
+                    <Loader />
+                ) : (
+                    <>
+                        <table className="table">
+                            <thead><TableHeader /></thead>
+                            <tbody><TableBody /></tbody>
+                            <tfoot className="table-footer"><TableFooter /></tfoot>
+                        </table>
+                        <div className="table-pagination">
+                            <Pagination />
+                        </div>
+                    </>
+                )}
 
-                <div className="table-pagination">
-                    <Pagination />
-                </div>
             </div>
         </DataTableContext.Provider>
     );

@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const TOKEN = "0b008ea4-07fa-435f-906d-76f134078e3d-mdcedoc7";
 
 type UsersContextValue = {
-    data: ApiResponse | null;
+    data: ApiResponse<UserData> | null;
     users: UserData[];
     loading: boolean;
     error: string | null;
@@ -18,7 +18,7 @@ type UsersContextValue = {
 const usersContext = createContext<UsersContextValue | undefined>(undefined);
 
 export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [data, setData] = useState<ApiResponse | null>(null);
+    const [data, setData] = useState<ApiResponse<UserData> | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
@@ -45,7 +45,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 throw new Error(`Failed to fetch users: ${res.status} ${res.statusText} ${text ? `- ${text}` : ""}`);
             }
 
-            const json = (await res.json()) as ApiResponse;
+            const json = (await res.json()) as ApiResponse<UserData>;
             setData(json);
         } catch (err: any) {
             if (err.name === "AbortError") return;

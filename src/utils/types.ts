@@ -21,6 +21,18 @@ export interface AuthContextType {
 
 
 // -------DOJO API USERS ---------------
+export type ApiResponse<T> = {
+    domain: string;
+    current_page: number;
+    last_page: number;
+    page_size: number;
+    total_count: number;
+    records: T[];
+}
+// type UserApiResponse = ApiResponse<UserData>;
+// type SubjectApiResponse = ApiResponse<SubjectData>;
+
+
 export type UserData = {
     id: number;
     email: string;
@@ -31,11 +43,16 @@ export type UserData = {
     created_at: string; 
 }
 
-export type ApiResponse = {
-    domain: string;
-    current_page: number;
-    last_page: number;
-    page_size: number;
-    total_count: number;
-    records: UserData[];
+
+// --------DOJO SUBJECTS API ------------
+export type SubjectData = {
+    id: number;
+    name: string;
+    description: string;
+    created_by: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    created_by_name: string;
 }
+

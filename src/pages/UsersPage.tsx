@@ -10,7 +10,6 @@ export default function UsersPage() {
     data,
     loading,
     error,
-    page,
     pageSize,
     setPage,
   } = useUsers();
@@ -19,7 +18,6 @@ export default function UsersPage() {
   if (error) return <p className="text-red-500">Error: {error}</p>;
   if (!data || users.length === 0) return <p>No data available.</p>;
 
-  // Define columns for DataTable
   const columns: ColumnProps<typeof users[0], any>[] = [
     { id: "id", caption: "ID", size: 80 },
     {
@@ -30,7 +28,6 @@ export default function UsersPage() {
         <img
           src={value as string}
           alt={row.name}
-          className="w-8 h-8 rounded-full"
         />
       ),
     },
@@ -46,6 +43,13 @@ export default function UsersPage() {
     },
   ];
 
+  console.log(data.current_page)
+
+  function handlePageChange(newPage: number) {
+    setPage(newPage);
+
+  }
+
   return (
     <div className="p-4">
       <h1 className="text-xl font-semibold mb-4">Users</h1>
@@ -54,28 +58,16 @@ export default function UsersPage() {
         columns={columns}
         data={users}
         pagination={{
-          page,
+          page: data.current_page,
           pageSize,
-          total: data.total,
-          onPageChange: setPage,
+          total: data.last_page,
+          onPageChange: handlePageChange,
         }}
         error={error}
         isLoading={loading}
-          />
-          
-
-          <DataTable
-              columns={columns}
-              data={users}
-              pagination={{
-                  page,
-                  pageSize,
-                  total: data.total,
-                  onPageChange: setPage,
-              }}
-              error={error}
-              isLoading
-          />
+      />
+   
+        
     </div>
   );
 }
