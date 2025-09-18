@@ -10,8 +10,10 @@ type UsersContextValue = {
     error: string | null;
     page: number;
     pageSize: number;
+    params: Record<string, string>;
     setPage: (n: number) => void;
     setPageSize: (n: number) => void;
+    setParams: (params: Record<string, string>) => void;
     refresh: () => void;
 }
 
@@ -23,14 +25,16 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const [error, setError] = useState<string | null>(null);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [lastPage, setLastPage] = useState<number | null>(null)
     const [reload, setReload] = useState(false);
+    const [params, setParams] = useState<Record<string, string>>({});
 
     const fetchUsers = async (signal: AbortSignal) => {
         setLoading(true);
         setError(null);
 
-        const url = `/api/admin/users/?page=${page}&pageSize=${pageSize}`;
+        const query = new URLSearchParams({ page: String(page), pageSize: String(pageSize), ...params }).toString();
+        const url = `/api/admin/users/?${query}`;
+
         try {
             const res = await fetch(url, {
                 headers: {
@@ -60,7 +64,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const ac = new AbortController();
         fetchUsers(ac.signal);
         return () => ac.abort();
-    }, [page, pageSize, reload]);
+    }, [page, pageSize,params, reload]);
 
     const refresh = () => setReload((s) => !s);
 
@@ -71,8 +75,10 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         error,
         page,
         pageSize,
+        params,
         setPage,
         setPageSize,
+        setParams,
         refresh,
     };
 
