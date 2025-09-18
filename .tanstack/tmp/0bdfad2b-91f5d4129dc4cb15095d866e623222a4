@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as _notFoundRouteImport } from './routes/__not-found'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedVendorIndexRouteImport } from './routes/_protected/vendor/index'
 import { Route as ProtectedTraineeIndexRouteImport } from './routes/_protected/trainee/index'
@@ -28,6 +29,10 @@ const PublicRoute = PublicRouteImport.update({
 } as any)
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const _notFoundRoute = _notFoundRouteImport.update({
+  id: '/__not-found',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -109,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/__not-found': typeof _notFoundRoute
   '/_protected': typeof ProtectedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_public/auth/login': typeof PublicAuthLoginRoute
@@ -149,6 +155,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/__not-found'
     | '/_protected'
     | '/_public'
     | '/_public/auth/login'
@@ -164,6 +171,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  _notFoundRoute: typeof _notFoundRoute
   ProtectedRoute: typeof ProtectedRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
 }
@@ -182,6 +190,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof ProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/__not-found': {
+      id: '/__not-found'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof _notFoundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -296,6 +311,7 @@ const PublicRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  _notFoundRoute: _notFoundRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
 }

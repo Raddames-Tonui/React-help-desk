@@ -1,0 +1,115 @@
+@import url(./variables.css);
+
+
+
+:root {
+  --option-all: #1098AD;
+  --option-open: #FD7E14;
+  --option-inprogress: #1C7ED6;
+  --option-resolved: #37B24D;
+  --option-closed: #0CA678;
+  --option-dropped: #F03E3E;
+  --option-onhold: #5C5F66;
+
+  --border-color-default: #E3E3E3;
+
+  --bg-secondary: #F5F7F9;
+
+}
+
+.tickets-page {
+  display: flex;
+  height: 100%;
+  box-sizing: border-box;
+  flex-direction: row; 
+}
+
+.page-header {
+  background-color: var(--bg-secondary);
+  color: var(--primary-700);
+  border-bottom: 1px solid var(--border-color-default);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   
+  height: 3rem;              
+  box-sizing: border-box;
+  padding: 0 1rem;          
+}
+
+.page-header > button {
+  background-color: var(--primary-700);
+  color: #ffffff;
+  padding: 10px; 
+  width: 6.875rem;           
+  border-radius: 0.25rem;  
+  border: none; 
+}
+
+.tickets-nav {
+  width: 16.625rem;         
+  border-right: 1px solid var(--border-color-default);
+  background-color: var(--bg-default);
+}
+
+.tickets-nav ul {
+  list-style: none;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;               
+}
+
+.tickets-nav li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2.0625rem;           
+  padding: 0.5rem;             
+  border-radius: 0.25rem;      
+  font-size: 0.875rem;        
+  color: #000;
+  cursor: pointer;
+}
+
+.tickets-nav li:hover {
+  background: #DBF2F8; 
+}
+
+.tickets-nav li .label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;                
+}
+
+.tickets-nav li .label::before {
+  content: "";
+  display: inline-block;
+  width: 0.875rem;             
+  height: 0.875rem;            
+  border-radius: 2px;    
+  background: currentColor; 
+}
+
+.tickets-nav li.all .label::before { background: var(--option-all); }
+.tickets-nav li.open .label::before { background: var(--option-open); }
+.tickets-nav li.progress .label::before { background: var(--option-inprogress); }
+.tickets-nav li.resolved .label::before { background: var(--option-resolved); }
+.tickets-nav li.closed .label::before { background: var(--option-closed); }
+.tickets-nav li.dropped .label::before { background: var(--option-dropped); }
+.tickets-nav li.hold .label::before { background: var(--option-onhold); }
+
+.count {
+  font-weight: 600;
+  color: #000;
+}
+
+.tickets-table {
+  flex: 1;
+}
+
+
+
+.table-wrapper{
+  display: flex;
+  justify-content: center;
+}

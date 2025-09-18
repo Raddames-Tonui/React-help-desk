@@ -1,8 +1,9 @@
 export async function encryptData(data: string, key: string): Promise<string> {
-  if (!key || typeof key !== 'string' || key.length < 32) {
+if (!key){
+    throw new Error('Key is empty');
+  } else if (!key || typeof key !== 'string' || key.length < 32) {
     throw new Error('Invalid encryption key: Must be a string of at least 32 characters');
   }
-
   try {
     // Convert key to CryptoKey (pad to 32 bytes for AES-256)
     const keyBuffer = new TextEncoder().encode(key.padEnd(32, ' ').slice(0, 32));
