@@ -9,7 +9,7 @@ export const Route = createFileRoute('/')({
 function Index() {
     return (
         <div>
-            <h3>Welcome Home</h3>
+            <p>Hello world</p>
         </div>
     )
 }

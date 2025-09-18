@@ -18,4 +18,13 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "./src/components"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://the-dojo.pagoda.africa",
+        changeOrigin: true,
+        secure: true, 
+      },
+    },
+  },
 })

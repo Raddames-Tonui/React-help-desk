@@ -17,3 +17,25 @@ export interface AuthContextType {
     resetPassword: (email: string, newPassword: string) => Promise<void>;
     getUser: () => Omit<User, 'password'> | null;
 }
+
+
+
+// -------DOJO API USERS ---------------
+export type UserData = {
+    id: number;
+    email: string;
+    name: string;
+    role: string;
+    status: string;
+    avatar_url: string;
+    created_at: string; 
+}
+
+export type ApiResponse = {
+    domain: string;
+    current_page: number;
+    last_page: number;
+    page_size: number;
+    total_count: number;
+    records: UserData[];
+}

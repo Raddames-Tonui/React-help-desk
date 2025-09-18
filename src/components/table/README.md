@@ -164,3 +164,72 @@ This ensures:
 * Sorting, filtering, and search states are managed centrally in context.
 * Child components like modals and table headers can consume and update state.
 * State persists via URL serialization and can be rehydrated on page refresh.
+
+
+
+export interface ColumnProps<T, K extends keyof T = keyof T> {
+This line is using TypeScript generics with a default type parameter.
+
+🧩 The pieces
+T →
+
+This is the data type of a single row in your table.
+
+Example: If your rows are User objects, then T = User.
+
+ts
+Copy code
+type User = { id: number; name: string; email: string };
+K extends keyof T →
+
+keyof T means all the keys of type T.
+
+For User, keyof User is "id" | "name" | "email".
+
+So K can only be one of those keys.
+
+= keyof T (default type) →
+
+If you don’t explicitly provide K, it will default to all keys of T.
+
+That means K becomes "id" | "name" | "email" in the User example.
+
+🏗 Inside the interface
+ts
+Copy code
+id: K;
+caption: string;
+size: number;
+renderCell?: (value: T[K], row: T) => React.ReactNode;
+id: K → id must be a property name from T (like "id", "name", or "email").
+
+renderCell → The value passed to this function will be T[K] (so if K = "email", then the value is a string).
+
+✅ Example usage
+ts
+Copy code
+type User = { id: number; name: string; email: string };
+
+const userColumns: ColumnProps<User>[] = [
+  {
+    id: "id",  // K is "id"
+    caption: "User ID",
+    size: 100,
+    renderCell: (value, row) => <b>{value}</b>, // value is number
+  },
+  {
+    id: "email", // K is "email"
+    caption: "Email Address",
+    size: 200,
+    renderCell: (value, row) => <a href={`mailto:${value}`}>{value}</a>, // value is string
+  },
+];
+This guarantees type safety:
+
+You can’t accidentally use id: "foo" because "foo" is not a key of User.
+
+TypeScript knows exactly what type value is inside renderCell.
+
+👉 In short:
+ColumnProps<T, K extends keyof T = keyof T> means:
+"This column definition works with any type T (the row type). The column ID (id) must be one of the keys of that type (K). If you don’t specify K, it defaults to all the keys of T."

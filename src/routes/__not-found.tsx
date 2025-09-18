@@ -1,8 +1,7 @@
-import { NotFoundRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import "@/css/authPages.css";
 
-export const notFoundRoute = new NotFoundRoute({
-  getParentRoute: () => rootRoute,
+export const Route = createFileRoute("/__not-found")({
   component: NotFoundPage,
 });
 

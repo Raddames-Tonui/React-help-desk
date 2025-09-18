@@ -18,8 +18,8 @@ export interface ColumnProps<T, K extends keyof T = keyof T> {
     isSortable?: boolean;
     isFilterable?: boolean;
     data_type?: string | boolean | number | Date;
-    renderCell?: (value: T[K], row: T) => React.ReactNode; // cell-level custom render
-    renderColumn?: (column: ColumnProps<T>) => React.ReactNode; // column-level custom render
+    renderCell?: (value: T[K], row: T) => React.ReactNode; // Cell-level custom render (strongly typed with T[K])
+    renderColumn?: (column: ColumnProps<any, any>) => React.ReactNode;     // Column-level custom render
 }
 
 /**
@@ -57,7 +57,7 @@ interface PaginationProps {
  * Props accepted by the DataTable component
  */
 export interface DataTableProps<T> {
-    columns: ColumnProps<T>[];
+    columns: ColumnProps<T, any>[];
     data: T[];
     tableActionsLeft?: React.ReactNode;   // Custom buttons left and right
     tableActionsRight?: React.ReactNode;
@@ -72,18 +72,23 @@ export interface DataTableProps<T> {
     onFilterApply?: (filterRules: FilterRule[]) => void;
     onSearchApply?: (searchArr: string[]) => void;
     onRefresh?: () => void;
+
+    error?: string | null; 
+    isLoading?: boolean;   
 }
 
 /** ---- Context for table state ---- */
 interface DataTableContextType<T> {
-    columns: ColumnProps<T>[];
+    columns: ColumnProps<T, any>[]; 
     data: T[];
     rowRender?: (row: T, defaultCells: React.ReactNode) => React.ReactNode;
     pagination?: PaginationProps;
     tableActionsLeft?: React.ReactNode;
     tableActionsRight?: React.ReactNode;
 
-    // State for Actions
+    error?: string | null;
+    isLoading?: boolean;
+
     sortBy: SortRule[];
     filter: FilterRule[];
     search: string[];
@@ -129,33 +134,35 @@ export function DataTable<T>({
     onFilterApply,
     onSearchApply,
     onRefresh,
+    error,
+    isLoading,
 }: DataTableProps<T>) {
     // ---- Local state for search/sort/filter ----
-    // Arrays make it easier to manage multiple rules and persist them
     const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
     const [filter, setFilter] = useState<FilterRule[]>(initialFilter);
     const [search, setSearch] = useState<string[]>(initialSearch);
 
+    const value: DataTableContextType<any> = {
+        columns,
+        data,
+        rowRender,
+        pagination,
+        tableActionsLeft,
+        tableActionsRight,
+        sortBy,
+        filter,
+        search,
+        onSortApply: (rules: SortRule[]) => { setSortBy(rules); onSortApply?.(rules); },
+        onFilterApply: (rules: FilterRule[]) => { setFilter(rules); onFilterApply?.(rules); },
+        onSearchApply: (arr: string[]) => { setSearch(arr); onSearchApply?.(arr); },
+        onRefresh,
+        error,
+        isLoading,
+    };
+
     return (
-        <DataTableContext.Provider
-            value={{
-                columns,
-                data,
-                rowRender,
-                pagination,
-                tableActionsLeft,
-                tableActionsRight,
-                sortBy,
-                filter,
-                search,
-                onSortApply: (rules: SortRule[]) => { setSortBy(rules); onSortApply?.(rules); },
-                onFilterApply: (rules: FilterRule[]) => { setFilter(rules); onFilterApply?.(rules); },
-                onSearchApply: (arr: string[]) => { setSearch(arr); onSearchApply?.(arr); },
-                onRefresh,
-            }}
-        >
+        <DataTableContext.Provider value={value}>
             <div className="table-wrapper">
-                {/* Top toolbar (search, filter, sort, custom buttons) */}
                 <div className="table-action-wrapper">
                     <TableActions />
                 </div>

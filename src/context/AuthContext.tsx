@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import type { User, AuthContextType } from '../utils/types';
-import { getAllUsers, saveAllUsers } from '../utils/utils';
+import type { User, AuthContextType } from '@/utils/types';
+import { getAllUsers, saveAllUsers } from '@/utils/utils';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

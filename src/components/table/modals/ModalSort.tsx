@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "./Modal";
 import { useDataTable } from "../DataTable";
 import type { ColumnProps } from "../DataTable";
-import type { SortRule } from "../DataTable"; // now using the array type
+import type { SortRule } from "../DataTable"; 
 
 export default function ModalSort<T>({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { columns, sortBy, onSortApply } = useDataTable<T>();

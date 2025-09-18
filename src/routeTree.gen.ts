@@ -11,8 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as _notFoundRouteImport } from './routes/__not-found'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProtectedVendorIndexRouteImport } from './routes/_protected/vendor/index'
 import { Route as ProtectedTraineeIndexRouteImport } from './routes/_protected/trainee/index'
 import { Route as ProtectedClientIndexRouteImport } from './routes/_protected/client/index'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
@@ -21,6 +21,15 @@ import { Route as PublicAuthUnauthorizedRouteImport } from './routes/_public/aut
 import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
 import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
+import { Route as ProtectedPagesSettingsRouteImport } from './routes/_protected/pages/settings'
+import { Route as ProtectedAdminUsersRouteImport } from './routes/_protected/admin/users'
+import { Route as ProtectedPagesVendorIndexRouteImport } from './routes/_protected/pages/vendor/index'
+import { Route as ProtectedPagesTasksIndexRouteImport } from './routes/_protected/pages/tasks/index'
+import { Route as ProtectedPagesSubjectsIndexRouteImport } from './routes/_protected/pages/subjects/index'
+import { Route as ProtectedPagesOdataIndexRouteImport } from './routes/_protected/pages/odata/index'
+import { Route as ProtectedPagesClientIndexRouteImport } from './routes/_protected/pages/client/index'
+import { Route as ProtectedPagesVendorDummyRouteImport } from './routes/_protected/pages/vendor/dummy'
+import { Route as ProtectedPagesVendorIdRouteImport } from './routes/_protected/pages/vendor/$id'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -30,15 +39,14 @@ const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
   getParentRoute: () => rootRouteImport,
 } as any)
+const _notFoundRoute = _notFoundRouteImport.update({
+  id: '/__not-found',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const ProtectedVendorIndexRoute = ProtectedVendorIndexRouteImport.update({
-  id: '/vendor/',
-  path: '/vendor/',
-  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedTraineeIndexRoute = ProtectedTraineeIndexRouteImport.update({
   id: '/trainee/',
@@ -81,9 +89,62 @@ const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => PublicRoute,
 } as any)
+const ProtectedPagesSettingsRoute = ProtectedPagesSettingsRouteImport.update({
+  id: '/pages/settings',
+  path: '/pages/settings',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedAdminUsersRoute = ProtectedAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedPagesVendorIndexRoute =
+  ProtectedPagesVendorIndexRouteImport.update({
+    id: '/pages/vendor/',
+    path: '/pages/vendor/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesTasksIndexRoute =
+  ProtectedPagesTasksIndexRouteImport.update({
+    id: '/pages/tasks/',
+    path: '/pages/tasks/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesSubjectsIndexRoute =
+  ProtectedPagesSubjectsIndexRouteImport.update({
+    id: '/pages/subjects/',
+    path: '/pages/subjects/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesOdataIndexRoute =
+  ProtectedPagesOdataIndexRouteImport.update({
+    id: '/pages/odata/',
+    path: '/pages/odata/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesClientIndexRoute =
+  ProtectedPagesClientIndexRouteImport.update({
+    id: '/pages/client/',
+    path: '/pages/client/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesVendorDummyRoute =
+  ProtectedPagesVendorDummyRouteImport.update({
+    id: '/pages/vendor/dummy',
+    path: '/pages/vendor/dummy',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedPagesVendorIdRoute = ProtectedPagesVendorIdRouteImport.update({
+  id: '/pages/vendor/$id',
+  path: '/pages/vendor/$id',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin/users': typeof ProtectedAdminUsersRoute
+  '/pages/settings': typeof ProtectedPagesSettingsRoute
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
@@ -92,10 +153,18 @@ export interface FileRoutesByFullPath {
   '/admin': typeof ProtectedAdminIndexRoute
   '/client': typeof ProtectedClientIndexRoute
   '/trainee': typeof ProtectedTraineeIndexRoute
-  '/vendor': typeof ProtectedVendorIndexRoute
+  '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
+  '/pages/client': typeof ProtectedPagesClientIndexRoute
+  '/pages/odata': typeof ProtectedPagesOdataIndexRoute
+  '/pages/subjects': typeof ProtectedPagesSubjectsIndexRoute
+  '/pages/tasks': typeof ProtectedPagesTasksIndexRoute
+  '/pages/vendor': typeof ProtectedPagesVendorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/users': typeof ProtectedAdminUsersRoute
+  '/pages/settings': typeof ProtectedPagesSettingsRoute
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
@@ -104,13 +173,22 @@ export interface FileRoutesByTo {
   '/admin': typeof ProtectedAdminIndexRoute
   '/client': typeof ProtectedClientIndexRoute
   '/trainee': typeof ProtectedTraineeIndexRoute
-  '/vendor': typeof ProtectedVendorIndexRoute
+  '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
+  '/pages/client': typeof ProtectedPagesClientIndexRoute
+  '/pages/odata': typeof ProtectedPagesOdataIndexRoute
+  '/pages/subjects': typeof ProtectedPagesSubjectsIndexRoute
+  '/pages/tasks': typeof ProtectedPagesTasksIndexRoute
+  '/pages/vendor': typeof ProtectedPagesVendorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/__not-found': typeof _notFoundRoute
   '/_protected': typeof ProtectedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_protected/admin/users': typeof ProtectedAdminUsersRoute
+  '/_protected/pages/settings': typeof ProtectedPagesSettingsRoute
   '/_public/auth/login': typeof PublicAuthLoginRoute
   '/_public/auth/register': typeof PublicAuthRegisterRoute
   '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
@@ -119,12 +197,20 @@ export interface FileRoutesById {
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/client/': typeof ProtectedClientIndexRoute
   '/_protected/trainee/': typeof ProtectedTraineeIndexRoute
-  '/_protected/vendor/': typeof ProtectedVendorIndexRoute
+  '/_protected/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
+  '/_protected/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
+  '/_protected/pages/client/': typeof ProtectedPagesClientIndexRoute
+  '/_protected/pages/odata/': typeof ProtectedPagesOdataIndexRoute
+  '/_protected/pages/subjects/': typeof ProtectedPagesSubjectsIndexRoute
+  '/_protected/pages/tasks/': typeof ProtectedPagesTasksIndexRoute
+  '/_protected/pages/vendor/': typeof ProtectedPagesVendorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin/users'
+    | '/pages/settings'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
@@ -133,10 +219,18 @@ export interface FileRouteTypes {
     | '/admin'
     | '/client'
     | '/trainee'
-    | '/vendor'
+    | '/pages/vendor/$id'
+    | '/pages/vendor/dummy'
+    | '/pages/client'
+    | '/pages/odata'
+    | '/pages/subjects'
+    | '/pages/tasks'
+    | '/pages/vendor'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/users'
+    | '/pages/settings'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
@@ -145,12 +239,21 @@ export interface FileRouteTypes {
     | '/admin'
     | '/client'
     | '/trainee'
-    | '/vendor'
+    | '/pages/vendor/$id'
+    | '/pages/vendor/dummy'
+    | '/pages/client'
+    | '/pages/odata'
+    | '/pages/subjects'
+    | '/pages/tasks'
+    | '/pages/vendor'
   id:
     | '__root__'
     | '/'
+    | '/__not-found'
     | '/_protected'
     | '/_public'
+    | '/_protected/admin/users'
+    | '/_protected/pages/settings'
     | '/_public/auth/login'
     | '/_public/auth/register'
     | '/_public/auth/resetpassword'
@@ -159,11 +262,18 @@ export interface FileRouteTypes {
     | '/_protected/admin/'
     | '/_protected/client/'
     | '/_protected/trainee/'
-    | '/_protected/vendor/'
+    | '/_protected/pages/vendor/$id'
+    | '/_protected/pages/vendor/dummy'
+    | '/_protected/pages/client/'
+    | '/_protected/pages/odata/'
+    | '/_protected/pages/subjects/'
+    | '/_protected/pages/tasks/'
+    | '/_protected/pages/vendor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  _notFoundRoute: typeof _notFoundRoute
   ProtectedRoute: typeof ProtectedRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
 }
@@ -184,19 +294,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/__not-found': {
+      id: '/__not-found'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof _notFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_protected/vendor/': {
-      id: '/_protected/vendor/'
-      path: '/vendor'
-      fullPath: '/vendor'
-      preLoaderRoute: typeof ProtectedVendorIndexRouteImport
-      parentRoute: typeof ProtectedRoute
     }
     '/_protected/trainee/': {
       id: '/_protected/trainee/'
@@ -254,21 +364,100 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthLoginRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_protected/pages/settings': {
+      id: '/_protected/pages/settings'
+      path: '/pages/settings'
+      fullPath: '/pages/settings'
+      preLoaderRoute: typeof ProtectedPagesSettingsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/admin/users': {
+      id: '/_protected/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof ProtectedAdminUsersRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/vendor/': {
+      id: '/_protected/pages/vendor/'
+      path: '/pages/vendor'
+      fullPath: '/pages/vendor'
+      preLoaderRoute: typeof ProtectedPagesVendorIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/tasks/': {
+      id: '/_protected/pages/tasks/'
+      path: '/pages/tasks'
+      fullPath: '/pages/tasks'
+      preLoaderRoute: typeof ProtectedPagesTasksIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/subjects/': {
+      id: '/_protected/pages/subjects/'
+      path: '/pages/subjects'
+      fullPath: '/pages/subjects'
+      preLoaderRoute: typeof ProtectedPagesSubjectsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/odata/': {
+      id: '/_protected/pages/odata/'
+      path: '/pages/odata'
+      fullPath: '/pages/odata'
+      preLoaderRoute: typeof ProtectedPagesOdataIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/client/': {
+      id: '/_protected/pages/client/'
+      path: '/pages/client'
+      fullPath: '/pages/client'
+      preLoaderRoute: typeof ProtectedPagesClientIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/vendor/dummy': {
+      id: '/_protected/pages/vendor/dummy'
+      path: '/pages/vendor/dummy'
+      fullPath: '/pages/vendor/dummy'
+      preLoaderRoute: typeof ProtectedPagesVendorDummyRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/pages/vendor/$id': {
+      id: '/_protected/pages/vendor/$id'
+      path: '/pages/vendor/$id'
+      fullPath: '/pages/vendor/$id'
+      preLoaderRoute: typeof ProtectedPagesVendorIdRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
   }
 }
 
 interface ProtectedRouteChildren {
+  ProtectedAdminUsersRoute: typeof ProtectedAdminUsersRoute
+  ProtectedPagesSettingsRoute: typeof ProtectedPagesSettingsRoute
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedClientIndexRoute: typeof ProtectedClientIndexRoute
   ProtectedTraineeIndexRoute: typeof ProtectedTraineeIndexRoute
-  ProtectedVendorIndexRoute: typeof ProtectedVendorIndexRoute
+  ProtectedPagesVendorIdRoute: typeof ProtectedPagesVendorIdRoute
+  ProtectedPagesVendorDummyRoute: typeof ProtectedPagesVendorDummyRoute
+  ProtectedPagesClientIndexRoute: typeof ProtectedPagesClientIndexRoute
+  ProtectedPagesOdataIndexRoute: typeof ProtectedPagesOdataIndexRoute
+  ProtectedPagesSubjectsIndexRoute: typeof ProtectedPagesSubjectsIndexRoute
+  ProtectedPagesTasksIndexRoute: typeof ProtectedPagesTasksIndexRoute
+  ProtectedPagesVendorIndexRoute: typeof ProtectedPagesVendorIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedAdminUsersRoute: ProtectedAdminUsersRoute,
+  ProtectedPagesSettingsRoute: ProtectedPagesSettingsRoute,
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedClientIndexRoute: ProtectedClientIndexRoute,
   ProtectedTraineeIndexRoute: ProtectedTraineeIndexRoute,
-  ProtectedVendorIndexRoute: ProtectedVendorIndexRoute,
+  ProtectedPagesVendorIdRoute: ProtectedPagesVendorIdRoute,
+  ProtectedPagesVendorDummyRoute: ProtectedPagesVendorDummyRoute,
+  ProtectedPagesClientIndexRoute: ProtectedPagesClientIndexRoute,
+  ProtectedPagesOdataIndexRoute: ProtectedPagesOdataIndexRoute,
+  ProtectedPagesSubjectsIndexRoute: ProtectedPagesSubjectsIndexRoute,
+  ProtectedPagesTasksIndexRoute: ProtectedPagesTasksIndexRoute,
+  ProtectedPagesVendorIndexRoute: ProtectedPagesVendorIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -296,6 +485,7 @@ const PublicRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  _notFoundRoute: _notFoundRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
 }

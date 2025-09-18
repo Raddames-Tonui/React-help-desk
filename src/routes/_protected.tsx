@@ -50,7 +50,6 @@ function RouteComponent() {
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>
-        <h1>Welcome, {currentUser?.firstname}</h1>
         <Outlet />
       </main>
       <Footer />
