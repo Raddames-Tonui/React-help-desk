@@ -1,20 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "react-jsx",
-
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"],
-      "@css/*": ["css/*"],
-      "@components/*": ["components/*"]
-    }
-  },
-  "include": ["src"],
+  "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
