@@ -131,12 +131,12 @@ export default function UsersPage(): React.FC {
                 initialSort={sortBy}
                 onSortApply={handleSortApply}
                 tableActionsLeft={
-                    <div className="flex gap-2">
+                    <div className="">
                         {/* Role filter */}
                         <select
                             value={params.role || ""}
                             onChange={(e) => setParams((prev) => ({ ...prev, role: e.target.value }))}
-                            className="select-role"
+                            className="table-select"
                         >
                             <option value="">All roles</option>
                             <option value="admin">Admin</option>
@@ -147,7 +147,7 @@ export default function UsersPage(): React.FC {
                         <select
                             value={params.status || ""}
                             onChange={(e) => setParams((prev) => ({ ...prev, status: e.target.value }))}
-                            className="select-status"
+                            className="table-select"
                         >
                             <option value="">All status</option>
                             <option value="approved">Approved</option>
@@ -159,7 +159,7 @@ export default function UsersPage(): React.FC {
                         <select
                             value={pageSize}
                             onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                            className="select-pageSize"
+                            className="table-select"
                         >
                             {[5, 10, 20, 50].map((n) => (
                                 <option key={n} value={n}>

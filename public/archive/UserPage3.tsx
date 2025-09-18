@@ -182,8 +182,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
             const json = (await res.json()) as { user: UserProfile; message: string };
 
-            refresh(); 
-            return json.user; 
+            refresh();
+            return json.user;
         } catch (err: any) {
             setError(err.message ?? "Unknown error deleting user");
             return null;

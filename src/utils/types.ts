@@ -43,6 +43,14 @@ export type UserData = {
     created_at: string; 
 }
 
+export type UserProfile = {
+    id: number;
+    email: string;
+    name: string;
+    role: string;
+    status: string;
+}
+
 
 // --------DOJO SUBJECTS API ------------
 export type SubjectData = {

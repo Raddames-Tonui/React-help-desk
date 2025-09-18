@@ -117,6 +117,10 @@ tbody tr:last-child td {
     border-radius: 3px;
     border: none;
 }
+.table-select {
+
+}
+
 
 /* Active chip */
 .open-action {
