@@ -179,11 +179,20 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 const text = await res.text().catch(() => "");
                 throw new Error(`Failed to delete user: ${res.status} ${res.statusText} ${text}`);
             }
+            const json = (await res.json()) as { user: UserData; message: string };
 
-            const json = (await res.json()) as { user: UserProfile; message: string };
+            setData((prev) => {
+                if (!prev) return prev;
+                return {
+                    ...prev,
+                    records: prev.records.filter((u) => u.id !== userId),
+                    total: prev.total - 1,
+                };
+            });
 
-            refresh(); 
-            return json.user; 
+
+            return json.user;
+
         } catch (err: any) {
             setError(err.message ?? "Unknown error deleting user");
             return null;
