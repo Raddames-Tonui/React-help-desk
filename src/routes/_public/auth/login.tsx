@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "react-hot-toast";
 
@@ -49,7 +49,6 @@ function LoginPage() {
 
       toast.success("Login successful!", { duration: 1500 });
     } catch (error) {
-      setAuthError(true);
       toast.error("Login failed");
     }
   };
@@ -125,5 +124,3 @@ function LoginPage() {
     </div>
   );
 }
-
-export default LoginPage;

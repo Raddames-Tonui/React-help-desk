@@ -1,0 +1,97 @@
+@import url(./variables.css);
+
+.user-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 40px;
+    background-color: var(--bg-color-primary);
+    width: 100%;
+    height: inherit;
+    margin: 0 auto;
+    box-shadow: none;
+    border: 1px solid var(--bg-secondary);
+}
+
+.user-avatar {
+    flex: 0 0 200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.user-avatar img {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    object-fit: cover;
+}
+
+.user-details {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    row-gap: 15px;
+    column-gap: 20px;
+    background: var(--bg-default);
+    padding: 30px;
+    border: 1px solid var(--primary-100);
+    height: 70vh;
+}
+
+.user-details p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.user-details strong {
+    color: var(--primary-600);
+    font-weight: 600;
+}
+
+.user-title {
+    grid-column: span 2;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--primary-700);
+}
+
+.user-loading,
+.user-error,
+.user-empty {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    height: 50vh;
+}
+
+.user-error {
+    color: red;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .user-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .user-avatar {
+        margin-bottom: 20px;
+    }
+
+    .user-details {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .user-title {
+        font-size: 1.5rem;
+    }
+}

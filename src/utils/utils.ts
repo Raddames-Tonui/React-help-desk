@@ -1,4 +1,4 @@
-import type { User } from './types';
+import type { User } from '../context/types.ts';
 
 export const getAllUsers = async (): Promise<User[]> => {
     const data = localStorage.getItem('users');

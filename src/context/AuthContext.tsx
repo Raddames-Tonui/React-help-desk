@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import type { User, AuthContextType } from '@/utils/types';
+import type { User, AuthContextType } from '@/context/types.ts';
 import { getAllUsers, saveAllUsers } from '@/utils/utils';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             sessionStorage.setItem('user', JSON.stringify(safeUser));
             setUser(safeUser);
 
-            // Redirect based on role
             if (safeUser.role === 'admin') {
                 navigate({ to: '/admin' });
             } else if (safeUser.role === 'vendor') {
@@ -64,6 +63,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         return false;
     };
+
+
 
     const logout = () => {
         sessionStorage.removeItem('user');

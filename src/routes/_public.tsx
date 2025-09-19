@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster} from 'react-hot-toast';
 
 export const Route = createFileRoute('/_public')({
   component: RouteComponent,

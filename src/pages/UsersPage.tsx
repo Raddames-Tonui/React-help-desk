@@ -2,14 +2,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "@/routes/_protected/admin/users"
-import { useUsers } from "@/context/usersContext";
 import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
-import type { UserData } from "@/utils/types.ts";
+import type { UserData } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
 import Modal from "@components/Modal.tsx";
-
-
+import Icon from "@/utils/Icon";
+import {useUsers} from "@/hooks";
 
 export default function UsersPage() {
   const searchParams = Route.useSearch();
@@ -101,11 +100,11 @@ export default function UsersPage() {
 
         const handleDelete = () => {
             handleOpenModal(
-                <div className="flex flex-col gap-4">
-                    <h3>Are you sure?</h3>
-                    <div className="flex gap-4">
+                <div className="" >
+                    <h3 style={{color: "red"}}>Are you sure?</h3>
+                    <div className="">
                         <button
-                            className="bg-red-500 text-white px-4 py-2 rounded"
+                            className="modal-close-btn"
                             onClick={() => {
                                 deleteUser(user.id);
                                 setModalOpen(false);
@@ -114,7 +113,7 @@ export default function UsersPage() {
                             Yes, Delete
                         </button>
                         <button
-                            className="bg-gray-300 px-4 py-2 rounded"
+                            className="cancel"
                             onClick={() => setModalOpen(false)}
                         >
                             Cancel
@@ -124,16 +123,24 @@ export default function UsersPage() {
             );
         };
 
+      const handleView = () => {
+          navigate({ to: `/admin/${user.id}` });
+      };
+
         return (
-            <div className="flex gap-2">
-                <button onClick={handleEditRole} className="text-blue-500 underline">
+            <div className="">
+
+                <button onClick={handleEditRole} className="">
                     Edit Role
                 </button>
-                <button onClick={handleEditStatus} className="text-green-500 underline">
+                <button onClick={handleEditStatus} className="">
                     Edit Status
                 </button>
-                <button onClick={handleDelete} className="text-red-500 underline">
-                    Delete
+                <button onClick={handleDelete} className="">
+                    <Icon iconName="delete" />
+                </button>
+                <button onClick={handleView} className="">
+                    View
                 </button>
             </div>
         );
@@ -144,7 +151,17 @@ export default function UsersPage() {
     { id: "name", caption: "Name", size: 150, isSortable: true },
     { id: "email", caption: "Email", size: 200, isSortable: true },
     { id: "role", caption: "Role", size: 120, isSortable: true, isFilterable: true },
-    { id: "status", caption: "Status", size: 120, isSortable: true, isFilterable: true },
+    { id: "status", caption: "Status", size: 120, isSortable: true, isFilterable: true,
+        renderCell: (value) => (
+            <span
+                style={{
+                    color: value === "rejected" ? "red" : value === "accepted" ? "green" : value === "pending" ? "yellow" : "inherit",
+                }}
+            >
+          {value}
+        </span>
+        ),
+    },
     {
       id: "created_at",
       caption: "Created",
@@ -192,6 +209,10 @@ export default function UsersPage() {
         refresh();
     };
 
+    const handleRowClick = (user: UserData) => {
+        navigate({to: `/admin/${user.id}`})
+    }
+
   return (
     <div>
         <DataTable
@@ -200,7 +221,6 @@ export default function UsersPage() {
             isLoading={loading}
             error={error}
             onRefresh={refresh}
-
             initialSort={sortBy}
             onSortApply={handleSortApply}
             pagination={{
@@ -209,7 +229,6 @@ export default function UsersPage() {
                 total: data?.total_count,
                 onPageChange: handlePageChange,
             }}
-
         />
 
         <Modal

@@ -1,5 +1,5 @@
 import React from "react";
-import type { UserData } from "@/utils/types";
+import type { UserData } from "@/context/types.ts";
 
 interface ActionsCellProps {
   user: UserData;
