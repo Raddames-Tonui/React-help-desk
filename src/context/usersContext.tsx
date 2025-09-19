@@ -163,7 +163,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
 
-    const deleteUser = async (userId: number): Promise<UserProfile | null> => {
+    const deleteUser = async (userId: number): Promise<UserData | null> => {
         try {
             setLoading(true);
 

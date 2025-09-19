@@ -243,7 +243,7 @@ tbody tr:last-child td {
 }
 
 /* Card layout for mobile */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     table, thead, tbody, th, td, tr { display: block; }
     thead tr { display: none; }
 
@@ -286,4 +286,4 @@ tbody tr:last-child td {
         border-radius: 8px 8px 0 0;
         font-weight: 600;
     }
-}
+} */
