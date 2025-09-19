@@ -48,9 +48,9 @@ export interface FilterRule {
 }
 
 interface PaginationProps {
-    page: number;
-    pageSize: number;
-    total: number;
+    page: number | undefined;
+    pageSize: number | undefined;
+    total: number | undefined;
     onPageChange: (page: number) => void;
 }
 

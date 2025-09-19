@@ -6,7 +6,6 @@ import { useUsers } from "@/context/usersContext";
 import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
 import type { UserData } from "@/utils/types.ts";
-import { ActionsCell } from "@components/ActionsCell.tsx";
 import { DataTable } from "@/components/table/DataTable";
 import Modal from "@components/Modal.tsx";
 
@@ -198,7 +197,7 @@ export default function UsersPage() {
         <DataTable
             columns={columns}
             data={sortedUsers}
-            loading={loading}
+            isLoading={loading}
             error={error}
             onRefresh={refresh}
 
@@ -207,9 +206,10 @@ export default function UsersPage() {
             pagination={{
                 page: data?.current_page,
                 pageSize: data?.page_size,
-                total: data?.last_page,
+                total: data?.total_count,
                 onPageChange: handlePageChange,
             }}
+
         />
 
         <Modal
