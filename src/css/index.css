@@ -101,7 +101,7 @@
 
 
 .btn-secondary {
-  background: var(--primary-700);
+  background: var(--primary-500);
   color: var(--bg-default);
   border: none;
   padding: 8px 18px;

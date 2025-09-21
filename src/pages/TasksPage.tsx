@@ -54,11 +54,25 @@ export default function TasksPage() {
 
   const sortedTasks = useMemo(() => sortData(tasks, sortBy), [tasks, sortBy]);
 
+
+
   const tasksColumns: ColumnProps<TaskData>[] = [
     { id: "id", caption: "ID", size: 5, isSortable: true },
     { id: "title", caption: "Title", size: 150, isSortable: true },
-    { id: "description", caption: "Description", size: 200 },
-    { id: "requirements", caption: "Requirements", size: 200 },
+    {
+      id: "description", caption: "Description", size: 200, renderCell: (value) => {
+        const text = String(value ?? ""); 
+        const words = text.split(/\s+/);
+        return words.length <= 20 ? text : words.slice(0, 20).join(" ") + "...";
+      },
+    },
+    {
+      id: "requirements", caption: "Requirements", size: 200, renderCell: (value) => {
+        const text = String(value ?? "");
+        const words = text.split(/\s+/);
+        return words.length <= 20 ? text : words.slice(0, 20).join(" ") + "...";
+      },
+    },
     {
       id: "due_date",
       caption: "Due Date",

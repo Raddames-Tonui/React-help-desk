@@ -16,12 +16,11 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // ------------------- FETCH ALL USERS -------------------
   const fetchUsers = async (signal?: AbortSignal) => {
     try {
-      setIsLoading(true);
       setError(null);
 
       const query = new URLSearchParams({
         page: String(page),
-        pageSize: String(pageSize),
+        page_size: String(pageSize),
         ...params,
       }).toString();
 
@@ -45,9 +44,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(msg);
       setData(null);
       toast.error(`Error fetching users: ${msg}`);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   useEffect(() => {
