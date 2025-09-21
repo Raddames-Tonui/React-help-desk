@@ -1,49 +1,31 @@
-import type {
-    ApiResponse,
-    UserProfile,
-    UserData,
-    SingleUser, ApiError,
-} from "@/context/types.ts";
-import { useEffect, useState } from "react";
-import { TOKEN, usersContext, type UsersContextValue } from "@/hooks";
+import type { ApiResponse, UserData, SingleUser } from "@/context/types.ts";
+import React, { useEffect, useState } from "react";
+import { UsersContext, TOKEN, type UsersContextValue } from "@/hooks/hooks.tsx";
 
-export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
-                                                                           children,
-                                                                       }) => {
+export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [data, setData] = useState<ApiResponse<UserData> | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<ApiError | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [params, setParams] = useState<Record<string, string>>({});
     const [reload, setReload] = useState(false);
 
-     const handleError = async (
-        res: Response,
-        fallbackMsg: string
-    ): Promise<ApiError> => {
-        const json = await res.json().catch(() => null);
-        return {
-            message: json?.error || `${fallbackMsg}: ${res.status} ${res.statusText}`,
-            code: String(res.status),
-            details: json,
-        };
-    };
-
-    // Fetch all users
-    const fetchUsers = async (signal: AbortSignal) => {
-        setLoading(true);
-        setError(null);
-
-        const query = new URLSearchParams({
-            page: String(page),
-            pageSize: String(pageSize),
-            ...params,
-        }).toString();
-        const url = `/api/admin/users/?${query}`;
-
+    // ------------------- FETCH ALL USERS -------------------
+    const fetchUsers = async (signal?: AbortSignal) => {
         try {
-            const res = await fetch(url, {
+            setIsLoading(true);
+            setError(null);
+
+            const query = new URLSearchParams({
+                page: String(page),
+                pageSize: String(pageSize),
+                ...params,
+            }).toString();
+
+            const res = await fetch(`/api/admin/users/?${query}`, {
+                method: "GET",
                 headers: {
                     Authorization: `Bearer ${TOKEN}`,
                     Accept: "application/json",
@@ -51,24 +33,17 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
                 signal,
             });
 
-            if (!res.ok) {
-                setError(await handleError(res, "Failed to fetch users"));
-                setData(null);
-                return;
-            }
+            const json = await res.json();
 
-            const json = (await res.json()) as ApiResponse<UserData>;
-            setData(json);
-        } catch (err: any) {
-            if (err.name === "AbortError") return;
-            setError({
-                message: err.message ?? "Unknown error",
-                code: "FETCH_ERROR",
-                details: err,
-            });
+            if (!res.ok) throw new Error(json.message || `Failed to fetch users (status ${res.status})`);
+
+            setData(json as ApiResponse<UserData>);
+        } catch (err) {
+            if ((err as any)?.name === "AbortError") return;
+            setError(err instanceof Error ? err.message : "Unknown error");
             setData(null);
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -80,11 +55,12 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const refresh = () => setReload((s) => !s);
 
-    // Fetch single user details
-    const viewUserPage = async (
-        userId: number
-    ): Promise<SingleUser["user"] | null> => {
+    // ------------------- FETCH SINGLE USER -------------------
+    const viewUserPage = async (userId: number): Promise<SingleUser["user"] | null> => {
         try {
+            setIsLoading(true);
+            setError(null);
+
             const res = await fetch(`/api/admin/users/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${TOKEN}`,
@@ -92,48 +68,26 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
                 },
             });
 
-            if (!res.ok) throw await handleError(res, "Failed to fetch user profile");
+            if (!res.ok) {
+                const json = await res.json();
+                throw new Error(json?.message || "Failed to fetch user profile");
+            }
 
             const json = (await res.json()) as SingleUser;
             return json.user;
         } catch (err: any) {
-            console.error("viewUserPage error:", err.message);
-            setError(err);
-            return null;
-        }
-    };
-
-
-    // Fetch logged-in profile
-    const viewProfile = async (): Promise<UserProfile | null> => {
-        try {
-            setLoading(true);
-            const res = await fetch(`/api/admin/users/profile`, {
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    Accept: "application/json",
-                },
-            });
-
-            if (!res.ok) throw await handleError(res, "Failed to fetch profile");
-
-            const json = (await res.json()) as { user: UserProfile; message: string };
-            return json.user;
-        } catch (err: any) {
-            setError(err);
+            setError(err instanceof Error ? err.message : "Unknown error");
             return null;
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
-    // Edit user status
-    const editStatus = async (
-        userId: number,
-        status: string
-    ): Promise<UserData | null> => {
+    // ------------------- EDIT STATUS -------------------
+    const editStatus = async (userId: number, status: string): Promise<UserData | null> => {
         try {
-            setLoading(true);
+            setIsLoading(true);
+
             const res = await fetch(`/api/admin/users/${userId}/status`, {
                 method: "PUT",
                 headers: {
@@ -144,27 +98,24 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
                 body: JSON.stringify({ status }),
             });
 
-            if (!res.ok) throw await handleError(res, "Failed to edit status");
+            const json = await res.json();
 
-            const json = (await res.json()) as { user: UserData; message: string };
+            if (!res.ok) throw new Error(json.message || `Failed to edit status (status ${res.status})`);
+
             refresh();
-            return json.user;
-        } catch (err: any) {
-            setError(err);
-            return null;
+            return json.user as UserData;
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Unknown error");
+            throw err;
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
-
-    // Edit user role
-    const editRole = async (
-        userId: number,
-        role: string
-    ): Promise<UserData | null> => {
+    // ------------------- EDIT ROLE -------------------
+    const editRole = async (userId: number, role: string): Promise<UserData | null> => {
         try {
-            setLoading(true);
+            setIsLoading(true);
 
             const res = await fetch(`/api/admin/users/${userId}/role`, {
                 method: "PUT",
@@ -176,23 +127,24 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
                 body: JSON.stringify({ role }),
             });
 
-            if (!res.ok) throw await handleError(res, "Failed to edit role");
+            const json = await res.json();
 
-            const json = (await res.json()) as { user: UserData; message: string };
+            if (!res.ok) throw new Error(json.message || `Failed to edit role (status ${res.status})`);
+
             refresh();
-            return json.user;
-        } catch (err: any) {
-            setError(err);
-            return null;
+            return json.user as UserData;
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Unknown error");
+            throw err;
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
-    // Delete user
-    const deleteUser = async (userId: number): Promise<UserData | null> => {
+    // ------------------- DELETE USER -------------------
+    const deleteUser = async (userId: number): Promise<string> => {
         try {
-            setLoading(true);
+            setIsLoading(true);
 
             const res = await fetch(`/api/admin/users/${userId}`, {
                 method: "DELETE",
@@ -202,9 +154,9 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
                 },
             });
 
-            if (!res.ok) throw await handleError(res, "Failed to delete user");
+            const json = await res.json();
 
-            const json = (await res.json()) as { user: UserData; message: string };
+            if (!res.ok) throw new Error(json.message || `Failed to delete user (status ${res.status})`);
 
             setData((prev) => {
                 if (!prev) return prev;
@@ -215,22 +167,19 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
                 };
             });
 
-            return json.user;
-        } catch (err: any) {
-            setError(err);
-            return null;
+            return json.message || "User deleted successfully";
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Unknown error");
+            throw err;
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
-    //
-    // Provide context value
-    //
     const value: UsersContextValue = {
         data,
         users: data?.records ?? [],
-        loading,
+        isLoading,
         error,
         page,
         pageSize,
@@ -239,14 +188,11 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({
         setPageSize,
         setParams,
         refresh,
-        viewProfile,
+        viewUserPage,
         editStatus,
         editRole,
         deleteUser,
-        viewUserPage,
     };
 
-    return (
-        <usersContext.Provider value={value}>{children}</usersContext.Provider>
-    );
+    return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>;
 };

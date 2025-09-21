@@ -163,27 +163,35 @@ export function DataTable<T>({
     return (
         <DataTableContext.Provider value={value}>
             <div className="table-wrapper">
-                <div className="table-action-wrapper">
-                    <TableActions />
-                </div>
-
                 {error ? (
                     <div className="table-error">{error}</div>
                 ) : isLoading ? (
-                    <Loader />
+                    <div className="table-loader">
+                        <Loader />
+                    </div>
                 ) : (
                     <>
+                        <div className="table-action-wrapper">
+                            <TableActions />
+                        </div>
+
                         <table className="table">
-                            <thead><TableHeader /></thead>
-                            <tbody><TableBody /></tbody>
-                            <tfoot className="table-footer"><TableFooter /></tfoot>
+                            <thead>
+                                <TableHeader />
+                            </thead>
+                            <tbody>
+                                <TableBody />
+                            </tbody>
+                            <tfoot className="table-footer">
+                                <TableFooter />
+                            </tfoot>
                         </table>
+
                         <div className="table-pagination">
                             <Pagination />
                         </div>
                     </>
                 )}
-
             </div>
         </DataTableContext.Provider>
     );

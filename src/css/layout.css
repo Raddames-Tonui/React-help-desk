@@ -236,6 +236,22 @@ main {
     transition: width 0.3s ease;    
 }
 
+.page-header {
+  background-color: var(--bg-secondary);
+  color: var(--primary-700);
+  border-bottom: 1px solid var( --border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   
+  height: 3rem;              
+  box-sizing: border-box;
+  padding: 0 1rem;          
+}
+
+.page-header h1 {
+    font-size: 18px;
+}
+
 footer {
     grid-area:footer;
     background-color: var(--primary-100);      

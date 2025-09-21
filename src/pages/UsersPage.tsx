@@ -1,14 +1,12 @@
-
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Route } from "@/routes/_protected/admin/users"
+import { Route } from "@/routes/_protected/admin/users";
 import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
 import type { UserData } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
-import Modal from "@components/Modal.tsx";
-import Icon from "@/utils/Icon";
-import {useUsers} from "@/hooks";
+import { useUsers } from "@/hooks/hooks.tsx";
+import UserActions from "@/components/UserActions"; 
 
 export default function UsersPage() {
   const searchParams = Route.useSearch();
@@ -17,7 +15,7 @@ export default function UsersPage() {
   const {
     users,
     data,
-    loading,
+    isLoading,
     error,
     page,
     pageSize,
@@ -28,23 +26,17 @@ export default function UsersPage() {
     refresh,
     editRole,
     editStatus,
-    deleteUser
+    deleteUser,
   } = useUsers();
 
   const initialSortFromUrl: SortRule[] = searchParams.sortBy
     ? searchParams.sortBy.split(",").map((s) => {
-      const [column, direction = "asc"] = s.trim().split(" ");
-      return { column, direction: direction as "asc" | "desc" }
-    }) : [{ column: "id", direction: "asc" }];
+        const [column, direction = "asc"] = s.trim().split(" ");
+        return { column, direction: direction as "asc" | "desc" };
+      })
+    : [];
 
   const [sortBy, setSortBy] = useState<SortRule[]>(initialSortFromUrl);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [ModalContent, setModalContent] = useState<React.ReactNode>(null);
-
-  const openModal = (content: React.ReactNode) =>{
-        setModalContent(content);
-        setModalOpen(true);
-  }
 
   useEffect(() => {
     setPage(Number(searchParams.page || 1));
@@ -59,108 +51,36 @@ export default function UsersPage() {
 
   const sortedUsers = useMemo(() => sortData(users, sortBy), [users, sortBy]);
 
-  const renderActionsCell = (user: UserData) => {
-        const handleOpenModal = (content: React.ReactNode) => {
-            setModalContent(content);
-            setModalOpen(true);
-        };
-
-        const handleEditRole = () => {
-            handleOpenModal(
-                <div className="flex flex-col gap-4">
-                    <h3>Edit Role</h3>
-                    <select
-                        value={user.role}
-                        onChange={(e) => editRole(user.id, e.target.value)}
-                        className="border p-2 rounded"
-                    >
-                        <option value="admin">Admin</option>
-                        <option value="trainee">Trainee</option>
-                    </select>
-                </div>
-            );
-        };
-
-        const handleEditStatus = () => {
-            handleOpenModal(
-                <div className="flex flex-col gap-4">
-                    <h3>Edit Status</h3>
-                    <select
-                        value={user.status}
-                        onChange={(e) => editStatus(user.id, e.target.value)}
-                        className="border p-2 rounded"
-                    >
-                        <option value="approved">Approved</option>
-                        <option value="pending">Pending</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
-            );
-        };
-
-        const handleDelete = () => {
-            handleOpenModal(
-                <div className="" >
-                    <h3 style={{color: "red"}}>Are you sure?</h3>
-                    <div className="">
-                        <button
-                            className="modal-close-btn"
-                            onClick={() => {
-                                deleteUser(user.id);
-                                setModalOpen(false);
-                            }}
-                        >
-                            Yes, Delete
-                        </button>
-                        <button
-                            className="cancel"
-                            onClick={() => setModalOpen(false)}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            );
-        };
-
-      const handleView = () => {
-          navigate({ to: `/admin/${user.id}` });
-      };
-
-        return (
-            <div className="">
-
-                <button onClick={handleEditRole} className="">
-                    Edit Role
-                </button>
-                <button onClick={handleEditStatus} className="">
-                    Edit Status
-                </button>
-                <button onClick={handleDelete} className="">
-                    <Icon iconName="delete" />
-                </button>
-                <button onClick={handleView} className="">
-                    View
-                </button>
-            </div>
-        );
-    };
-
-  const columns: ColumnProps<UserData>[] = [
-    { id: "id", caption: "ID", size: 80, isSortable: true },
+  const usersColumns: ColumnProps<UserData>[] = [
+    { id: "id", caption: "ID", size: 5, isSortable: true },
     { id: "name", caption: "Name", size: 150, isSortable: true },
     { id: "email", caption: "Email", size: 200, isSortable: true },
     { id: "role", caption: "Role", size: 120, isSortable: true, isFilterable: true },
-    { id: "status", caption: "Status", size: 120, isSortable: true, isFilterable: true,
-        renderCell: (value) => (
-            <span
-                style={{
-                    color: value === "rejected" ? "red" : value === "accepted" ? "green" : value === "pending" ? "yellow" : "inherit",
-                }}
-            >
+    {
+      id: "status",
+      caption: "Status",
+      size: 120,
+      isSortable: true,
+      isFilterable: true,
+      renderCell: (value) => (
+        <span
+          style={{
+            backgroundColor:
+              value === "rejected"
+                ? "#a81d1dff"
+                : value === "approved"
+                ? "green"
+                : value === "pending"
+                ? "#cbe505ff"
+                : "inherit",
+            padding: value === "approved" ? "3px 1rem" : "3px 1.35rem",
+            fontWeight: "bold",
+            color: "white",
+          }}
+        >
           {value}
         </span>
-        ),
+      ),
     },
     {
       id: "created_at",
@@ -173,72 +93,65 @@ export default function UsersPage() {
       id: "actions",
       caption: "Actions",
       size: 200,
-      renderCell: (_, row) => renderActionsCell(row),
-    }
-  ]
+      renderCell: (_, row) => (
+        <UserActions
+          user={row}
+          editRole={editRole}
+          editStatus={editStatus}
+          deleteUser={deleteUser}
+        />
+      ),
+    },
+  ];
 
-    // Updating page url with params
-    const updateUrl = (extraSearch: Record<string, any> ={}): void => {
-      navigate({
-          search: {
-              page,
-              pageSize,
-              sortBy: sortBy.map((r) => `$r.column ${r.direction}`).join(","),
-              ...params,
-              ...extraSearch,
-          }
-      })
-    }
+  // Updating page url with params
+  const updateUrl = (extraSearch: Record<string, any> = {}): void => {
+    navigate({
+      search: {
+        page,
+        pageSize,
+        sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
+        ...params,
+        ...extraSearch,
+      },
+    });
+  };
 
-    const handleSortApply = (rules: SortRule[]) => {
-        setSortBy(rules);
-        updateUrl();
-        refresh();
-    };
+  const handleSortApply = (rules: SortRule[]) => {
+    setSortBy(rules);
+    updateUrl();
+  };
 
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-        updateUrl({ page: newPage });
-        refresh();
-    };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    updateUrl({ page: newPage });
+  };
 
-    const handlePageSizeChange = (newPageSize: number) => {
-        setPageSize(newPageSize);
-        setPage(1);
-        updateUrl({ page: 1, pageSize: newPageSize });
-        refresh();
-    };
 
-    const handleRowClick = (user: UserData) => {
-        navigate({to: `/admin/${user.id}`})
-    }
+
 
   return (
     <div>
+      <div className="page-header">
+        <h1>Users</h1>
+      </div>
+      <div className="table-wrapper">
         <DataTable
-            columns={columns}
-            data={sortedUsers}
-            isLoading={loading}
-            error={error}
-            onRefresh={refresh}
-            initialSort={sortBy}
-            onSortApply={handleSortApply}
-            pagination={{
-                page: data?.current_page,
-                pageSize: data?.page_size,
-                total: data?.total_count,
-                onPageChange: handlePageChange,
-            }}
+          columns={usersColumns}
+          data={sortedUsers}
+          isLoading={isLoading}
+          error={error}
+          onRefresh={refresh}
+          initialSort={sortBy}
+          onSortApply={handleSortApply}
+          pagination={{
+            page: data?.current_page,
+            pageSize: data?.page_size,
+            total: data?.total_count,
+            onPageChange: handlePageChange,
+          }}
         />
-
-        <Modal
-            isOpen={modalOpen}
-            title="Action"
-            body={ModalContent}
-            onClose={() => setModalOpen(false)}
-        />
-
+      </div>
     </div>
   );
-};
-
+}

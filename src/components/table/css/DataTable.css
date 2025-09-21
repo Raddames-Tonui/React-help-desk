@@ -1,4 +1,4 @@
-@import url('./variables.css');
+@import url('../../../css/variables.css');
 
 :root {
     --bg-color-primary: #ffffff;
@@ -10,7 +10,7 @@
 /* Table base styles */
 table {
     background-color: var(--bg-color-primary);
-    margin: 1rem;
+    margin: 0;
     border-collapse: collapse;
     width: 100%;
 }
@@ -52,7 +52,7 @@ tbody tr:last-child td {
     overflow-x: auto;
     border-radius: 8px;
     padding: 0.5rem;
-    margin: 1rem 0;
+    margin: 0;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -91,11 +91,21 @@ tbody tr:last-child td {
     background-color: #dee2e6;
 }
 
+
+.table-loader{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    width: 100%;
+    height: 40vh;
+}
+
 /* Table Actions */
 .table-actions {
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
+    margin-bottom: 10px;
 }
 
 .table-actions-left,
@@ -118,10 +128,6 @@ tbody tr:last-child td {
     border-radius: 3px;
     border: none;
 }
-.table-select {
-
-}
-
 
 /* Active chip */
 .open-action {
@@ -216,6 +222,15 @@ tbody tr:last-child td {
     color: #484F56;
 }
 
+
+.table-error {
+    display: flex;
+    justify-content: center;
+    color: #ce1a1a;
+    /* border-top: 1px solid #ccc; */
+    padding-top: 2rem;
+}
+
 /* Priority-based columns */
 .priority-1 { display: table-cell; }
 .priority-2 { display: table-cell; }
@@ -244,7 +259,7 @@ tbody tr:last-child td {
 }
 
 /* Card layout for mobile */
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
     table, thead, tbody, th, td, tr { display: block; }
     thead tr { display: none; }
 
@@ -287,4 +302,4 @@ tbody tr:last-child td {
         border-radius: 8px 8px 0 0;
         font-weight: 600;
     }
-} */
+}

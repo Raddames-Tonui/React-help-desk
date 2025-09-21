@@ -1,8 +1,9 @@
-import React from "react";
+import React, { type CSSProperties } from "react";
 
 
 interface IconBaseProps {
     className?: string;
+    style?: CSSProperties;
 }
 
 export const MicroPhone: React.FC<IconBaseProps> = ({ className }) => (
@@ -17,7 +18,32 @@ export const Pie: React.FC<IconBaseProps> = ({ className }) => (
     </svg>
 
 )
-
+export const DangerIcon: React.FC<IconBaseProps> = ({ className, style }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        style={style}
+    >
+        {/* Outer circle */}
+        <circle cx="12" cy="12" r="10" />
+        {/* Exclamation mark line */}
+        <line x1="12" y1="8" x2="12" y2="14" />
+        {/* Exclamation mark dot */}
+        <circle cx="12" cy="17" r="1" fill="currentColor" />
+    </svg>
+);
+export const EditIcon: React.FC<IconBaseProps> = ({ className, style }) => (
+    <svg style={style}
+        className={className}
+        viewBox="0 0 16 16"
+        fill="none"><path d="M6.573 14.287 6 14.667l-2-1.334-2 1.334V2h12v4.8c-.42-.18-.907-.18-1.334.013V3.333H3.333v8.84L4 11.733l2 1.333.573-.4v1.62Zm1.334-.98 4.094-4.087 1.353 1.36L9.267 14.667H7.907v-1.36ZM14.473 9.46l-.653.653-1.36-1.36.653-.654c.114-.106.287-.113.414-.026.02.007.04.027.054.04l.88.88c.133.133.133.353 0 .567ZM11.333 6V4.667H4.667V6h6.666ZM10 8.667V7.333H4.667v1.334H10Z" fill="#444054" /></svg>
+);
 
 export const Razor: React.FC<IconBaseProps> = ({ className }) => (
     <svg className={className} width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -287,22 +313,43 @@ export const Subscript: React.FC<IconBaseProps> = ({ className }) => (
 )
 
 export const Attachment: React.FC<IconBaseProps> = ({ className }) => (
-    <svg className={className}  width="16" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={className} width="16" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2.99931 15.4883C2.24908 15.4883 1.52877 15.2076 0.95469 14.6881C-0.318181 13.5336 -0.318181 11.6558 0.954396 10.5021L10.8796 0.973574C12.4282 -0.428676 14.8003 -0.302676 16.5314 1.26432C17.307 1.96682 17.7423 2.97957 17.726 4.04407C17.7096 5.09734 17.2545 6.10532 16.4766 6.80982L8.97543 14.0293C8.76665 14.2316 8.41656 14.2408 8.19369 14.0511C7.97136 13.8611 7.96058 13.5441 8.17019 13.3426L15.6827 6.11207C16.2703 5.57982 16.6074 4.82481 16.6198 4.03006C16.6323 3.23482 16.3146 2.48506 15.7493 1.97281C14.6874 1.01081 12.9586 0.507058 11.6732 1.67181L1.74828 11.2003C0.894907 11.9738 0.895184 13.2161 1.73722 13.9793C2.13209 14.3365 2.60081 14.5105 3.09995 14.4833C3.59383 14.456 4.10154 14.227 4.52961 13.839L12.4268 6.24003C12.713 5.98078 13.2881 5.34528 12.7027 4.81478C12.3712 4.51453 12.1383 4.53303 12.0618 4.53878C11.843 4.55628 11.5875 4.69303 11.3223 4.93353L5.37828 10.6488C5.16839 10.8505 4.81803 10.8603 4.59651 10.67C4.3739 10.4805 4.36367 10.163 4.57301 9.96203L10.5279 4.23603C10.996 3.81078 11.4747 3.58028 11.9619 3.54078C12.3422 3.51026 12.9077 3.58353 13.4845 4.10653C14.3407 4.88201 14.2342 6.01953 13.2204 6.93803L5.32327 14.5365C4.69278 15.1085 3.93147 15.4408 3.1677 15.4832C3.11156 15.4867 3.05542 15.4882 2.99929 15.4882L2.99931 15.4883Z" fill="#1C7ED6" />
     </svg>
 )
 
-export const Delete: React.FC<IconBaseProps> = ({ className }) => (
-<svg className={className}  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M9 3V4H4V6H5V19C5 19.5304 5.21071 20.0391 5.58579 20.4142C5.96086 20.7893 6.46957 21 7 21H17C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6ZM9 8V17H11V8H9ZM13 8V17H15V8H13Z" fill="#A10900"/>
-</svg>
+export const Delete: React.FC<IconBaseProps> = ({ className, style }) => (
+    <svg className={className} style={style}
+        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 3V4H4V6H5V19C5 19.5304 5.21071 20.0391 5.58579 20.4142C5.96086 20.7893 6.46957 21 7 21H17C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19V6H20V4H15V3H9ZM7 6H17V19H7V6ZM9 8V17H11V8H9ZM13 8V17H15V8H13Z" fill="#A10900" />
+    </svg>
+)
+export const EyeView: React.FC<IconBaseProps> = ({ className, style }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+        style={style}
+    >
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+    </svg>
+
 )
 
 export const Icons = {
     attachment: Attachment,
+    eyeView: EyeView,
     delete: Delete,
+    dangerIcon: DangerIcon,
     avatar: Avatar,
     notification: Notification,
+    editIcon: EditIcon,
     search: Search,
     add: Add,
     building: Building,

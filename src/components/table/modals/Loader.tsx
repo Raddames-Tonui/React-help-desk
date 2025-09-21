@@ -1,6 +1,6 @@
 
 export default function Loader({
-  size = "2em",
+  size = "3em",
   speed = 1.5,
   className = "",
   ariaLabel = "Loading",

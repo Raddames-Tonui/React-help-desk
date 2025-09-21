@@ -1,62 +1,55 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import type { User, AuthContextType } from '@/context/types.ts';
-import { getAllUsers, saveAllUsers } from '@/utils/utils';
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { type ReactNode, useState } from "react";
+import type { User } from "@/context/types.ts";
+import { AuthContext, TOKEN } from "@/hooks/hooks";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
+
     const [user, setUser] = useState<Omit<User, 'password'> | null>(() => {
         const stored = sessionStorage.getItem('user');
-        if (stored) {
-            return JSON.parse(stored);
-        } else {
-            return null;
-        }
+        return stored ? JSON.parse(stored) : null;
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // --------- REGISTER ---------
     const register = async (newUser: User) => {
-        const users = await getAllUsers();
-
-        const existingUser = users.find(function(u) {
-            return u.email === newUser.email;
-        });
-
-        if (existingUser) {
-            throw new Error('User already exists');
-        }
+        const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
+        if (users.find(u => u.email === newUser.email)) throw new Error("User already exists");
 
         users.push(newUser);
-        await saveAllUsers(users);
+        localStorage.setItem("users", JSON.stringify(users));
     };
 
+    // --------- LOGIN ---------
     const login = async (email: string, password: string): Promise<boolean> => {
-        const users = await getAllUsers();
+        const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
+        const found = users.find(u => u.email === email);
+        if (!found) return false;
 
-        const userFound = users.find(function(u) {
-            return u.email === email;
-        });
+        if (found.password === password) {
+            const { password: _, ...safeUser } = found;
 
-        if (!userFound) {
-            return false;
-        }
+            if (safeUser.role === "admin") {
+                const fetchedProfile = await fetchUserProfile();
+                if (!fetchedProfile) return false;
 
-        if (userFound.password === password) {
-            const { password: _, ...safeUser } = userFound;
-
-            sessionStorage.setItem('user', JSON.stringify(safeUser));
-            setUser(safeUser);
-
-            if (safeUser.role === 'admin') {
-                navigate({ to: '/admin' });
-            } else if (safeUser.role === 'vendor') {
-                navigate({ to: '/vendor' });
-            } else if (safeUser.role === 'client') {
-                navigate({ to: '/client' });
-            } else if (safeUser.role === 'trainee') {
-                navigate({ to: '/trainee' });
+                // Add company manually
+                const updatedUser = { ...fetchedProfile, company: "Sky World Limited" };
+                sessionStorage.setItem("user", JSON.stringify(updatedUser));
+                setUser(updatedUser);
+            } else {
+                // Non-admin roles: use local user
+                sessionStorage.setItem("user", JSON.stringify(safeUser));
+                setUser(safeUser);
             }
+
+            if (safeUser.role === "admin") navigate({ to: "/admin" });
+            else if (safeUser.role === "vendor") navigate({ to: "/vendor" });
+            else if (safeUser.role === "client") navigate({ to: "/client" });
+            else if (safeUser.role === "trainee") navigate({ to: "/trainee" });
 
             return true;
         }
@@ -64,44 +57,69 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false;
     };
 
+// --------- FETCH USER PROFILE ---------
+    const fetchUserProfile = async (): Promise<Omit<User, 'password'> | null> => {
+        setIsLoading(true);
+        setError(null);
 
+        try {
+            const res = await fetch("/api/admin/users/profile", {
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`,
+                    Accept: "application/json",
+                },
+            });
 
-    const logout = () => {
-        sessionStorage.removeItem('user');
-        setUser(null);
-        navigate({ to: '/auth/login' });
+            const json = await res.json();
+            if (!res.ok) throw new Error(json?.message || "Failed to fetch user profile");
+
+            const fetchedUser: Omit<User, "password"> = json.user;
+            return fetchedUser;
+        } catch (err: any) {
+            setError(err instanceof Error ? err.message : "Unknown error");
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
     };
 
+
+    // --------- LOGOUT ---------
+    const logout = () => {
+        sessionStorage.removeItem("user");
+        setUser(null);
+        navigate({ to: "/auth/login" });
+    };
+
+    // --------- RESET PASSWORD ---------
     const resetPassword = async (email: string, newPassword: string) => {
-        const users = await getAllUsers();
-
-        const index = users.findIndex(function(u) {
-            return u.email === email;
-        });
-
-        if (index === -1) {
-            throw new Error('User not found');
-        }
+        const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
+        const index = users.findIndex(u => u.email === email);
+        if (index === -1) throw new Error("User not found");
 
         users[index].password = newPassword;
-        await saveAllUsers(users);
+        localStorage.setItem("users", JSON.stringify(users));
     };
 
-    const getUser = () => {
-        return user;
-    };
+    // --------- GET USER ---------
+    const getUser = () => user;
+
 
     return (
-        <AuthContext.Provider value={{ user, register, login, logout, resetPassword, getUser }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                isLoading,
+                error,
+                register,
+                login,
+                logout,
+                resetPassword,
+                getUser,
+                fetchUserProfile
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
-};
-
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within AuthProvider');
-    }
-    return context;
 };

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
-import { useAuth } from '@/context/AuthContext';
+import {useAuth} from "@/hooks/hooks.tsx";
 import "@css/layout.css";
 
 

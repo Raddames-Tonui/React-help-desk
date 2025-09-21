@@ -4,12 +4,12 @@ import { Route as UserRoute } from "@/routes/_protected/admin/$userId";
 import type { SingleUser } from "@/context/types.ts";
 import "@/css/userspage.css";
 
-import Loader from "@components/Loader.tsx";
-import {useUsers} from "@/hooks";
+import Loader from "@/components/Loader.tsx";
+import {useUsers} from "@/hooks/hooks.tsx";
 
 function UsersPageId() {
     const { userId } = useParams({ from: UserRoute.id });
-    const { viewUserPage, loading: contextLoading, error: contextError } = useUsers();
+    const { viewUserPage, isLoading: contextLoading, error: contextError } = useUsers();
     const [user, setUser] = useState<SingleUser["user"] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -28,12 +28,13 @@ function UsersPageId() {
 
             setLoading(false);
         };
+        console.log("UserId param changed:", userId);
 
         fetchUser();
         return () => {
             isMounted = false;
         };
-    }, [userId, viewUserPage]);
+    }, [userId]);
 
     if (loading || contextLoading) return <div className="user-loading"><Loader/></div>;
     if (error || contextError) return <div className="user-error">{error || contextError}</div>;

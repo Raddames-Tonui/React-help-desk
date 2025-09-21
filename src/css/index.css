@@ -84,3 +84,21 @@
 }
 
 
+
+/* ICONS CSS */
+
+
+
+.action-icons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
+}
+
+.action-icons button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+

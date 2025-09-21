@@ -13,6 +13,7 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as _notFoundRouteImport } from './routes/__not-found'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProtectedVendorIndexRouteImport } from './routes/_protected/vendor/index'
 import { Route as ProtectedTraineeIndexRouteImport } from './routes/_protected/trainee/index'
 import { Route as ProtectedClientIndexRouteImport } from './routes/_protected/client/index'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
@@ -49,6 +50,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedVendorIndexRoute = ProtectedVendorIndexRouteImport.update({
+  id: '/vendor/',
+  path: '/vendor/',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedTraineeIndexRoute = ProtectedTraineeIndexRouteImport.update({
   id: '/trainee/',
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof ProtectedAdminIndexRoute
   '/client': typeof ProtectedClientIndexRoute
   '/trainee': typeof ProtectedTraineeIndexRoute
+  '/vendor': typeof ProtectedVendorIndexRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
@@ -189,6 +196,7 @@ export interface FileRoutesByTo {
   '/admin': typeof ProtectedAdminIndexRoute
   '/client': typeof ProtectedClientIndexRoute
   '/trainee': typeof ProtectedTraineeIndexRoute
+  '/vendor': typeof ProtectedVendorIndexRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/client/': typeof ProtectedClientIndexRoute
   '/_protected/trainee/': typeof ProtectedTraineeIndexRoute
+  '/_protected/vendor/': typeof ProtectedVendorIndexRoute
   '/_protected/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/_protected/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/_protected/pages/client/': typeof ProtectedPagesClientIndexRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/client'
     | '/trainee'
+    | '/vendor'
     | '/pages/vendor/$id'
     | '/pages/vendor/dummy'
     | '/pages/client'
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/client'
     | '/trainee'
+    | '/vendor'
     | '/pages/vendor/$id'
     | '/pages/vendor/dummy'
     | '/pages/client'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/_protected/admin/'
     | '/_protected/client/'
     | '/_protected/trainee/'
+    | '/_protected/vendor/'
     | '/_protected/pages/vendor/$id'
     | '/_protected/pages/vendor/dummy'
     | '/_protected/pages/client/'
@@ -331,6 +343,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_protected/vendor/': {
+      id: '/_protected/vendor/'
+      path: '/vendor'
+      fullPath: '/vendor'
+      preLoaderRoute: typeof ProtectedVendorIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_protected/trainee/': {
       id: '/_protected/trainee/'
@@ -476,6 +495,7 @@ interface ProtectedRouteChildren {
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedClientIndexRoute: typeof ProtectedClientIndexRoute
   ProtectedTraineeIndexRoute: typeof ProtectedTraineeIndexRoute
+  ProtectedVendorIndexRoute: typeof ProtectedVendorIndexRoute
   ProtectedPagesVendorIdRoute: typeof ProtectedPagesVendorIdRoute
   ProtectedPagesVendorDummyRoute: typeof ProtectedPagesVendorDummyRoute
   ProtectedPagesClientIndexRoute: typeof ProtectedPagesClientIndexRoute
@@ -493,6 +513,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedClientIndexRoute: ProtectedClientIndexRoute,
   ProtectedTraineeIndexRoute: ProtectedTraineeIndexRoute,
+  ProtectedVendorIndexRoute: ProtectedVendorIndexRoute,
   ProtectedPagesVendorIdRoute: ProtectedPagesVendorIdRoute,
   ProtectedPagesVendorDummyRoute: ProtectedPagesVendorDummyRoute,
   ProtectedPagesClientIndexRoute: ProtectedPagesClientIndexRoute,
