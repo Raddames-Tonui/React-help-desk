@@ -7,9 +7,6 @@ export const Route = createFileRoute('/_protected/admin/subjects')({
 
 function RouteComponent() {
   return <section>
-          <div className="page-header">
-              <h1>Subjects</h1>
-      </div>
-      <Subjects />
+    <Subjects />
   </section>
 }
