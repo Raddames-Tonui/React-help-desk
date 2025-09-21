@@ -5,7 +5,7 @@ import type { SingleUser } from "@/context/types.ts";
 import "@/css/userspage.css";
 
 import Loader from "@/components/Loader.tsx";
-import {useUsers} from "@/hooks/hooks.tsx";
+import { useUsers } from "@/hooks/hooks.tsx";
 
 function UsersPageId() {
     const { userId } = useParams({ from: UserRoute.id });
@@ -36,7 +36,7 @@ function UsersPageId() {
         };
     }, [userId]);
 
-    if (loading || contextLoading) return <div className="user-loading"><Loader/></div>;
+    if (loading || contextLoading) return <div className="user-loading"><Loader /></div>;
     if (error || contextError) return <div className="user-error">{error || contextError}</div>;
     if (!user) return <div className="user-empty">No user data available</div>;
 

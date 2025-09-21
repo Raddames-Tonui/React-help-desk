@@ -113,7 +113,7 @@ const UserActions: React.FC<UserActionsProps> = ({
 
 
 
-    const handleView = () => {
+    const handleViewUser = () => {
         navigate({
             to: `/admin/$userId`, params: { userId: user.id.toString() }
         });
@@ -124,7 +124,7 @@ const UserActions: React.FC<UserActionsProps> = ({
         <div className="action-icons">
             <button className="" onClick={handleEditRole}><Icon iconName="editIcon" style={{ width: "18px" }} />Role</button>
             <button onClick={handleEditStatus}><Icon iconName="editIcon" style={{ width: "18px" }} />Status</button>
-            <button onClick={handleView}> <Icon iconName="eyeView" style={{ width: "18px" }} />View</button>
+            <button onClick={handleViewUser}> <Icon iconName="eyeView" style={{ width: "18px" }} />View</button>
             <button onClick={handleDelete}>
                 <Icon iconName="delete" style={{ width: "18px" }} />
                 Delete

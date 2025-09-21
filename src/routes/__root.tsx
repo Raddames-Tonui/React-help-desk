@@ -26,7 +26,7 @@ const RootLayout = () => (
           </SubjectProvider>
       </UsersProvider>
     </QueryClientProvider>
-    {/*<TanStackRouterDevtools />*/}
+    <TanStackRouterDevtools />
   </AuthProvider>
 )
 

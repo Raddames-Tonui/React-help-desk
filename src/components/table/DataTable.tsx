@@ -11,7 +11,7 @@ import Loader from "../Loader";
  * Column config for Datatable
  */
 export interface ColumnProps<T, K extends keyof T = keyof T> {
-    id: K;
+    id: K | string;
     caption: string;
     size: number;
     align?: "left" | "center" | "right";

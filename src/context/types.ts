@@ -84,7 +84,7 @@ export type SubjectData = {
 export type SingleSubjectData = {
     subject : {
         id : number;
-        name: string;
+        name?: string;
         description: string;
         created_by: string;
         is_active: boolean;
