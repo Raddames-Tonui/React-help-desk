@@ -1,7 +1,6 @@
 @import url(./variables.css);
 
 
-
 .home-page{
     display: flex;
     flex-direction: column;
@@ -86,9 +85,6 @@
 
 
 /* ICONS CSS */
-
-
-
 .action-icons {
   display: flex;
   justify-content: space-evenly;
@@ -96,9 +92,25 @@
   gap: 5px;
 }
 
-.action-icons button {
+.action-icons > button {
   background-color: transparent;
   outline: none;
   border: none;
 }
 
+
+
+.btn-secondary {
+  background: var(--primary-700);
+  color: var(--bg-default);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--primary-800);
+}

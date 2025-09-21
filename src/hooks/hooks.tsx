@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import type {
     ApiResponse,  SingleSubjectData,
-    SingleUser, SubjectData, SubjectPayload, User,
+    SingleUser, SubjectData, SubjectPayload, TaskData, TaskPayload, User,
     UserData,
 } from "@/context/types.ts";
 
@@ -101,3 +101,41 @@ export const useSubjects = () => {
     }
     return ctx;
 };
+
+
+
+
+// ---------- TASKS CONTEXT ------------------
+
+export type TasksContextValue = {
+  tasksData: ApiResponse<TaskData> | null;
+  tasks: TaskData[];
+  isLoading: boolean;
+  error: string | null;
+
+  page: number;
+  pageSize: number;
+  setPage: (page: number) => void;
+  setPageSize: (size: number) => void;
+  setParams: (params: Record<string, string>) => void;
+  refresh: () => void;
+
+  fetchTasksBySubject: (subjectId: number) => Promise<TaskData[] | null>;
+  fetchSingleTask: (taskId: number) => Promise<TaskData | null>;
+  createTask: (payload: TaskPayload) => Promise<TaskData | null>;
+  updateTask: (
+    taskId: number,
+    payload: TaskPayload
+  ) => Promise<TaskData | null>;
+  deleteTask: (taskId: number) => Promise<string>;
+};
+
+export const TasksContext = createContext<TasksContextValue | undefined>(
+  undefined
+);
+
+export function useTasks() {
+  const ctx = useContext(TasksContext);
+  if (!ctx) throw new Error("useTasks must be used within a TasksProvider");
+  return ctx;
+}

@@ -24,6 +24,7 @@ import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/re
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
 import { Route as ProtectedPagesSettingsRouteImport } from './routes/_protected/pages/settings'
 import { Route as ProtectedAdminUsersRouteImport } from './routes/_protected/admin/users'
+import { Route as ProtectedAdminTasksRouteImport } from './routes/_protected/admin/tasks'
 import { Route as ProtectedAdminSubjectsRouteImport } from './routes/_protected/admin/subjects'
 import { Route as ProtectedAdminUserIdRouteImport } from './routes/_protected/admin/$userId'
 import { Route as ProtectedPagesVendorIndexRouteImport } from './routes/_protected/pages/vendor/index'
@@ -33,6 +34,8 @@ import { Route as ProtectedPagesOdataIndexRouteImport } from './routes/_protecte
 import { Route as ProtectedPagesClientIndexRouteImport } from './routes/_protected/pages/client/index'
 import { Route as ProtectedPagesVendorDummyRouteImport } from './routes/_protected/pages/vendor/dummy'
 import { Route as ProtectedPagesVendorIdRouteImport } from './routes/_protected/pages/vendor/$id'
+import { Route as ProtectedAdminTasksTaskIdRouteImport } from './routes/_protected/admin/tasks.$taskId'
+import { Route as ProtectedAdminSubjectsSubjectIdRouteImport } from './routes/_protected/admin/subjects.$subjectId'
 
 const PublicRoute = PublicRouteImport.update({
   id: '/_public',
@@ -107,6 +110,11 @@ const ProtectedAdminUsersRoute = ProtectedAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedAdminTasksRoute = ProtectedAdminTasksRouteImport.update({
+  id: '/admin/tasks',
+  path: '/admin/tasks',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const ProtectedAdminSubjectsRoute = ProtectedAdminSubjectsRouteImport.update({
   id: '/admin/subjects',
   path: '/admin/subjects',
@@ -158,11 +166,24 @@ const ProtectedPagesVendorIdRoute = ProtectedPagesVendorIdRouteImport.update({
   path: '/pages/vendor/$id',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedAdminTasksTaskIdRoute =
+  ProtectedAdminTasksTaskIdRouteImport.update({
+    id: '/$taskId',
+    path: '/$taskId',
+    getParentRoute: () => ProtectedAdminTasksRoute,
+  } as any)
+const ProtectedAdminSubjectsSubjectIdRoute =
+  ProtectedAdminSubjectsSubjectIdRouteImport.update({
+    id: '/$subjectId',
+    path: '/$subjectId',
+    getParentRoute: () => ProtectedAdminSubjectsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin/$userId': typeof ProtectedAdminUserIdRoute
-  '/admin/subjects': typeof ProtectedAdminSubjectsRoute
+  '/admin/subjects': typeof ProtectedAdminSubjectsRouteWithChildren
+  '/admin/tasks': typeof ProtectedAdminTasksRouteWithChildren
   '/admin/users': typeof ProtectedAdminUsersRoute
   '/pages/settings': typeof ProtectedPagesSettingsRoute
   '/auth/login': typeof PublicAuthLoginRoute
@@ -174,6 +195,8 @@ export interface FileRoutesByFullPath {
   '/client': typeof ProtectedClientIndexRoute
   '/trainee': typeof ProtectedTraineeIndexRoute
   '/vendor': typeof ProtectedVendorIndexRoute
+  '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
+  '/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
@@ -185,7 +208,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/$userId': typeof ProtectedAdminUserIdRoute
-  '/admin/subjects': typeof ProtectedAdminSubjectsRoute
+  '/admin/subjects': typeof ProtectedAdminSubjectsRouteWithChildren
+  '/admin/tasks': typeof ProtectedAdminTasksRouteWithChildren
   '/admin/users': typeof ProtectedAdminUsersRoute
   '/pages/settings': typeof ProtectedPagesSettingsRoute
   '/auth/login': typeof PublicAuthLoginRoute
@@ -197,6 +221,8 @@ export interface FileRoutesByTo {
   '/client': typeof ProtectedClientIndexRoute
   '/trainee': typeof ProtectedTraineeIndexRoute
   '/vendor': typeof ProtectedVendorIndexRoute
+  '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
+  '/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
   '/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/pages/client': typeof ProtectedPagesClientIndexRoute
@@ -212,7 +238,8 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
   '/_protected/admin/$userId': typeof ProtectedAdminUserIdRoute
-  '/_protected/admin/subjects': typeof ProtectedAdminSubjectsRoute
+  '/_protected/admin/subjects': typeof ProtectedAdminSubjectsRouteWithChildren
+  '/_protected/admin/tasks': typeof ProtectedAdminTasksRouteWithChildren
   '/_protected/admin/users': typeof ProtectedAdminUsersRoute
   '/_protected/pages/settings': typeof ProtectedPagesSettingsRoute
   '/_public/auth/login': typeof PublicAuthLoginRoute
@@ -224,6 +251,8 @@ export interface FileRoutesById {
   '/_protected/client/': typeof ProtectedClientIndexRoute
   '/_protected/trainee/': typeof ProtectedTraineeIndexRoute
   '/_protected/vendor/': typeof ProtectedVendorIndexRoute
+  '/_protected/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
+  '/_protected/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
   '/_protected/pages/vendor/$id': typeof ProtectedPagesVendorIdRoute
   '/_protected/pages/vendor/dummy': typeof ProtectedPagesVendorDummyRoute
   '/_protected/pages/client/': typeof ProtectedPagesClientIndexRoute
@@ -238,6 +267,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/$userId'
     | '/admin/subjects'
+    | '/admin/tasks'
     | '/admin/users'
     | '/pages/settings'
     | '/auth/login'
@@ -249,6 +279,8 @@ export interface FileRouteTypes {
     | '/client'
     | '/trainee'
     | '/vendor'
+    | '/admin/subjects/$subjectId'
+    | '/admin/tasks/$taskId'
     | '/pages/vendor/$id'
     | '/pages/vendor/dummy'
     | '/pages/client'
@@ -261,6 +293,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/$userId'
     | '/admin/subjects'
+    | '/admin/tasks'
     | '/admin/users'
     | '/pages/settings'
     | '/auth/login'
@@ -272,6 +305,8 @@ export interface FileRouteTypes {
     | '/client'
     | '/trainee'
     | '/vendor'
+    | '/admin/subjects/$subjectId'
+    | '/admin/tasks/$taskId'
     | '/pages/vendor/$id'
     | '/pages/vendor/dummy'
     | '/pages/client'
@@ -287,6 +322,7 @@ export interface FileRouteTypes {
     | '/_public'
     | '/_protected/admin/$userId'
     | '/_protected/admin/subjects'
+    | '/_protected/admin/tasks'
     | '/_protected/admin/users'
     | '/_protected/pages/settings'
     | '/_public/auth/login'
@@ -298,6 +334,8 @@ export interface FileRouteTypes {
     | '/_protected/client/'
     | '/_protected/trainee/'
     | '/_protected/vendor/'
+    | '/_protected/admin/subjects/$subjectId'
+    | '/_protected/admin/tasks/$taskId'
     | '/_protected/pages/vendor/$id'
     | '/_protected/pages/vendor/dummy'
     | '/_protected/pages/client/'
@@ -421,6 +459,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminUsersRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/admin/tasks': {
+      id: '/_protected/admin/tasks'
+      path: '/admin/tasks'
+      fullPath: '/admin/tasks'
+      preLoaderRoute: typeof ProtectedAdminTasksRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/admin/subjects': {
       id: '/_protected/admin/subjects'
       path: '/admin/subjects'
@@ -484,12 +529,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedPagesVendorIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/admin/tasks/$taskId': {
+      id: '/_protected/admin/tasks/$taskId'
+      path: '/$taskId'
+      fullPath: '/admin/tasks/$taskId'
+      preLoaderRoute: typeof ProtectedAdminTasksTaskIdRouteImport
+      parentRoute: typeof ProtectedAdminTasksRoute
+    }
+    '/_protected/admin/subjects/$subjectId': {
+      id: '/_protected/admin/subjects/$subjectId'
+      path: '/$subjectId'
+      fullPath: '/admin/subjects/$subjectId'
+      preLoaderRoute: typeof ProtectedAdminSubjectsSubjectIdRouteImport
+      parentRoute: typeof ProtectedAdminSubjectsRoute
+    }
   }
 }
 
+interface ProtectedAdminSubjectsRouteChildren {
+  ProtectedAdminSubjectsSubjectIdRoute: typeof ProtectedAdminSubjectsSubjectIdRoute
+}
+
+const ProtectedAdminSubjectsRouteChildren: ProtectedAdminSubjectsRouteChildren =
+  {
+    ProtectedAdminSubjectsSubjectIdRoute: ProtectedAdminSubjectsSubjectIdRoute,
+  }
+
+const ProtectedAdminSubjectsRouteWithChildren =
+  ProtectedAdminSubjectsRoute._addFileChildren(
+    ProtectedAdminSubjectsRouteChildren,
+  )
+
+interface ProtectedAdminTasksRouteChildren {
+  ProtectedAdminTasksTaskIdRoute: typeof ProtectedAdminTasksTaskIdRoute
+}
+
+const ProtectedAdminTasksRouteChildren: ProtectedAdminTasksRouteChildren = {
+  ProtectedAdminTasksTaskIdRoute: ProtectedAdminTasksTaskIdRoute,
+}
+
+const ProtectedAdminTasksRouteWithChildren =
+  ProtectedAdminTasksRoute._addFileChildren(ProtectedAdminTasksRouteChildren)
+
 interface ProtectedRouteChildren {
   ProtectedAdminUserIdRoute: typeof ProtectedAdminUserIdRoute
-  ProtectedAdminSubjectsRoute: typeof ProtectedAdminSubjectsRoute
+  ProtectedAdminSubjectsRoute: typeof ProtectedAdminSubjectsRouteWithChildren
+  ProtectedAdminTasksRoute: typeof ProtectedAdminTasksRouteWithChildren
   ProtectedAdminUsersRoute: typeof ProtectedAdminUsersRoute
   ProtectedPagesSettingsRoute: typeof ProtectedPagesSettingsRoute
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
@@ -507,7 +592,8 @@ interface ProtectedRouteChildren {
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAdminUserIdRoute: ProtectedAdminUserIdRoute,
-  ProtectedAdminSubjectsRoute: ProtectedAdminSubjectsRoute,
+  ProtectedAdminSubjectsRoute: ProtectedAdminSubjectsRouteWithChildren,
+  ProtectedAdminTasksRoute: ProtectedAdminTasksRouteWithChildren,
   ProtectedAdminUsersRoute: ProtectedAdminUsersRoute,
   ProtectedPagesSettingsRoute: ProtectedPagesSettingsRoute,
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,

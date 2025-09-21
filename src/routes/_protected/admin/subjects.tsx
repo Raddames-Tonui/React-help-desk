@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Subjects from "@/pages/Subjects.tsx";
+import SubjectsPage from "@/pages/SubjectsPage";
 
 export const Route = createFileRoute('/_protected/admin/subjects')({
   component: RouteComponent,
@@ -7,6 +7,6 @@ export const Route = createFileRoute('/_protected/admin/subjects')({
 
 function RouteComponent() {
   return <section>
-    <Subjects />
+    <SubjectsPage />
   </section>
 }

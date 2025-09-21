@@ -1,219 +1,239 @@
 import type {
-    ApiResponse,
-    SingleSubjectData,
-    SubjectData,
-    SubjectPayload,
+  ApiResponse,
+  SingleSubjectData,
+  SubjectData,
+  SubjectPayload,
 } from "@/context/types.ts";
 import React, { useEffect, useState, useCallback } from "react";
 import { SubjectContext, type SubjectContextValue, TOKEN } from "@/hooks/hooks.tsx";
+import toast from "react-hot-toast";
 
-export const SubjectProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
-    const [subjectData, setSubjectData] = useState<ApiResponse<SubjectData> | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+export const SubjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [subjectData, setSubjectData] = useState<ApiResponse<SubjectData> | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [params, setParams] = useState<Record<string, string>>({});
-    const [reload, setReload] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [params, setParams] = useState<Record<string, string>>({});
+  const [reload, setReload] = useState(false);
 
-    const fetchSubjects = useCallback(
-        async (signal: AbortSignal) => {
-            try {
-                setIsLoading(true);
-                setError(null);
+  const fetchSubjects = useCallback(
+    async (signal: AbortSignal) => {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-                const query = new URLSearchParams({
-                    page: String(page),
-                    pageSize: String(pageSize),
-                    ...params,
-                }).toString();
+        const query = new URLSearchParams({
+          page: String(page),
+          pageSize: String(pageSize),
+          ...params,
+        }).toString();
 
-                const res = await fetch(`/api/admin/subjects/?${query}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Accept: "application/json",
-                        Authorization: `Bearer ${TOKEN}`,
-                    },
-                    signal,
-                });
+        const res = await fetch(`/api/admin/subjects/?${query}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          signal,
+        });
 
-                const json = await res.json();
+        const json = await res.json();
 
-                if (!res.ok) {
-                    throw new Error(
-                        json.message || `Failed to fetch subjects (status ${res.status})`
-                    );
-                }
+        if (!res.ok) {
+          throw new Error(
+            json.message || `Failed to fetch subjects (status ${res.status})`
+          );
+        }
 
-                setSubjectData(json);
-            } catch (error) {
-                if ((error as any).name === "AbortError") return;
-                setError(error instanceof Error ? error.message : "Unknown error");
-                setSubjectData(null);
-            } finally {
-                setIsLoading(false);
-            }
+        setSubjectData(json);
+      } catch (error) {
+        if ((error as any).name === "AbortError") return;
+        const msg = error instanceof Error ? error.message : "Unknown error";
+        setError(msg);
+        setSubjectData(null);
+        toast.error(`Error fetching subjects: ${msg}`);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [page, pageSize, params]
+  );
+
+  useEffect(() => {
+    const ac = new AbortController();
+    fetchSubjects(ac.signal);
+    return () => ac.abort();
+  }, [fetchSubjects, reload]);
+
+  const refresh = () => setReload((s) => !s);
+
+  const fetchSingleSubject = async (
+    subjectId: number
+  ): Promise<SingleSubjectData | null> => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const res = await fetch(`/api/admin/subjects/${subjectId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          Accept: "application/json",
         },
-        [page, pageSize, params]
-    );
+      });
 
-    useEffect(() => {
-        const ac = new AbortController();
-        fetchSubjects(ac.signal);
-        return () => ac.abort();
-    }, [fetchSubjects, reload]);
+      const json = await res.json();
 
-    const refresh = () => setReload((s) => !s);
+      if (!res.ok) {
+        throw new Error(
+          json.message || `Failed to fetch subject (status ${res.status})`
+        );
+      }
 
-    const fetchSingleSubject = async (
-        subjectId: number
-    ): Promise<SingleSubjectData | null> => {
-        try {
-            setIsLoading(true);
-            setError(null);
+      return json as SingleSubjectData;
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error fetching subject: ${msg}`);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            const res = await fetch(`/api/admin/subjects/${subjectId}`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    Accept: "application/json",
-                },
-            });
+  const createSubject = async (
+    payload: SubjectPayload
+  ): Promise<SingleSubjectData | null> => {
+    try {
+      setIsLoading(true);
 
-            const json = await res.json();
+      const res = await fetch(`/api/admin/subjects/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-            if (!res.ok) {
-                throw new Error(
-                    json.message || `Failed to fetch subject (status ${res.status})`
-                );
-            }
+      const json = await res.json();
 
-            return json as SingleSubjectData;
-        } catch (error) {
-            setError(error instanceof Error ? error.message : "Unknown error");
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      if (!res.ok) {
+        throw new Error(
+          json.message || `Failed to create subject (status ${res.status})`
+        );
+      }
 
-    const createSubject = async (
-        payload: SubjectPayload
-    ): Promise<SingleSubjectData | null> => {
-        try {
-            setIsLoading(true);
+      toast.success("Subject created successfully");
+      refresh();
 
-            const res = await fetch(`/api/admin/subjects/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${TOKEN}`,
-                },
-                body: JSON.stringify(payload),
-            });
+      return json as SingleSubjectData;
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error creating subject: ${msg}`);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            const json = await res.json();
+  const updateSubject = async (
+    subjectId: number,
+    payload: SubjectPayload
+  ): Promise<SingleSubjectData | null> => {
+    try {
+      setIsLoading(true);
 
-            if (!res.ok) {
-                throw new Error(
-                    json.message || `Failed to create subject (status ${res.status})`
-                );
-            }
+      const res = await fetch(`/api/admin/subjects/${subjectId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-            return json as SingleSubjectData;
-        } catch (error) {
-            setError(error instanceof Error ? error.message : "Unknown error");
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      const json = await res.json();
 
-    const updateSubject = async (
-        subjectId: number,
-        payload: SubjectPayload
-    ): Promise<SingleSubjectData | null> => {
-        try {
-            setIsLoading(true);
+      if (!res.ok) {
+        throw new Error(
+          json.message || `Failed to edit subject (status ${res.status})`
+        );
+      }
 
-            const res = await fetch(`/api/admin/subjects/${subjectId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${TOKEN}`,
-                },
-                body: JSON.stringify(payload),
-            });
+      toast.success("Subject updated successfully");
+      refresh();
 
-            const json = await res.json();
+      return json as SingleSubjectData;
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error updating subject: ${msg}`);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            if (!res.ok) {
-                throw new Error(
-                    json.message || `Failed to edit subject (status ${res.status})`
-                );
-            }
+  const deleteSubject = async (subjectId: number): Promise<string> => {
+    try {
+      setIsLoading(true);
 
-            return json as SingleSubjectData;
-        } catch (error) {
-            setError(error instanceof Error ? error.message : "Unknown error");
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      const res = await fetch(`/api/admin/subjects/${subjectId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          Accept: "application/json",
+        },
+      });
 
-    const deleteSubject = async (subjectId: number): Promise<string> => {
-        try {
-            setIsLoading(true);
+      const json = await res.json();
 
-            const res = await fetch(`/api/admin/subjects/${subjectId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    Accept: "application/json",
-                },
-            });
+      if (!res.ok) {
+        throw new Error(
+          json.message || `Failed to delete subject (status ${res.status})`
+        );
+      }
 
-            const json = await res.json();
+      toast.success("Subject deleted");
+      refresh();
 
-            if (!res.ok) {
-                throw new Error(
-                    json.message || `Failed to delete subject (status ${res.status})`
-                );
-            }
+      return json.message || "Subject deleted successfully";
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error deleting subject: ${msg}`);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-            return json.message || "Subject deleted successfully";
-        } catch (error) {
-            setError(error instanceof Error ? error.message : "Unknown error");
-            throw error;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  const value: SubjectContextValue = {
+    subjectData,
+    subjects: subjectData?.records ?? [],
+    isLoading,
+    error,
+    page,
+    pageSize,
+    setPage,
+    setPageSize,
+    setParams,
+    refresh,
 
-    const value: SubjectContextValue = {
-        subjectData,
-        subjects: subjectData?.records ?? [],
-        isLoading,
-        error,
-        page,
-        pageSize,
-        setPage,
-        setPageSize,
-        setParams,
-        refresh,
+    fetchSingleSubject,
+    createSubject,
+    updateSubject,
+    deleteSubject,
+  };
 
-        fetchSingleSubject,
-        createSubject,
-        updateSubject,
-        deleteSubject,
-    };
-
-    return (
-        <SubjectContext.Provider value={value}>
-            {children}
-        </SubjectContext.Provider>
-    );
+  return (
+    <SubjectContext.Provider value={value}>
+      {children}
+    </SubjectContext.Provider>
+  );
 };

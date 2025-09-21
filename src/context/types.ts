@@ -79,6 +79,7 @@ export type SubjectData = {
     created_at: string;
     updated_at: string;
     created_by_name: string;
+    actions: string;
 }
 
 export type SingleSubjectData = {
@@ -101,3 +102,52 @@ export type SubjectPayload = {
     description: string;
 }
 
+
+
+// ----------- DOJO TASKS -------------------
+
+export type TaskData = {
+    id: number;
+    subject_id: number;
+    title: string;
+    description: string;
+    requirements: string;
+    due_date: string;      
+    max_score: number;
+    is_active: boolean;
+    created_by: number;
+    created_at: string;
+    updated_at: string;
+    created_by_name: string;
+    subject_name?: string; 
+};
+
+export type SingleTaskData = {
+    task: {
+        id: number;
+        subject_id: number;
+        title: string;
+        description: string;
+        requirements: string;
+        due_date: string;
+        max_score: number;
+        is_active: boolean;
+        created_by: number;
+        created_at: string;
+        updated_at: string;
+        created_by_name: string;
+        subject_name: string;
+    };
+    message: string;
+};
+
+export type TaskPayload = {
+    subject_id: number;
+    title: string;
+    description: string;
+    requirements: string;
+    due_date: string;  
+    max_score: number;
+};
+
+export type TaskApiResponse = ApiResponse<TaskData>;

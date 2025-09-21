@@ -3,8 +3,12 @@ import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
-import {useAuth} from "@/hooks/hooks.tsx";
+import { useAuth } from "@/hooks/hooks.tsx";
+import { Toaster } from 'react-hot-toast';
+
 import "@css/layout.css";
+import "@css/Form.css";
+
 
 
 export const Route = createFileRoute('/_protected')({
@@ -20,7 +24,7 @@ export const Route = createFileRoute('/_protected')({
     }
 
     // Role-based access
-    const allowedRoles = ['admin', 'vendor','client', 'trainee']; 
+    const allowedRoles = ['admin', 'vendor', 'client', 'trainee'];
     if (!allowedRoles.includes(user.role)) {
       throw redirect({
         to: '/auth/unauthorized',
@@ -48,8 +52,11 @@ function RouteComponent() {
       style={{ '--sidebar-width': isSidebarOpen ? '240px' : '48px' } as React.CSSProperties}
     >
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Toaster position="top-right" />
+
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>
+
         <Outlet />
       </main>
       <Footer />

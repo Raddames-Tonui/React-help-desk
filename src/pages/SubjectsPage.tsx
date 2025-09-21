@@ -1,20 +1,22 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Route } from "@/routes/_protected/admin/users";
+import { Route } from "@/routes/_protected/admin/subjects";
 import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
-import type { UserData } from "@/context/types.ts";
+import type { SubjectData, SubjectPayload } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
-import { useUsers } from "@/hooks/hooks.tsx";
-import UserActions from "@/components/UserActions";
+import { useSubjects } from "@/hooks/hooks.tsx";
+import SubjectActions from "@/components/SubjectActions";
+import Modal from "@/components/Modal";
+import SubjectForm from "@/components/SubjectForm";
 
-export default function UsersPage() {
+export default function SubjectsPage() {
   const searchParams = Route.useSearch();
   const navigate = useNavigate();
 
   const {
-    users,
-    data,
+    subjects,
+    subjectData,
     isLoading,
     error,
     page,
@@ -24,16 +26,16 @@ export default function UsersPage() {
     setPageSize,
     setParams,
     refresh,
-    editRole,
-    editStatus,
-    deleteUser,
-  } = useUsers();
+    deleteSubject,
+    updateSubject,
+    createSubject,
+  } = useSubjects();
 
   const initialSortFromUrl: SortRule[] = searchParams.sortBy
     ? searchParams.sortBy.split(",").map((s) => {
-      const [column, direction = "asc"] = s.trim().split(" ");
-      return { column, direction: direction as "asc" | "desc" };
-    })
+        const [column, direction = "asc"] = s.trim().split(" ");
+        return { column, direction: direction as "asc" | "desc" };
+      })
     : [];
 
   const [sortBy, setSortBy] = useState<SortRule[]>(initialSortFromUrl);
@@ -43,44 +45,40 @@ export default function UsersPage() {
     setPageSize(Number(searchParams.pageSize || 10));
 
     const backendParams: Record<string, string> = {};
-    if (searchParams.role) backendParams.role = String(searchParams.role);
-    if (searchParams.status) backendParams.status = String(searchParams.status);
     if (searchParams.page) backendParams.page = String(searchParams.page);
     if (searchParams.pageSize) backendParams.pageSize = String(searchParams.pageSize);
+
+    setParams(backendParams);
   }, [searchParams, setPage, setPageSize, setParams]);
 
-  const sortedUsers = useMemo(() => sortData(users, sortBy), [users, sortBy]);
+  const sortedSubjects = useMemo(() => sortData(subjects, sortBy), [subjects, sortBy]);
 
-  const usersColumns: ColumnProps<UserData>[] = [
+  const subjectsColumns: ColumnProps<SubjectData>[] = [
     { id: "id", caption: "ID", size: 5, isSortable: true },
     { id: "name", caption: "Name", size: 150, isSortable: true },
-    { id: "email", caption: "Email", size: 200, isSortable: true },
-    { id: "role", caption: "Role", size: 120, isSortable: true, isFilterable: true },
+    { id: "description", caption: "Description", size: 200 },
     {
-      id: "status",
-      caption: "Status",
-      size: 120,
+      id: "is_active",
+      caption: "Active",
+      size: 100,
       isSortable: true,
-      isFilterable: true,
       renderCell: (value) => (
         <span
           style={{
-            backgroundColor:
-              value === "rejected"
-                ? "#a81d1dff"
-                : value === "approved"
-                  ? "green"
-                  : value === "pending"
-                    ? "#cbe505ff"
-                    : "inherit",
-            padding: value === "approved" ? "3px 1rem" : "3px 1.35rem",
+            color: value ? "green" : "red",
+            padding: "3px 1rem",
             fontWeight: "bold",
-            color: "white",
           }}
         >
-          {value}
+          {value ? "Yes" : "No"}
         </span>
       ),
+    },
+    {
+      id: "created_by_name",
+      caption: "Created By",
+      size: 120,
+      isSortable: true,
     },
     {
       id: "created_at",
@@ -94,11 +92,10 @@ export default function UsersPage() {
       caption: "Actions",
       size: 200,
       renderCell: (_, row) => (
-        <UserActions
-          user={row}
-          editRole={editRole}
-          editStatus={editStatus}
-          deleteUser={deleteUser}
+        <SubjectActions
+          subject={row}
+          updateSubject={updateSubject}
+          deleteSubject={deleteSubject}
         />
       ),
     },
@@ -127,31 +124,59 @@ export default function UsersPage() {
     updateUrl({ page: newPage });
   };
 
-
-
+  // Modal state for creating subject
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newPayload, setNewPayload] = useState<SubjectPayload>({ name: "", description: "" });
 
   return (
     <div>
       <div className="page-header">
-        <h1>Users</h1>
+        <h1>Subjects</h1>
+        <button className="btn-secondary" onClick={() => setIsModalOpen(true)}>
+          Create Subject
+        </button>
       </div>
+
       <div className="table-wrapper">
         <DataTable
-          columns={usersColumns}
-          data={sortedUsers}
+          columns={subjectsColumns}
+          data={sortedSubjects}
           isLoading={isLoading}
           error={error}
           onRefresh={refresh}
           initialSort={sortBy}
           onSortApply={handleSortApply}
           pagination={{
-            page: data?.current_page,
-            pageSize: data?.page_size,
-            total: data?.total_count,
+            page: subjectData?.current_page,
+            pageSize: subjectData?.page_size,
+            total: subjectData?.total_count,
             onPageChange: handlePageChange,
           }}
         />
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        title="Create Subject"
+        body={<SubjectForm onChange={setNewPayload} />}
+        footer={
+          <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+            <button
+              className="modal-close-btn"
+              onClick={() => {
+                createSubject(newPayload);
+                setIsModalOpen(false);
+              }}
+            >
+              Create
+            </button>
+            <button className="cancel" onClick={() => setIsModalOpen(false)}>
+              Cancel
+            </button>
+          </div>
+        }
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }

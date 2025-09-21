@@ -86,19 +86,21 @@ const Navbar: React.FC<NavbarProps> = ({ isSidebarOpen }) => {
                             <Icon iconName="avatar" />
                         </div>
 
-                        {showDropdown && user && (
-                            <div className="dropdown-menu">
-                                <p className="dropdown-user"><strong>{user?.name}</strong></p>
-                                <p>Email: {user?.email}</p>
-                                <p>Role: {user?.role}</p>
-                                <p>Status: {user?.status}</p>
-
+                        {user && (
+                            <div className={`dropdown-menu ${showDropdown ? "show" : ""}`}>
+                                <p className="dropdown-user">{user?.name}</p>
+                                <div className="dropdown-info">
+                                    <p><strong>Email:</strong> {user?.email}</p>
+                                    <p><strong>Role:</strong> {user?.role}</p>
+                                    <p><strong>Status:</strong> {user?.status}</p>
+                                </div>
                                 <button className="dropdown-item" onClick={handleLogout}>
                                     Logout
                                 </button>
                             </div>
                         )}
                     </div>
+
                 </div>
             </div>
         </header>
