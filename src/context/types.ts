@@ -136,7 +136,7 @@ export type SingleTaskData = {
         created_at: string;
         updated_at: string;
         created_by_name: string;
-        subject_name: string;
+        subject_name?: string;
     };
     message: string;
 };

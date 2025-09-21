@@ -1,9 +1,12 @@
+import SubjectPageId from '@/pages/SubjectPageId'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected/admin/subjects/$subjectId')({
-  component: RouteComponent,
+  component:  RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/_protected/admin/subjects/$subjectId"!</div>
+  return <div>
+    < SubjectPageId />
+  </div>
 }

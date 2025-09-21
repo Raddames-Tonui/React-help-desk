@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Route } from "@/routes/_protected/admin/subjects";
 import Modal from "@/components/Modal";
 import Icon from "@/utils/Icon";
 import type { SubjectData, SubjectPayload } from "@/context/types";
 import "@/css/index.css";
+import { Route } from "@/routes/_protected/admin/subjects";
 
 
 interface SubjectActionsProps {

@@ -23,7 +23,6 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const fetchTasks = useCallback(
     async (signal?: AbortSignal) => {
       try {
-        setIsLoading(true);
         setError(null);
 
         const query = new URLSearchParams({
@@ -54,9 +53,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setError(error instanceof Error ? error.message : "Unknown error");
         setTasksData(null);
         toast.error("Failed to fetch tasks");
-      } finally {
-        setIsLoading(false);
-      }
+      } 
     },
     [page, pageSize, params]
   );
@@ -71,7 +68,6 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // ---------- Fetch by subject ----------
   const fetchTasksBySubject = async (subjectId: number): Promise<TaskData[] | null> => {
     try {
-      setIsLoading(true);
 
       const res = await fetch(`/api/admin/tasks/?subject_id=${subjectId}`, {
         method: "GET",
@@ -92,15 +88,12 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error("Failed to fetch tasks by subject");
       return null;
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   // ---------- Fetch single ----------
   const fetchSingleTask = async (taskId: number): Promise<TaskData | null> => {
     try {
-      setIsLoading(true);
 
       const res = await fetch(`/api/admin/tasks/${taskId}`, {
         method: "GET",
@@ -121,15 +114,12 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error("Failed to fetch task");
       return null;
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   // ---------- Create ----------
   const createTask = async (payload: TaskPayload): Promise<TaskData | null> => {
     try {
-      setIsLoading(true);
 
       const res = await fetch(`/api/admin/tasks/`, {
         method: "POST",
@@ -153,15 +143,12 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error(error instanceof Error ? error.message : "Failed to create task");
       return null;
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   // ---------- Update ----------
   const updateTask = async (taskId: number, payload: TaskPayload): Promise<TaskData | null> => {
     try {
-      setIsLoading(true);
 
       const res = await fetch(`/api/admin/tasks/${taskId}`, {
         method: "PUT",
@@ -185,15 +172,12 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error(error instanceof Error ? error.message : "Failed to update task");
       return null;
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   // ---------- Delete ----------
   const deleteTask = async (taskId: number): Promise<string> => {
     try {
-      setIsLoading(true);
 
       const res = await fetch(`/api/admin/tasks/${taskId}`, {
         method: "DELETE",
@@ -216,9 +200,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error(error instanceof Error ? error.message : "Failed to delete task");
       throw error;
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   const value: TasksContextValue = {

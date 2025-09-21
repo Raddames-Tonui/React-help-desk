@@ -33,9 +33,9 @@ export default function TasksPage() {
 
   const initialSortFromUrl: SortRule[] = searchParams.sortBy
     ? searchParams.sortBy.split(",").map((s) => {
-        const [column, direction = "asc"] = s.trim().split(" ");
-        return { column, direction: direction as "asc" | "desc" };
-      })
+      const [column, direction = "asc"] = s.trim().split(" ");
+      return { column, direction: direction as "asc" | "desc" };
+    })
     : [];
 
   const [sortBy, setSortBy] = useState<SortRule[]>(initialSortFromUrl);
@@ -89,12 +89,15 @@ export default function TasksPage() {
       caption: "Created By",
       size: 120,
       isSortable: true,
+      hide: true,
+
     },
     {
       id: "created_at",
       caption: "Created",
       size: 120,
       isSortable: true,
+      hide: true,
       renderCell: (v) => new Date(v as string).toLocaleDateString(),
     },
     {

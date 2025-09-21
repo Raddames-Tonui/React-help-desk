@@ -28,7 +28,7 @@ function UsersPageId() {
 
             setLoading(false);
         };
-        console.log("UserId param changed:", userId);
+        // console.log("UserId param changed:", userId);
 
         fetchUser();
         return () => {

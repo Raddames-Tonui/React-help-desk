@@ -1,198 +1,197 @@
 import type { ApiResponse, UserData, SingleUser } from "@/context/types.ts";
 import React, { useEffect, useState } from "react";
 import { UsersContext, TOKEN, type UsersContextValue } from "@/hooks/hooks.tsx";
+import toast from "react-hot-toast";
 
 export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [data, setData] = useState<ApiResponse<UserData> | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<ApiResponse<UserData> | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [params, setParams] = useState<Record<string, string>>({});
-    const [reload, setReload] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [params, setParams] = useState<Record<string, string>>({});
+  const [reload, setReload] = useState(false);
 
-    // ------------------- FETCH ALL USERS -------------------
-    const fetchUsers = async (signal?: AbortSignal) => {
-        try {
-            setIsLoading(true);
-            setError(null);
+  // ------------------- FETCH ALL USERS -------------------
+  const fetchUsers = async (signal?: AbortSignal) => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-            const query = new URLSearchParams({
-                page: String(page),
-                pageSize: String(pageSize),
-                ...params,
-            }).toString();
+      const query = new URLSearchParams({
+        page: String(page),
+        pageSize: String(pageSize),
+        ...params,
+      }).toString();
 
-            const res = await fetch(`/api/admin/users/?${query}`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    Accept: "application/json",
-                },
-                signal,
-            });
+      const res = await fetch(`/api/admin/users/?${query}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          Accept: "application/json",
+        },
+        signal,
+      });
 
-            const json = await res.json();
+      const json = await res.json();
 
-            if (!res.ok) throw new Error(json.message || `Failed to fetch users (status ${res.status})`);
+      if (!res.ok) throw new Error(json.message || `Failed to fetch users (status ${res.status})`);
 
-            setData(json as ApiResponse<UserData>);
-        } catch (err) {
-            if ((err as any)?.name === "AbortError") return;
-            setError(err instanceof Error ? err.message : "Unknown error");
-            setData(null);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      setData(json as ApiResponse<UserData>);
+    } catch (err) {
+      if ((err as any)?.name === "AbortError") return;
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(msg);
+      setData(null);
+      toast.error(`Error fetching users: ${msg}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        const ac = new AbortController();
-        fetchUsers(ac.signal);
-        return () => ac.abort();
-    }, [page, pageSize, params, reload]);
+  useEffect(() => {
+    const ac = new AbortController();
+    fetchUsers(ac.signal);
+    return () => ac.abort();
+  }, [page, pageSize, params, reload]);
 
-    const refresh = () => setReload((s) => !s);
+  const refresh = () => setReload((s) => !s);
 
-    // ------------------- FETCH SINGLE USER -------------------
-    const viewUserPage = async (userId: number): Promise<SingleUser["user"] | null> => {
-        try {
-            setIsLoading(true);
-            setError(null);
+  // ------------------- FETCH SINGLE USER -------------------
+  const viewUserPage = async (userId: number): Promise<SingleUser["user"] | null> => {
+    try {
+      setError(null);
 
-            const res = await fetch(`/api/admin/users/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    Accept: "application/json",
-                },
-            });
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          Accept: "application/json",
+        },
+      });
 
-            if (!res.ok) {
-                const json = await res.json();
-                throw new Error(json?.message || "Failed to fetch user profile");
-            }
+      if (!res.ok) {
+        const json = await res.json();
+        throw new Error(json?.message || "Failed to fetch user profile");
+      }
 
-            const json = (await res.json()) as SingleUser;
-            return json.user;
-        } catch (err: any) {
-            setError(err instanceof Error ? err.message : "Unknown error");
-            return null;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      const json = (await res.json()) as SingleUser;
+      return json.user;
+    } catch (err: any) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error fetching user: ${msg}`);
+      return null;
+    }
+  };
 
-    // ------------------- EDIT STATUS -------------------
-    const editStatus = async (userId: number, status: string): Promise<UserData | null> => {
-        try {
-            setIsLoading(true);
+  // ------------------- EDIT STATUS -------------------
+  const editStatus = async (userId: number, status: string): Promise<UserData | null> => {
+    try {
+      const res = await fetch(`/api/admin/users/${userId}/status`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ status }),
+      });
 
-            const res = await fetch(`/api/admin/users/${userId}/status`, {
-                method: "PUT",
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify({ status }),
-            });
+      const json = await res.json();
 
-            const json = await res.json();
+      if (!res.ok) throw new Error(json.message || `Failed to edit status (status ${res.status})`);
 
-            if (!res.ok) throw new Error(json.message || `Failed to edit status (status ${res.status})`);
+      toast.success("User status updated successfully");
+      refresh();
+      return json.user as UserData;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error editing status: ${msg}`);
+      throw err;
+    }
+  };
 
-            refresh();
-            return json.user as UserData;
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Unknown error");
-            throw err;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  // ------------------- EDIT ROLE -------------------
+  const editRole = async (userId: number, role: string): Promise<UserData | null> => {
+    try {
+      const res = await fetch(`/api/admin/users/${userId}/role`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ role }),
+      });
 
-    // ------------------- EDIT ROLE -------------------
-    const editRole = async (userId: number, role: string): Promise<UserData | null> => {
-        try {
-            setIsLoading(true);
+      const json = await res.json();
 
-            const res = await fetch(`/api/admin/users/${userId}/role`, {
-                method: "PUT",
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify({ role }),
-            });
+      if (!res.ok) throw new Error(json.message || `Failed to edit role (status ${res.status})`);
 
-            const json = await res.json();
+      toast.success("User role updated successfully");
+      refresh();
+      return json.user as UserData;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error editing role: ${msg}`);
+      throw err;
+    }
+  };
 
-            if (!res.ok) throw new Error(json.message || `Failed to edit role (status ${res.status})`);
+  // ------------------- DELETE USER -------------------
+  const deleteUser = async (userId: number): Promise<string> => {
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          Accept: "application/json",
+        },
+      });
 
-            refresh();
-            return json.user as UserData;
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Unknown error");
-            throw err;
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      const json = await res.json();
 
-    // ------------------- DELETE USER -------------------
-    const deleteUser = async (userId: number): Promise<string> => {
-        try {
-            setIsLoading(true);
+      if (!res.ok) throw new Error(json.message || `Failed to delete user (status ${res.status})`);
 
-            const res = await fetch(`/api/admin/users/${userId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${TOKEN}`,
-                    Accept: "application/json",
-                },
-            });
+      setData((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          records: prev.records.filter((u) => u.id !== userId),
+          total: prev.total - 1,
+        };
+      });
 
-            const json = await res.json();
+      toast.success("User deleted successfully");
+      return json.message || "User deleted successfully";
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(msg);
+      toast.error(`Error deleting user: ${msg}`);
+      throw err;
+    }
+  };
 
-            if (!res.ok) throw new Error(json.message || `Failed to delete user (status ${res.status})`);
+  const value: UsersContextValue = {
+    data,
+    users: data?.records ?? [],
+    isLoading,
+    error,
+    page,
+    pageSize,
+    params,
+    setPage,
+    setPageSize,
+    setParams,
+    refresh,
+    viewUserPage,
+    editStatus,
+    editRole,
+    deleteUser,
+  };
 
-            setData((prev) => {
-                if (!prev) return prev;
-                return {
-                    ...prev,
-                    records: prev.records.filter((u) => u.id !== userId),
-                    total: prev.total - 1,
-                };
-            });
-
-            return json.message || "User deleted successfully";
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Unknown error");
-            throw err;
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const value: UsersContextValue = {
-        data,
-        users: data?.records ?? [],
-        isLoading,
-        error,
-        page,
-        pageSize,
-        params,
-        setPage,
-        setPageSize,
-        setParams,
-        refresh,
-        viewUserPage,
-        editStatus,
-        editRole,
-        deleteUser,
-    };
-
-    return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>;
+  return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>;
 };

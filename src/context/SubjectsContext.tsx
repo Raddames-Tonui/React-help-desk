@@ -70,39 +70,31 @@ export const SubjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const refresh = () => setReload((s) => !s);
 
-  const fetchSingleSubject = async (
-    subjectId: number
-  ): Promise<SingleSubjectData | null> => {
-    try {
-      setIsLoading(true);
-      setError(null);
+    const fetchSingleSubject = async (
+        subjectId: number
+    ): Promise<SingleSubjectData | null> => {
+        try {
+            const res = await fetch(`/api/admin/subjects/${subjectId}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${TOKEN}`,
+                    Accept: "application/json",
+                },
+            });
 
-      const res = await fetch(`/api/admin/subjects/${subjectId}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-          Accept: "application/json",
-        },
-      });
+            const json = await res.json();
 
-      const json = await res.json();
+            if (!res.ok) {
+                throw new Error(json.message || `Failed to fetch subject (status ${res.status})`);
+            }
 
-      if (!res.ok) {
-        throw new Error(
-          json.message || `Failed to fetch subject (status ${res.status})`
-        );
-      }
-
-      return json as SingleSubjectData;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : "Unknown error";
-      setError(msg);
-      toast.error(`Error fetching subject: ${msg}`);
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+            return json as SingleSubjectData;
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : "Unknown error";
+            toast.error(`Error fetching subject: ${msg}`);
+            throw error;
+        }
+    };
 
   const createSubject = async (
     payload: SubjectPayload

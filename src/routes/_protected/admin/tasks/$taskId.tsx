@@ -1,9 +1,7 @@
+import TaskPageId from '@/pages/TaskPageId'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected/admin/tasks/$taskId')({
-  component: RouteComponent,
+  component: TaskPageId,
 })
 
-function RouteComponent() {
-  return <div>Hello "/_protected/admin/tasks/$tasks"!</div>
-}
