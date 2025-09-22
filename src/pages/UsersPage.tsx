@@ -31,12 +31,12 @@ export default function UsersPage() {
   // --- Parse initial sort from URL ---
   const initialSort: SortRule[] = searchParams.sortBy
     ? searchParams.sortBy
-        .split(",")
-        .filter(Boolean)
-        .map((s) => {
-          const [column, direction = "asc"] = s.trim().split(" ");
-          return { column, direction: direction as "asc" | "desc" };
-        })
+      .split(",")
+      .filter(Boolean)
+      .map((s) => {
+        const [column, direction = "asc"] = s.trim().split(" ");
+        return { column, direction: direction as "asc" | "desc" };
+      })
     : [];
 
   const initialPage = searchParams.page ? Number(searchParams.page) : 1;
@@ -57,7 +57,7 @@ export default function UsersPage() {
     const backendParams: Record<string, string> = {};
     filters.forEach(f => backendParams[f.column] = f.value);
     setParams(backendParams);
-  }, []); 
+  }, []);
 
   const sortedUsers = useMemo(() => sortData(users, sortBy), [users, sortBy]);
 
@@ -114,7 +114,6 @@ export default function UsersPage() {
     },
   ];
 
-  // --- URL updater ---
   const updateUrl = useCallback(() => {
     navigate({
       search: {
@@ -136,6 +135,8 @@ export default function UsersPage() {
     setParams(backendParams);
     setPage(1);
   };
+
+  
   const handlePageChange = (newPage: number) => setPage(newPage);
   const handlePageSizeChange = (newSize: number) => {
     setPageSize(newSize);
@@ -144,13 +145,13 @@ export default function UsersPage() {
 
   const tableActionsRight = (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-      <label htmlFor="pageSizeSelect">Page Size</label>
+      <label htmlFor="pageSizeSelect"></label>
       <select
         id="pageSizeSelect"
         value={pageSize}
         onChange={(e) => handlePageSizeChange(Number(e.target.value))}
         className="button-sec"
-        style={{padding: "0.4rem 1rem "}}
+        style={{ padding: "0.4rem 1rem " }}
       >
         {[5, 10, 20].map((size) => (
           <option key={size} value={size}>{size}</option>
@@ -181,8 +182,8 @@ export default function UsersPage() {
           onFilterApply={handleFilterApply}
           tableActionsRight={tableActionsRight}
           pagination={{
-            page, 
-            pageSize, 
+            page,
+            pageSize,
             total: data?.total_count ?? 0,
             onPageChange: handlePageChange,
           }}

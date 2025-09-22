@@ -1,5 +1,5 @@
 import type { ApiResponse, UserData, SingleUser } from "@/context/types.ts";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { UsersContext, TOKEN, type UsersContextValue } from "@/hooks/hooks.tsx";
 import toast from "react-hot-toast";
 
@@ -14,7 +14,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [reload, setReload] = useState(false);
 
   // ----- FETCH USERS -----
-  const fetchUsers = async (signal?: AbortSignal) => {
+  const fetchUsers = useCallback( async (signal?: AbortSignal) => {
     try {
       setError(null);
 
@@ -23,6 +23,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         page_size: String(pageSize),
         ...params, // role/status
       }).toString();
+      // console.log(query)
 
       const res = await fetch(`/api/admin/users/?${query}`, {
         method: "GET",
@@ -42,15 +43,14 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
       setData(null);
-      toast.error(`Error fetching users: ${msg}`);
     } 
-  };
+  }, [page, pageSize, params]);
 
   useEffect(() => {
     const ac = new AbortController();
     fetchUsers(ac.signal);
     return () => ac.abort();
-  }, [page, pageSize, params, reload]);
+  }, [fetchUsers,reload]);
 
   const refresh = () => setReload((s) => !s);
 
@@ -73,7 +73,6 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (err: any) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
-      toast.error(`Error fetching user: ${msg}`);
       return null;
     }
   };
@@ -98,7 +97,6 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
-      toast.error(`Error editing status: ${msg}`);
       throw err;
     }
   };
@@ -123,7 +121,6 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
-      toast.error(`Error editing role: ${msg}`);
       throw err;
     }
   };
@@ -154,7 +151,6 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
-      toast.error(`Error deleting user: ${msg}`);
       throw err;
     }finally {
         setIsLoading(false);

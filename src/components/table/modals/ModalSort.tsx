@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "./Modal";
 import { useDataTable } from "../DataTable";
 import type { ColumnProps } from "../DataTable";
@@ -9,7 +9,7 @@ export default function ModalSort<T>({ isOpen, onClose }: { isOpen: boolean; onC
   const [rules, setRules] = React.useState<SortRule[]>([]);
 
   // Sync modal state with context whenever opened
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       setRules(sortBy);
     }

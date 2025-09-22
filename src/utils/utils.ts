@@ -22,7 +22,6 @@ export const truncateWords = (text?: string, wordLimit = 20) => {
 
 
 
-
 // import type { User } from './types';
 // import { encryptData, decryptData } from './cryptoUtils';
 

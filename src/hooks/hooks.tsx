@@ -1,14 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext } from "react";
 import type {
-    ApiResponse,  SingleSubjectData,
+    ApiResponse, SingleSubjectData,
     SingleUser, SubjectData, SubjectPayload, TaskData, TaskPayload, User,
     UserData,
 } from "@/context/types.ts";
 
-// export const TOKEN =
-//     "0b008ea4-07fa-435f-906d-76f134078e3d-mdcedoc7";
-
-    export const TOKEN = import.meta.env.VITE_TOKEN;
+export const TOKEN = import.meta.env.VITE_TOKEN;
 
 
 // ----------- AUTH CONTEXT------------
@@ -20,7 +18,7 @@ export interface AuthContextType {
     logout: () => void;
     resetPassword: (email: string, newPassword: string) => Promise<void>;
     getUser: () => Omit<User, 'password'> | null;
-    isLoading:  boolean;
+    isLoading: boolean;
     error: string | null;
     fetchUserProfile: () => Promise<Omit<User, 'password'> | null>
 
@@ -111,34 +109,36 @@ export const useSubjects = () => {
 // ---------- TASKS CONTEXT ------------------
 
 export type TasksContextValue = {
-  tasksData: ApiResponse<TaskData> | null;
-  tasks: TaskData[];
-  isLoading: boolean;
-  error: string | null;
+    tasksData: ApiResponse<TaskData> | null;
+    tasks: TaskData[];
+    isLoading: boolean;
+    error: string | null;
 
-  page: number;
-  pageSize: number;
-  setPage: (page: number) => void;
-  setPageSize: (size: number) => void;
-  setParams: (params: Record<string, string>) => void;
-  refresh: () => void;
+    page: number;
+    pageSize: number;
+    params: Record<string, string>;
+    
+    setPage: (page: number) => void;
+    setPageSize: (size: number) => void;
+    setParams: (params: Record<string, string>) => void;
+    refresh: () => void;
 
-  fetchTasksBySubject: (subjectId: number) => Promise<TaskData[] | null>;
-  fetchSingleTask: (taskId: number) => Promise<TaskData | null>;
-  createTask: (payload: TaskPayload) => Promise<TaskData | null>;
-  updateTask: (
-    taskId: number,
-    payload: TaskPayload
-  ) => Promise<TaskData | null>;
-  deleteTask: (taskId: number) => Promise<string>;
+    fetchTasksBySubject: (subjectId: number) => Promise<TaskData[] | null>;
+    fetchSingleTask: (taskId: number) => Promise<TaskData | null>;
+    createTask: (payload: TaskPayload) => Promise<TaskData | null>;
+    updateTask: (
+        taskId: number,
+        payload: TaskPayload
+    ) => Promise<TaskData | null>;
+    deleteTask: (taskId: number) => Promise<string>;
 };
 
 export const TasksContext = createContext<TasksContextValue | undefined>(
-  undefined
+    undefined
 );
 
 export function useTasks() {
-  const ctx = useContext(TasksContext);
-  if (!ctx) throw new Error("useTasks must be used within a TasksProvider");
-  return ctx;
+    const ctx = useContext(TasksContext);
+    if (!ctx) throw new Error("useTasks must be used within a TasksProvider");
+    return ctx;
 }

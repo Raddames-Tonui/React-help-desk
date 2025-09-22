@@ -2,7 +2,7 @@ import UsersPage from '@/pages/UsersPage'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected/admin/users')({
-  component: RouteComponent,
+  component: UsersPage,
   validateSearch: (search: Record<string, unknown>) => {
     return {
       page: Number(search.page) || 1,
@@ -15,8 +15,3 @@ export const Route = createFileRoute('/_protected/admin/users')({
 
 })
 
-function RouteComponent() {
-  return <div>
-    <UsersPage />
-  </div>
-}

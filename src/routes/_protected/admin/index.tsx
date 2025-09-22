@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
 
 export const Route = createFileRoute('/_protected/admin/')({
   component: RouteComponent,

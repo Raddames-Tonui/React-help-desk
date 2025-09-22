@@ -21,6 +21,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ initialData, onChange }) => {
                 id="name"
                 type="text"
                 value={name}
+                required
                 onChange={(e) => {
                     setName(e.target.value);
                     updatePayload(e.target.value, description);
@@ -32,6 +33,7 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ initialData, onChange }) => {
             <textarea
                 id="description"
                 value={description}
+                required
                 onChange={(e) => {
                     setDescription(e.target.value);
                     updatePayload(name, e.target.value);

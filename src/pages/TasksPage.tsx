@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "@/routes/_protected/admin/tasks";
 import { sortData } from "@/components/table/utils/tableUtils";
@@ -21,7 +21,6 @@ export default function TasksPage() {
     error,
     page,
     pageSize,
-    params,
     setPage,
     setPageSize,
     setParams,
@@ -32,25 +31,27 @@ export default function TasksPage() {
   } = useTasks();
 
   const initialSortFromUrl: SortRule[] = searchParams.sortBy
-    ? searchParams.sortBy.split(",").map((s) => {
-      const [column, direction = "asc"] = s.trim().split(" ");
-      return { column, direction: direction as "asc" | "desc" };
-    })
-    : [];
+    ? searchParams.sortBy
+      .split(",")
+      .filter(Boolean)
+      .map((s) => {
+        const [column, direction = "asc"] = s.trim().split(" ");
+        return { column, direction: direction as "asc" | "desc" };
+      }) : [];
+
+
+  const initialPage = searchParams.page ? Number(searchParams.page) : 1;
+  const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
 
   const [sortBy, setSortBy] = useState<SortRule[]>(initialSortFromUrl);
 
   useEffect(() => {
-    setPage(Number(searchParams.page || 1));
-    setPageSize(Number(searchParams.pageSize || 10));
+    setPage(initialPage);
+    setPageSize(initialPageSize);
 
-    const backendParams: Record<string, string> = {};
-    if (searchParams.page) backendParams.page = String(searchParams.page);
-    if (searchParams.pageSize) backendParams.pageSize = String(searchParams.pageSize);
-    if (searchParams.subject_id) backendParams.subject_id = String(searchParams.subject_id);
-
-    setParams(backendParams);
-  }, [searchParams, setPage, setPageSize, setParams]);
+    // const backendParams: Record<string, string> = {};
+    // setParams(backendParams);
+  }, []);
 
   const sortedTasks = useMemo(() => sortData(tasks, sortBy), [tasks, sortBy]);
 
@@ -60,18 +61,10 @@ export default function TasksPage() {
     { id: "id", caption: "ID", size: 5, isSortable: true },
     { id: "title", caption: "Title", size: 150, isSortable: true },
     {
-      id: "description", caption: "Description", size: 200, renderCell: (value) => {
-        const text = String(value ?? ""); 
-        const words = text.split(/\s+/);
-        return words.length <= 20 ? text : words.slice(0, 20).join(" ") + "...";
-      },
+      id: "description", caption: "Description", size: 200
     },
     {
-      id: "requirements", caption: "Requirements", size: 200, renderCell: (value) => {
-        const text = String(value ?? "");
-        const words = text.split(/\s+/);
-        return words.length <= 20 ? text : words.slice(0, 20).join(" ") + "...";
-      },
+      id: "requirements", caption: "Requirements", size: 200,
     },
     {
       id: "due_date",
@@ -125,28 +118,49 @@ export default function TasksPage() {
   ];
 
   // Updating page url with params
-  const updateUrl = (extraSearch: Record<string, any> = {}): void => {
+  const updateUrl = useCallback(() => {
     navigate({
       search: {
         page,
         pageSize,
         sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
-        subject_id: searchParams.subject_id,
-        ...params,
-        ...extraSearch,
-      },
-    });
-  };
+      }
+    })
+  }, [navigate, page, pageSize, sortBy]);
 
   const handleSortApply = (rules: SortRule[]) => {
     setSortBy(rules);
-    updateUrl();
   };
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    updateUrl({ page: newPage });
   };
+
+  const handlePageSizeChange = (newSize: number) => {
+    setPageSize(newSize);
+    setPage(1);
+  }
+
+  const tableActionsRight = (
+    <div>
+      <label htmlFor="pageSizeSelect"></label>
+      <select
+        id="pageSizeSelect"
+        value={pageSize}
+        onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+        className="button-sec"
+        style={{ padding: "0.4rem 1rem " }}
+      >
+        {[5, 10, 15, 20].map((size) => (
+          <option key={size} value={size}>{size}</option>
+        ))}
+      </select>
+    </div>
+  );
+
+  useEffect(() => {
+    updateUrl();
+  }, [updateUrl]);
 
   // Modal state for creating task
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -184,6 +198,7 @@ export default function TasksPage() {
             total: tasksData?.total_count,
             onPageChange: handlePageChange,
           }}
+          tableActionsRight={tableActionsRight}
         />
       </div>
 
