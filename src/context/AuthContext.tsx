@@ -91,6 +91,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
 
+    // --------- REGISTER ---------
+    const register = async (newUser: User) => {
+        const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
+        if (users.find(u => u.email === newUser.email)) throw new Error("User already exists");
+
+        users.push(newUser);
+        localStorage.setItem("users", JSON.stringify(users));
+    };
+
+    // --------- RESET PASSWORD ---------
+    const resetPassword = async (email: string, newPassword: string) => {
+        const users = JSON.parse(localStorage.getItem("users") || "[]") as User[];
+        const index = users.findIndex(u => u.email === email);
+        if (index === -1) throw new Error("User not found");
+
+        users[index].password = newPassword;
+        localStorage.setItem("users", JSON.stringify(users));
+    };
+
+
+
 
     const logout = () => {
         sessionStorage.removeItem("user");
@@ -109,10 +130,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 login,
                 logout,
                 fetchUserProfile,
-                getUser, 
+                getUser,
+                resetPassword,
+                register 
             }}
         >
             {children}
         </AuthContext.Provider>
     );
 };
+
