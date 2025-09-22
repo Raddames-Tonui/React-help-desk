@@ -7,8 +7,9 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-// 🔹 Role-based menu definitions
-const menuConfig: Record<string, { icon: string; label: string; path: string }[]> = {
+import type { IconName } from "../utils/Icon";
+
+const menuConfig: Record<string, { icon: IconName; label: string; path: string }[]> = {
   admin: [
     { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
     { icon: "notepad", label: "Subjects", path: "/admin/subjects" },

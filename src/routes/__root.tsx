@@ -6,6 +6,7 @@ import { ODataProvider } from '@/context/ODataContext';
 import { UsersProvider } from '@/context/usersContext';
 import { SubjectProvider } from "@/context/SubjectsContext.tsx";
 import { TasksProvider } from '@/context/TasksContext';
+import { ThemeProvider } from '@/context/ThemeProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,17 +19,19 @@ const queryClient = new QueryClient({
 
 const RootLayout = () => (
   <AuthProvider>
-    <QueryClientProvider client={queryClient}>
-      <UsersProvider>
-        <SubjectProvider>
-          <TasksProvider>
-            <ODataProvider>
-              <Outlet />
-            </ODataProvider>
-          </TasksProvider>
-        </SubjectProvider>
-      </UsersProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <UsersProvider>
+          <SubjectProvider>
+            <TasksProvider>
+              <ODataProvider>
+                <Outlet />
+              </ODataProvider>
+            </TasksProvider>
+          </SubjectProvider>
+        </UsersProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
     {/*<TanStackRouterDevtools />*/}
   </AuthProvider>
 )

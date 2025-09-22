@@ -21,7 +21,6 @@ export interface AuthContextType {
     isLoading: boolean;
     error: string | null;
     fetchUserProfile: () => Promise<Omit<User, 'password'> | null>
-
 }
 
 
@@ -142,3 +141,19 @@ export function useTasks() {
     if (!ctx) throw new Error("useTasks must be used within a TasksProvider");
     return ctx;
 }
+
+// ---------- THEME CONTEXT ------------------
+export type ThemeContextType = {
+    theme: "light" | "dark";
+    toggleTheme: () => void;
+};
+
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const useTheme = () => {
+    const context = useContext(ThemeContext);
+    if (!context) {
+        throw new Error('useTheme must be used within ThemeProvider');
+    }
+    return context;
+};

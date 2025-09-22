@@ -1,28 +1,41 @@
-import { createContext, useContext, useState } from "react";
+import { createContext,useState } from "react";
 
-type ThemeContextValue = {
-    theme,
-    setTheme
+
+interface ThemeContextType {
+    theme: "light" | "dark";
+    toggleTheme: () => void;
+    isSidebarOpen: boolean;
+    toggleSidebar: () => void;
 }
-    
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function ThemeProvider({ children }) {
-    const [theme, setTheme] = useState('light');
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+    const [theme, setTheme] = useState<"light" | "dark">(
+        () => (localStorage.getItem("theme") as "light" | "dark") || "light"
+    )
+    const [isSidebaOpen, setSidebarOpen] = useState<boolean>(() => (
+        (localStorage.getItem("isSidebarOpen") === "true")
+    ))
 
-    const value = {
+
+    const toggleTheme = () => {
+        const newTheme = theme === "light" ? "dark" : "light";
+        setTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+    };
+
+    const toggleSidebar = () => {
+        const newState = !isSidebaOpen;
+        localStorage.setItem("isSidebarOpen", newState.toString());
+        setSidebarOpen(newState);
+    }
+
+    const values = {
         theme,
-        setTheme
-    } 
-    return (
-        <ThemeContext.Provider value={{value}}>
-            {children}
-        </ThemeContext.Provider>
-    );
-}
+        toggleTheme,
+        isSidebarOpen: isSidebaOpen,
+        toggleSidebar
+    }
 
-export function useTheme() {
-    const context = useContext(ThemeContext);
-    if (!context) throw new Error ("useTheme must be used within ThemeProvider");
-    return context;
+    return <ThemeContext.Provider value={values}>{children}</ThemeContext.Provider>;
 }

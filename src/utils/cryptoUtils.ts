@@ -1,102 +1,65 @@
+// cryptoUtils.ts
 export async function encryptData(data: string, key: string): Promise<string> {
-if (!key){
-    throw new Error('Key is empty');
-  } else if (!key || typeof key !== 'string' || key.length < 32) {
-    throw new Error('Invalid encryption key: Must be a string of at least 32 characters');
-  }
-  try {
-    // Convert key to CryptoKey (pad to 32 bytes for AES-256)
-    const keyBuffer = new TextEncoder().encode(key.padEnd(32, ' ').slice(0, 32));
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      keyBuffer,
-      { name: 'AES-GCM' },
-      false,
-      ['encrypt']
-    );
+  if (!key) throw new Error("Key is empty");
+  if (key.length < 32) throw new Error("Key must be at least 32 characters");
 
-    // Generate a random IV (Initialization Vector)
-    const iv = crypto.getRandomValues(new Uint8Array(12)); // 12 bytes for GCM
-    
-    // Use TextEncoder directly without spreading the array to avoid stack overflow
-    const dataBuffer = new TextEncoder().encode(data);
+  const keyBuffer = new TextEncoder().encode(key.padEnd(32, " ").slice(0, 32));
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyBuffer,
+    { name: "AES-GCM" },
+    false,
+    ["encrypt"]
+  );
 
-    // Encrypt the data
-    const encrypted = await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv },
-      cryptoKey,
-      dataBuffer
-    );
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const dataBuffer = new TextEncoder().encode(data);
 
-    // Combine IV and encrypted data more efficiently
-    const encryptedArray = new Uint8Array(encrypted);
-    const combined = new Uint8Array(iv.length + encryptedArray.length);
-    combined.set(iv);
-    combined.set(encryptedArray, iv.length);
+  const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, cryptoKey, dataBuffer);
 
-    // Convert to base64 more efficiently for large data
-    return arrayBufferToBase64(combined);
-  } catch (error) {
-    console.error('Encryption error:', error);
-    throw new Error('Failed to encrypt data');
-  }
+  const encryptedArray = new Uint8Array(encrypted);
+  const combined = new Uint8Array(iv.length + encryptedArray.length);
+  combined.set(iv);
+  combined.set(encryptedArray, iv.length);
+
+  return arrayBufferToBase64(combined);
 }
 
 export async function decryptData(encryptedData: string, key: string): Promise<string> {
-  if (!key || typeof key !== 'string' || key.length < 32) {
-    throw new Error('Invalid decryption key: Must be a string of at least 32 characters');
-  }
+  if (key.length < 32) throw new Error("Key must be at least 32 characters");
 
-  try {
-    // Convert key to CryptoKey (pad to 32 bytes for AES-256)
-    const keyBuffer = new TextEncoder().encode(key.padEnd(32, ' ').slice(0, 32));
-    const cryptoKey = await crypto.subtle.importKey(
-      'raw',
-      keyBuffer,
-      { name: 'AES-GCM' },
-      false,
-      ['decrypt']
-    );
+  const keyBuffer = new TextEncoder().encode(key.padEnd(32, " ").slice(0, 32));
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyBuffer,
+    { name: "AES-GCM" },
+    false,
+    ["decrypt"]
+  );
 
-    // Decode base64 more efficiently for large data
-    const ivAndEncrypted = base64ToArrayBuffer(encryptedData);
-    const iv = ivAndEncrypted.slice(0, 12); // First 12 bytes are IV
-    const encrypted = ivAndEncrypted.slice(12);
+  const ivAndEncrypted = base64ToArrayBuffer(encryptedData);
+  const iv = ivAndEncrypted.slice(0, 12);
+  const encrypted = ivAndEncrypted.slice(12);
 
-    // Decrypt the data
-    const decrypted = await crypto.subtle.decrypt(
-      { name: 'AES-GCM', iv },
-      cryptoKey,
-      encrypted
-    );
-
-    return new TextDecoder().decode(decrypted);
-  } catch (error) {
-    console.error('Decryption error:', error);
-    throw new Error('Failed to decrypt data');
-  }
+  const decrypted = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, cryptoKey, encrypted);
+  return new TextDecoder().decode(decrypted);
 }
 
-// Efficient base64 conversion functions that handle large data better
 function arrayBufferToBase64(buffer: Uint8Array): string {
-  const chunks: string[] = [];
-  const chunkSize = 0x8000; // 32KB chunks to avoid stack overflow
-  
+  let binary = "";
+  const chunkSize = 0x8000;
   for (let i = 0; i < buffer.length; i += chunkSize) {
     const chunk = buffer.subarray(i, i + chunkSize);
-    chunks.push(String.fromCharCode.apply(null, Array.from(chunk)));
+    binary += String.fromCharCode.apply(null, Array.from(chunk));
   }
-  
-  return btoa(chunks.join(''));
+  return btoa(binary);
 }
 
 function base64ToArrayBuffer(base64: string): Uint8Array {
-  const binaryString = atob(base64);
-  const bytes = new Uint8Array(binaryString.length);
-  
-  for (let i = 0; i < binaryString.length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
   }
-  
   return bytes;
 }
