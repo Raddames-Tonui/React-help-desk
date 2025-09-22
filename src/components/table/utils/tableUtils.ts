@@ -1,10 +1,8 @@
 // src/utils/tableUtils.ts
-export type SortRule<T = any> = { column: keyof T; direction: "asc" | "desc" };
 export type FilterRule<T = any> = { column: keyof T; operator: string; value: string };
 
 /**
  * Apply client-side filtering based on rules.
- * Supports all operators from the modal.
  */
 export function filterData<T>(data: T[], filters: FilterRule<T>[]): T[] {
     if (!filters.length) return data;
@@ -28,14 +26,14 @@ export function filterData<T>(data: T[], filters: FilterRule<T>[]): T[] {
                     return stringVal.startsWith(filterVal);
                 case "endswith":
                     return stringVal.endsWith(filterVal);
-                case "gt":
-                    return Number(val) > Number(f.value);
-                case "lt":
-                    return Number(val) < Number(f.value);
-                case "ge":
-                    return Number(val) >= Number(f.value);
-                case "le":
-                    return Number(val) <= Number(f.value);
+                // case "gt":
+                //     return Number(val) > Number(f.value);
+                // case "lt":
+                //     return Number(val) < Number(f.value);
+                // case "ge":
+                //     return Number(val) >= Number(f.value);
+                // case "le":
+                //     return Number(val) <= Number(f.value);
                 default:
                     return false;
             }
@@ -46,10 +44,16 @@ export function filterData<T>(data: T[], filters: FilterRule<T>[]): T[] {
 /**
  * Apply client-side sorting based on rules.
  */
-export function sortData<T>(data: T[], sortRules: SortRule<T>[]): T[] {
+export interface SortRule<T> {
+    column: keyof T;
+    direction: "asc" | "desc";
+}
+
+export function sortData<T extends Record<string, any>>(data: T[], sortRules: SortRule<T>[]): T[] {
     if (!sortRules.length) return data;
 
     const sorted = [...data];
+
     sortRules.forEach(rule => {
         sorted.sort((a, b) => {
             const valA = a[rule.column];

@@ -144,11 +144,13 @@ export default function UsersPage() {
 
   const tableActionsRight = (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-      <label htmlFor="pageSizeSelect">Rows:</label>
+      <label htmlFor="pageSizeSelect">Page Size</label>
       <select
         id="pageSizeSelect"
         value={pageSize}
         onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+        className="button-sec"
+        style={{padding: "0.4rem 1rem "}}
       >
         {[5, 10, 20].map((size) => (
           <option key={size} value={size}>{size}</option>

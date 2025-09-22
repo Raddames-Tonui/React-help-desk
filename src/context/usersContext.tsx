@@ -131,6 +131,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // ----- DELETE USER -----
   const deleteUser = async (userId: number): Promise<string> => {
     try {
+        setIsLoading(true);
       const res = await fetch(`/api/admin/users/${userId}`, {
         method: "DELETE",
         headers: {
@@ -155,6 +156,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(msg);
       toast.error(`Error deleting user: ${msg}`);
       throw err;
+    }finally {
+        setIsLoading(false);
     }
   };
 

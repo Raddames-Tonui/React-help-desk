@@ -52,8 +52,15 @@ function RouteComponent() {
       style={{ '--sidebar-width': isSidebarOpen ? '240px' : '48px' } as React.CSSProperties}
     >
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <Toaster position="top-right" />
 
+        <Toaster
+            position="top-right"
+            toastOptions={{
+                style: {
+                    marginTop: '37px',
+                },
+            }}
+        />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>
 
