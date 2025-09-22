@@ -13,7 +13,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [params, setParams] = useState<Record<string, string>>({});
   const [reload, setReload] = useState(false);
 
-  // ------------------- FETCH ALL USERS -------------------
+  // ----- FETCH USERS -----
   const fetchUsers = async (signal?: AbortSignal) => {
     try {
       setError(null);
@@ -21,7 +21,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const query = new URLSearchParams({
         page: String(page),
         page_size: String(pageSize),
-        ...params,
+        ...params, // role/status
       }).toString();
 
       const res = await fetch(`/api/admin/users/?${query}`, {
@@ -34,7 +34,6 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       });
 
       const json = await res.json();
-
       if (!res.ok) throw new Error(json.message || `Failed to fetch users (status ${res.status})`);
 
       setData(json as ApiResponse<UserData>);
@@ -55,23 +54,20 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const refresh = () => setReload((s) => !s);
 
-  // ------------------- FETCH SINGLE USER -------------------
+  // ----- SINGLE USER -----
   const viewUserPage = async (userId: number): Promise<SingleUser["user"] | null> => {
     try {
       setError(null);
-
       const res = await fetch(`/api/admin/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${TOKEN}`,
           Accept: "application/json",
         },
       });
-
       if (!res.ok) {
         const json = await res.json();
         throw new Error(json?.message || "Failed to fetch user profile");
       }
-
       const json = (await res.json()) as SingleUser;
       return json.user;
     } catch (err: any) {
@@ -82,7 +78,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  // ------------------- EDIT STATUS -------------------
+  // ----- EDIT STATUS -----
   const editStatus = async (userId: number, status: string): Promise<UserData | null> => {
     try {
       const res = await fetch(`/api/admin/users/${userId}/status`, {
@@ -94,11 +90,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         },
         body: JSON.stringify({ status }),
       });
-
       const json = await res.json();
-
       if (!res.ok) throw new Error(json.message || `Failed to edit status (status ${res.status})`);
-
       toast.success("User status updated successfully");
       refresh();
       return json.user as UserData;
@@ -110,7 +103,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  // ------------------- EDIT ROLE -------------------
+  // ----- EDIT ROLE -----
   const editRole = async (userId: number, role: string): Promise<UserData | null> => {
     try {
       const res = await fetch(`/api/admin/users/${userId}/role`, {
@@ -122,11 +115,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         },
         body: JSON.stringify({ role }),
       });
-
       const json = await res.json();
-
       if (!res.ok) throw new Error(json.message || `Failed to edit role (status ${res.status})`);
-
       toast.success("User role updated successfully");
       refresh();
       return json.user as UserData;
@@ -138,7 +128,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  // ------------------- DELETE USER -------------------
+  // ----- DELETE USER -----
   const deleteUser = async (userId: number): Promise<string> => {
     try {
       const res = await fetch(`/api/admin/users/${userId}`, {
@@ -148,11 +138,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           Accept: "application/json",
         },
       });
-
       const json = await res.json();
-
       if (!res.ok) throw new Error(json.message || `Failed to delete user (status ${res.status})`);
-
       setData((prev) => {
         if (!prev) return prev;
         return {
@@ -161,7 +148,6 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           total: prev.total - 1,
         };
       });
-
       toast.success("User deleted successfully");
       return json.message || "User deleted successfully";
     } catch (err) {
@@ -172,6 +158,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
+  // ----- CONTEXT VALUE -----
   const value: UsersContextValue = {
     data,
     users: data?.records ?? [],

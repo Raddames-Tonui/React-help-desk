@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useDataTable } from "./DataTable";
 import ModalSort from "./modals/ModalSort";
 import ModalFilter from "./modals/ModalFilter";
@@ -9,16 +9,16 @@ export function TableActions<T>() {
     const [isFilterOpen, setFilterOpen] = useState(false);
 
     // Handle sort apply
-    const handleSortApply = (rules: any[]) => {
-        onSortApply?.(rules);
-        setSortOpen(false);
-    };
+    // const handleSortApply = (rules: any[]) => {
+    //     onSortApply?.(rules);
+    //     setSortOpen(false);
+    // };
 
-    // Handle filter apply
-    const handleFilterApply = (rules: any[]) => {
-        onFilterApply?.(rules);
-        setFilterOpen(false);
-    };
+    // // Handle filter apply
+    // const handleFilterApply = (rules: any[]) => {
+    //     onFilterApply?.(rules);
+    //     setFilterOpen(false);
+    // };
 
     // Reset handlers
     const handleSortReset = () => onSortApply?.([]);

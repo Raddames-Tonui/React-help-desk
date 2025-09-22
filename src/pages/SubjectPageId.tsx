@@ -6,6 +6,9 @@ import type { SingleSubjectData } from "@/context/types.ts";
 import Loader from "@/components/Loader.tsx";
 import { useSubjects } from "@/hooks/hooks.tsx";
 
+import "@/css/userspage.css";
+
+
 function SubjectPageId() {
   const { subjectId } = useParams({ from: SubjectRoute.id });
   const { fetchSingleSubject, isLoading: contextLoading, error: contextError } =
@@ -52,24 +55,31 @@ function SubjectPageId() {
   if (!subject) return <div className="subject-empty">No subject data available</div>;
 
   return (
-    <div className="subject-container">
-      <div className="subject-details">
-        <h2 className="subject-title">{subject.name}</h2>
+    <div className="page-container">
+      <div className="page-header">
+        <h1 className="task-title">Subject Page</h1>
+      </div>
+      <div className="s-page-container">
+        <div className="s-page-details">
+          <h2 className="s-page-title">{subject.name}</h2>
 
-        <p><strong>Description:</strong></p>
-        <p>{subject.description}</p>
+          <dl>
+            <dt>Description:</dt>
+            <dd>{subject.description}</dd>
 
-        <p><strong>Created By:</strong></p>
-        <p>{subject.created_by_name}</p>
+            <dt>Created By:</dt>
+            <dd>{subject.created_by_name}</dd>
 
-        <p><strong>Status:</strong></p>
-        <p>{subject.is_active ? "Active" : "Inactive"}</p>
+            <dt>Status:</dt>
+            <dd>{subject.is_active ? "Active" : "Inactive"}</dd>
 
-        <p><strong>Created At:</strong></p>
-        <p>{new Date(subject.created_at).toLocaleString()}</p>
+            <dt>Created At:</dt>
+            <dd>{new Date(subject.created_at).toLocaleString()}</dd>
 
-        <p><strong>Updated At:</strong></p>
-        <p>{new Date(subject.updated_at).toLocaleString()}</p>
+            <dt>Updated At:</dt>
+            <dd>{new Date(subject.updated_at).toLocaleString()}</dd>
+          </dl>
+        </div>
       </div>
     </div>
   );

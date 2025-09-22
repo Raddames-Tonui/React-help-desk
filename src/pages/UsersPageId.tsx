@@ -5,7 +5,7 @@ import type { SingleUser } from "@/context/types.ts";
 import "@/css/userspage.css";
 
 import Loader from "@/components/Loader.tsx";
-import {useUsers} from "@/hooks/hooks.tsx";
+import { useUsers } from "@/hooks/hooks.tsx";
 
 function UsersPageId() {
     const { userId } = useParams({ from: UserRoute.id });
@@ -36,28 +36,49 @@ function UsersPageId() {
         };
     }, [userId]);
 
-    if (loading || contextLoading) return <div className="user-loading"><Loader/></div>;
+    if (loading || contextLoading) return <div className="user-loading"><Loader /></div>;
     if (error || contextError) return <div className="user-error">{error || contextError}</div>;
     if (!user) return <div className="user-empty">No user data available</div>;
 
     return (
-        <div className="user-container">
-            <div className="user-avatar">
-                <img
-                    src={user.avatar_url || "/svgs/user-placeholder.svg"}
-                    alt={user.name}
-                />
+        <div>
+            <div className="page-header">
+                <h1>User Details</h1>
+            </div>
+            <div className="s-page-container">
+                <div className="s-page-details">
+                    <h2 className="s-page-title">{user.name}</h2>
+                    <div className="s-page-avatar">
+                        <img
+                            src={user.avatar_url || "/svgs/user-placeholder.svg"}
+                            alt={user.name}
+                        />
+                    </div>
+                    <dl>
+                        <dt>Email:</dt>
+                        <dd>{user.email}</dd>
+
+                        <dt>Role:</dt>
+                        <dd>{user.role}</dd>
+
+                        <dt>Status:</dt>
+                        <dd>{user.status}</dd>
+
+                        <dt>Google ID:</dt>
+                        <dd>{user.google_id}</dd>
+
+                        <dt>Created At:</dt>
+                        <dd>{new Date(user.created_at).toLocaleString()}</dd>
+
+                        <dt>Updated At:</dt>
+                        <dd>{new Date(user.updated_at).toLocaleString()}</dd>
+                    </dl>
+                </div>
+
+
             </div>
 
-            <div className="user-details">
-                <h2 className="user-title">{user.name}</h2>
-                <p><strong>Email:</strong></p> <p>{user.email}</p>
-                <p><strong>Role:</strong></p> <p>{user.role}</p>
-                <p><strong>Status:</strong></p> <p>{user.status}</p>
-                <p><strong>Google ID:</strong></p> <p>{user.google_id}</p>
-                <p><strong>Created At:</strong></p> <p>{new Date(user.created_at).toLocaleString()}</p>
-                <p><strong>Updated At:</strong></p> <p>{new Date(user.updated_at).toLocaleString()}</p>
-            </div>
+
         </div>
     );
 }

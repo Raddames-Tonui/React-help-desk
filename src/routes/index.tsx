@@ -23,7 +23,7 @@ function Index() {
 
             <main className="main">
                 <div className="hero">
-                    <h1>Welcome to MyApp</h1>
+                    <h1>Welcome to HOLLA DESK</h1>
                     <p>
                         A modern platform built with simplicity, performance, and elegance
                         in mind.

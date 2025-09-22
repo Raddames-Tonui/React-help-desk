@@ -6,6 +6,9 @@ import type { SingleTaskData } from "@/context/types.ts";
 import Loader from "@/components/Loader.tsx";
 import { useTasks } from "@/hooks/hooks.tsx";
 
+import "@/css/userspage.css";
+
+
 function TaskPageId() {
   const { taskId } = useParams({ from: TaskRoute.id });
   const { fetchSingleTask, isLoading: contextLoading, error: contextError } = useTasks();
@@ -51,37 +54,46 @@ function TaskPageId() {
   if (!task) return <div className="task-empty">No task data available</div>;
 
   return (
-    <div className="task-container">
-      <div className="task-details">
-        <h2 className="task-title">{task.title}</h2>
-
-        <p><strong>Description:</strong></p>
-        <p>{task.description}</p>
-
-        <p><strong>Requirements:</strong></p>
-        <p>{task.requirements}</p>
-
-        <p><strong>Due Date:</strong></p>
-        <p>{new Date(task.due_date).toLocaleDateString()}</p>
-
-        <p><strong>Max Score:</strong></p>
-        <p>{task.max_score}</p>
-
-        <p><strong>Subject:</strong></p>
-        <p>{task.subject_name}</p>
-
-        <p><strong>Status:</strong></p>
-        <p>{task.is_active ? "Active" : "Inactive"}</p>
-
-        <p><strong>Created By:</strong></p>
-        <p>{task.created_by_name}</p>
-
-        <p><strong>Created At:</strong></p>
-        <p>{new Date(task.created_at).toLocaleString()}</p>
-
-        <p><strong>Updated At:</strong></p>
-        <p>{new Date(task.updated_at).toLocaleString()}</p>
+    <div className="page-container">
+      <div className="page-header">
+        <h1 className="task-title">Task page</h1>
       </div>
+      <div className="s-page-container">
+        <div className="s-page-details">
+
+          <dl>
+            <h2 className="s-page-title">{task.title}</h2>
+
+            <dt>Description:</dt>
+            <dd>{task.description}</dd>
+
+            <dt>Requirements:</dt>
+            <dd>{task.requirements}</dd>
+
+            <dt>Due Date:</dt>
+            <dd>{new Date(task.due_date).toLocaleDateString()}</dd>
+
+            <dt>Max Score:</dt>
+            <dd>{task.max_score}</dd>
+
+            <dt>Subject:</dt>
+            <dd>{task.subject_name}</dd>
+
+            <dt>Status:</dt>
+            <dd>{task.is_active ? "Active" : "Inactive"}</dd>
+
+            <dt>Created By:</dt>
+            <dd>{task.created_by_name}</dd>
+
+            <dt>Created At:</dt>
+            <dd>{new Date(task.created_at).toLocaleString()}</dd>
+
+            <dt>Updated At:</dt>
+            <dd>{new Date(task.updated_at).toLocaleString()}</dd>
+          </dl>
+        </div>
+      </div>
+
     </div>
   );
 }
