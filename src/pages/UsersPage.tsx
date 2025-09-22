@@ -19,7 +19,6 @@ export default function UsersPage() {
     error,
     page,
     pageSize,
-    params,
     setPage,
     setPageSize,
     setParams,
