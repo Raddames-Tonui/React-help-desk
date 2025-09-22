@@ -23,7 +23,6 @@ export default function TasksPage() {
     pageSize,
     setPage,
     setPageSize,
-    setParams,
     refresh,
     deleteTask,
     updateTask,
@@ -73,7 +72,7 @@ export default function TasksPage() {
       isSortable: true,
       renderCell: (v) => new Date(v as string).toLocaleDateString(),
     },
-    { id: "max_score", caption: "Max Score", size: 100, isSortable: true },
+    { id: "max_score", caption: "Max Score", size: 100, isSortable: true, align: "center" },
     {
       id: "is_active",
       caption: "Active",
@@ -111,13 +110,13 @@ export default function TasksPage() {
       id: "actions",
       caption: "Actions",
       size: 200,
+      align: "left",
       renderCell: (_, row) => (
         <TaskActions task={row} updateTask={updateTask} deleteTask={deleteTask} />
       ),
     },
   ];
 
-  // Updating page url with params
   const updateUrl = useCallback(() => {
     navigate({
       search: {
@@ -162,25 +161,10 @@ export default function TasksPage() {
     updateUrl();
   }, [updateUrl]);
 
-  // Modal state for creating task
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newPayload, setNewPayload] = useState<TaskPayload>({
-    subject_id: Number(searchParams.subject_id || 0),
-    title: "",
-    description: "",
-    requirements: "",
-    due_date: "",
-    max_score: 0,
-    is_active: true,
-  });
-
   return (
     <div>
       <div className="page-header">
         <h1>Tasks</h1>
-        <button className="btn-secondary" onClick={() => setIsModalOpen(true)}>
-          Create Task
-        </button>
       </div>
 
       <div className="table-wrapper">
@@ -202,28 +186,7 @@ export default function TasksPage() {
         />
       </div>
 
-      <Modal
-        isOpen={isModalOpen}
-        title="Create Task"
-        body={<TaskForm onChange={setNewPayload} />}
-        footer={
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
-            <button
-              className="modal-close-btn"
-              onClick={() => {
-                createTask(newPayload);
-                setIsModalOpen(false);
-              }}
-            >
-              Create
-            </button>
-            <button className="cancel" onClick={() => setIsModalOpen(false)}>
-              Cancel
-            </button>
-          </div>
-        }
-        onClose={() => setIsModalOpen(false)}
-      />
+
     </div>
   );
 }

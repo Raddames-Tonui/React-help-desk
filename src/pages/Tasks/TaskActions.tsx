@@ -133,7 +133,6 @@ const TaskActions: React.FC<TaskActionsProps> = ({ task, updateTask, deleteTask 
     );
   };
 
-  // -------- View --------
   const handleView = () => {
     navigate({
       to: `/admin/tasks/$taskId`,

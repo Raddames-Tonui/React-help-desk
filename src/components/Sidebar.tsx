@@ -11,15 +11,15 @@ interface SidebarProps {
 const menuConfig: Record<string, { icon: string; label: string; path: string }[]> = {
   admin: [
     { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
-    { icon: "notes", label: "Subjects", path: "/admin/subjects" },
-    { icon: "notepad", label: "Tasks", path: "/admin/tasks" },
+    { icon: "notepad", label: "Subjects", path: "/admin/subjects" },
+    { icon: "notes", label: "Tasks", path: "/admin/tasks" },
     { icon: "users", label: "Users", path: "/admin/users" },
     { icon: "settings", label: "Settings", path: "/pages/settings" },
   ],
   trainee: [
     { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
-    { icon: "notes", label: "Subjects", path: "/admin/subjects" },
-    { icon: "notepad", label: "Tasks", path: "/admin/tasks" },
+    { icon: "notepad", label: "Subjects", path: "/admin/subjects" },
+    { icon: "notes", label: "Tasks", path: "/admin/tasks" },
     { icon: "settings", label: "Settings", path: "/pages/settings" },
   ],
   vendor: [

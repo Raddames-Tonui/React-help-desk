@@ -84,10 +84,10 @@
 
 
 
-/* ICONS CSS */
+/*ACTION ICONS CSS */
 .action-icons {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   gap: 5px;
 }

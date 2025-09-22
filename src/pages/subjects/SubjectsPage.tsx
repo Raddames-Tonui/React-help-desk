@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "@/routes/_protected/admin/subjects";
 import { sortData } from "@/components/table/utils/tableUtils";
@@ -6,9 +6,9 @@ import type { ColumnProps, SortRule } from "@/components/table/DataTable";
 import type { SubjectData, SubjectPayload } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
 import { useSubjects } from "@/context/hooks";
-import SubjectActions from "@/components/SubjectActions";
 import Modal from "@/components/Modal";
 import SubjectForm from "@/pages/subjects/SubjectForm";
+import SubjectActions from "@/pages/subjects/SubjectActions";
 
 export default function SubjectsPage() {
     const searchParams = Route.useSearch();
@@ -51,7 +51,7 @@ export default function SubjectsPage() {
         if (searchParams.pageSize) backendParams.pageSize = String(searchParams.pageSize);
 
         setParams(backendParams);
-    }, [searchParams, setPage, setPageSize, setParams]);
+    }, []);
 
     const sortedSubjects = useMemo(() => sortData(subjects, sortBy), [subjects, sortBy]);
 
@@ -103,27 +103,52 @@ export default function SubjectsPage() {
         },
     ];
 
-    // Updating page url with params
-    const updateUrl = (extraSearch: Record<string, any> = {}): void => {
+
+    const updateUrl = useCallback(() => {
         navigate({
             search: {
                 page,
                 pageSize,
                 sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
-                ...extraSearch,
-            },
-        });
-    };
+            }
+        })
+    }, [navigate, page, pageSize, sortBy]);
+
 
     const handleSortApply = (rules: SortRule[]) => {
         setSortBy(rules);
-        updateUrl();
     };
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
-        updateUrl({ page: newPage });
     };
+    const handlePageSizeChange = (newSize: number) => {
+        setPageSize(newSize);
+        setPage(1);
+    }
+
+
+    const tableActionsRight = (
+        <div>
+            <label htmlFor="pageSizeSelect"></label>
+            <select
+                id="pageSizeSelect"
+                value={pageSize}
+                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                className="button-sec"
+                style={{ padding: "0.4rem 1rem " }}
+            >
+                {[3, 10, 20].map((size) => (
+                    <option key={size} value={size}>{size}</option>
+                ))}
+            </select>
+        </div>
+    );
+
+    useEffect(() => {
+        updateUrl();
+    }, [updateUrl]);
+
 
     // Modal state for creating subject
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -133,7 +158,7 @@ export default function SubjectsPage() {
         <div>
             <div className="page-header">
                 <h1>Subjects</h1>
-                <button className="btn-secondary" onClick={() => setIsModalOpen(true)}>
+                <button className="button-sec" onClick={() => setIsModalOpen(true)}>
                     Create Subject
                 </button>
             </div>
@@ -153,6 +178,7 @@ export default function SubjectsPage() {
                         total: subjectData?.total_count,
                         onPageChange: handlePageChange,
                     }}
+                    tableActionsRight={tableActionsRight}
                 />
             </div>
 

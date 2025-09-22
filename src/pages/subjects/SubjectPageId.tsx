@@ -4,19 +4,26 @@ import { Route as SubjectRoute } from "@/routes/_protected/admin/subjects/$subje
 import type { SingleSubjectData } from "@/context/types.ts";
 
 import Loader from "@/components/Loader.tsx";
-import { useSubjects } from "@/context/hooks";
+import Modal from "@/components/Modal";
+import TaskForm from "@/pages/Tasks/TaskForm";
+
+import { useSubjects, useTasks } from "@/context/hooks";
+import toast from "react-hot-toast";
 
 import "@/css/userspage.css";
-
+import "@/css/index.css";
 
 function SubjectPageId() {
   const { subjectId } = useParams({ from: SubjectRoute.id });
-  const { fetchSingleSubject, isLoading: contextLoading, error: contextError } =
-    useSubjects();
+  const { fetchSingleSubject, isLoading: contextLoading, error: contextError } = useSubjects();
+  const { createTask } = useTasks();
 
   const [subject, setSubject] = useState<SingleSubjectData["subject"] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newPayload, setNewPayload] = useState<any>({});
 
   useEffect(() => {
     if (!subjectId) return;
@@ -34,13 +41,9 @@ function SubjectPageId() {
           setSubject(subjectData.subject);
         }
       } catch {
-        if (isMounted) {
-          setError("Failed to load subject");
-        }
+        if (isMounted) setError("Failed to load subject");
       } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        if (isMounted) setLoading(false);
       }
     };
 
@@ -50,6 +53,16 @@ function SubjectPageId() {
     };
   }, [subjectId, fetchSingleSubject]);
 
+  const handleTaskCreate = async () => {
+    if (!subjectId) return;
+
+    const task = await createTask({ ...newPayload, subject_id: Number(subjectId) });
+    if (task) {
+      toast.success("Task created successfully!");
+      setIsModalOpen(false);
+    }
+  };
+
   if (loading || contextLoading) return <Loader />;
   if (error || contextError) return <div className="subject-error">{error || contextError}</div>;
   if (!subject) return <div className="subject-empty">No subject data available</div>;
@@ -58,11 +71,14 @@ function SubjectPageId() {
     <div className="page-container">
       <div className="page-header">
         <h1 className="task-title">Subject Page</h1>
+        <button className="button-sec" onClick={() => setIsModalOpen(true)}>
+          Create Task
+        </button>
       </div>
+
       <div className="s-page-container">
         <div className="s-page-details">
           <h2 className="s-page-title">{subject.name}</h2>
-
           <dl>
             <dt>Description:</dt>
             <dd>{subject.description}</dd>
@@ -81,6 +97,18 @@ function SubjectPageId() {
           </dl>
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        title="Create Task"
+        body={<TaskForm subjectId={Number(subjectId)} initialData={undefined} onChange={setNewPayload} />}
+        footer={
+          <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+     
+          </div>
+        }
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
