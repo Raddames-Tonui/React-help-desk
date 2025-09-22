@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { type ReactNode, useState } from "react";
 import type { User } from "@/context/types.ts";
-import { AuthContext, TOKEN } from "@/hooks/hooks";
+import { AuthContext, TOKEN } from "@/context/hooks";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const navigate = useNavigate();
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return false;
     };
 
-// --------- FETCH USER PROFILE ---------
+    // --------- FETCH USER PROFILE ---------
     const fetchUserProfile = async (): Promise<Omit<User, 'password'> | null> => {
         setIsLoading(true);
         setError(null);

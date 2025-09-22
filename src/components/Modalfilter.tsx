@@ -23,10 +23,10 @@ const relations = [
   { value: "contains", label: "Contains" },
   { value: "startswith", label: "Starts with" },
   { value: "endswith", label: "Ends with" },
-  { value: "gt", label: "Greater than" },
-  { value: "lt", label: "Less than" },
-  { value: "ge", label: "Greater or equal" },
-  { value: "le", label: "Less or equal" },
+  // { value: "gt", label: "Greater than" },
+  // { value: "lt", label: "Less than" },
+  // { value: "ge", label: "Greater or equal" },
+  // { value: "le", label: "Less or equal" },
 ];
 
 /**

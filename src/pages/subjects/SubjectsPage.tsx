@@ -5,10 +5,10 @@ import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
 import type { SubjectData, SubjectPayload } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
-import { useSubjects } from "@/hooks/hooks.tsx";
+import { useSubjects } from "@/context/hooks";
 import SubjectActions from "@/components/SubjectActions";
 import Modal from "@/components/Modal";
-import SubjectForm from "@/components/SubjectForm";
+import SubjectForm from "@/pages/subjects/SubjectForm";
 
 export default function SubjectsPage() {
     const searchParams = Route.useSearch();
@@ -21,7 +21,6 @@ export default function SubjectsPage() {
         error,
         page,
         pageSize,
-        params,
         setPage,
         setPageSize,
         setParams,
@@ -40,9 +39,12 @@ export default function SubjectsPage() {
 
     const [sortBy, setSortBy] = useState<SortRule[]>(initialSortFromUrl);
 
+    const initialPage = searchParams.page ? Number(searchParams.age) : 1;
+    const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
+
     useEffect(() => {
-        setPage(Number(searchParams.page || 1));
-        setPageSize(Number(searchParams.pageSize || 10));
+        setPage(initialPage);
+        setPageSize(initialPageSize);
 
         const backendParams: Record<string, string> = {};
         if (searchParams.page) backendParams.page = String(searchParams.page);
@@ -108,7 +110,6 @@ export default function SubjectsPage() {
                 page,
                 pageSize,
                 sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
-                ...params,
                 ...extraSearch,
             },
         });

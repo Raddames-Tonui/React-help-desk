@@ -4,7 +4,7 @@ import { Route as TaskRoute } from "@/routes/_protected/admin/tasks/$taskId";
 import type { SingleTaskData } from "@/context/types.ts";
 
 import Loader from "@/components/Loader.tsx";
-import { useTasks } from "@/hooks/hooks.tsx";
+import { useTasks } from "@/context/hooks";
 
 import "@/css/userspage.css";
 

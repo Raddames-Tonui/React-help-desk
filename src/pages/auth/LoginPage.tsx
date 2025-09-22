@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import styles from "@/css/login.module.css";
-import {useAuth} from "@/hooks/hooks.tsx";
+import { useAuth } from "@/context/hooks";
 
 const schema = yup.object({
     email: yup.string().email("Invalid email").required("Email is required"),

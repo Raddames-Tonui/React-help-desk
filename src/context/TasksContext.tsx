@@ -5,7 +5,7 @@ import {
   TasksContext,
   type TasksContextValue,
   TOKEN,
-} from "@/hooks/hooks.tsx";
+} from "@/context/hooks";
 
 export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tasksData, setTasksData] = useState<ApiResponse<TaskData> | null>(null);
@@ -53,7 +53,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setError(error instanceof Error ? error.message : "Unknown error");
         setTasksData(null);
         toast.error("Failed to fetch tasks");
-      } 
+      }
     },
     [page, pageSize, params]
   );
@@ -88,7 +88,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error("Failed to fetch tasks by subject");
       return null;
-    } 
+    }
   };
 
   // ---------- Fetch single ----------
@@ -114,7 +114,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error("Failed to fetch task");
       return null;
-    } 
+    }
   };
 
   // ---------- Create ----------
@@ -143,7 +143,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error(error instanceof Error ? error.message : "Failed to create task");
       return null;
-    } 
+    }
   };
 
   // ---------- Update ----------
@@ -166,13 +166,13 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
 
       toast.success("Task updated successfully");
-      refresh(); 
+      refresh();
       return json.task as TaskData;
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error(error instanceof Error ? error.message : "Failed to update task");
       return null;
-    } 
+    }
   };
 
   // ---------- Delete ----------
@@ -194,13 +194,13 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
 
       toast.success("Task deleted");
-      refresh(); 
+      refresh();
       return json.message || "Task deleted successfully";
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unknown error");
       toast.error(error instanceof Error ? error.message : "Failed to delete task");
       throw error;
-    } 
+    }
   };
 
   const value: TasksContextValue = {

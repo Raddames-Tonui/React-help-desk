@@ -5,7 +5,7 @@ import type {
   SubjectPayload,
 } from "@/context/types.ts";
 import React, { useEffect, useState, useCallback } from "react";
-import { SubjectContext, type SubjectContextValue, TOKEN } from "@/hooks/hooks.tsx";
+import { SubjectContext, type SubjectContextValue, TOKEN } from "@/context/hooks";
 import toast from "react-hot-toast";
 
 export const SubjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

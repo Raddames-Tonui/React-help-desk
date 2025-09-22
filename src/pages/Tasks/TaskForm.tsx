@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { TaskData, TaskPayload } from "@/context/types.ts";
-import TaskForm from "@/components/TaskForm";
+import TaskForm from "@/pages/Tasks/TaskForm";
 import Modal from "@/components/Modal";
 
 interface TaskActionsProps {

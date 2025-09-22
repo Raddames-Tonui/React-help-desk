@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import styles from "@/css/login.module.css";
-import {useAuth, Role} from "@/hooks/hooks.tsx";
+import { useAuth, Role } from "@/context/hooks";
 
 const schema = yup.object({
     firstName: yup.string().required("First name is required"),

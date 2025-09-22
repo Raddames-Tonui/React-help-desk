@@ -5,7 +5,7 @@ import type { SingleUser } from "@/context/types.ts";
 import "@/css/userspage.css";
 
 import Loader from "@/components/Loader.tsx";
-import { useUsers } from "@/hooks/hooks.tsx";
+import { useUsers } from "@/context/hooks";
 
 function UsersPageId() {
     const { userId } = useParams({ from: UserRoute.id });

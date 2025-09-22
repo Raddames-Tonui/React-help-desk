@@ -4,7 +4,7 @@ import { Route as SubjectRoute } from "@/routes/_protected/admin/subjects/$subje
 import type { SingleSubjectData } from "@/context/types.ts";
 
 import Loader from "@/components/Loader.tsx";
-import { useSubjects } from "@/hooks/hooks.tsx";
+import { useSubjects } from "@/context/hooks";
 
 import "@/css/userspage.css";
 

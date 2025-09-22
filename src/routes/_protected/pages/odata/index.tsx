@@ -1,4 +1,4 @@
-import Odata from '@/pages/Odata'
+import Odata from '@/pages/odata/Odata'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected/pages/odata/')({

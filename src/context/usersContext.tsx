@@ -1,6 +1,6 @@
 import type { ApiResponse, UserData, SingleUser } from "@/context/types.ts";
 import React, { useCallback, useEffect, useState } from "react";
-import { UsersContext, TOKEN, type UsersContextValue } from "@/hooks/hooks.tsx";
+import { UsersContext, TOKEN, type UsersContextValue } from "@/context/hooks";
 import toast from "react-hot-toast";
 
 export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -14,7 +14,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [reload, setReload] = useState(false);
 
   // ----- FETCH USERS -----
-  const fetchUsers = useCallback( async (signal?: AbortSignal) => {
+  const fetchUsers = useCallback(async (signal?: AbortSignal) => {
     try {
       setError(null);
 
@@ -43,14 +43,14 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
       setData(null);
-    } 
+    }
   }, [page, pageSize, params]);
 
   useEffect(() => {
     const ac = new AbortController();
     fetchUsers(ac.signal);
     return () => ac.abort();
-  }, [fetchUsers,reload]);
+  }, [fetchUsers, reload]);
 
   const refresh = () => setReload((s) => !s);
 
@@ -128,7 +128,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // ----- DELETE USER -----
   const deleteUser = async (userId: number): Promise<string> => {
     try {
-        setIsLoading(true);
+      setIsLoading(true);
       const res = await fetch(`/api/admin/users/${userId}`, {
         method: "DELETE",
         headers: {
@@ -152,8 +152,8 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const msg = err instanceof Error ? err.message : "Unknown error";
       setError(msg);
       throw err;
-    }finally {
-        setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 

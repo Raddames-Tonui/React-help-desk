@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/hooks.tsx";
+import { useAuth } from "@/context/hooks";
 import Icon from "@/utils/Icon";
 
 interface NavbarProps {

@@ -1,4 +1,4 @@
-import TasksPage from '@/pages/TasksPage'
+import TasksPage from '@/pages/Tasks/TasksPage'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_protected/admin/tasks/')({

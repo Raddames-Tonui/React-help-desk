@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Vendor from '@/pages/Vendor'
+import Vendor from '@/pages/vendor/Vendor'
 
 export const Route = createFileRoute('/_protected/pages/vendor/dummy')({
   component: RouteComponent,
@@ -7,6 +7,6 @@ export const Route = createFileRoute('/_protected/pages/vendor/dummy')({
 
 function RouteComponent() {
   return <div>
-    <Vendor/>
+    <Vendor />
   </div>
 }

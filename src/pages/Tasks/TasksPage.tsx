@@ -5,10 +5,10 @@ import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
 import type { TaskData, TaskPayload } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
-import { useTasks } from "@/hooks/hooks.tsx";
-import TaskActions from "@/components/TaskActions";
+import { useTasks } from "@/context/hooks";
+import TaskActions from "@/pages/Tasks/TaskActions";
 import Modal from "@/components/Modal";
-import TaskForm from "@/components/TaskForm";
+import TaskForm from "@/pages/Tasks/TaskForm";
 
 export default function TasksPage() {
   const searchParams = Route.useSearch();

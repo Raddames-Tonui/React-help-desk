@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
-import { useAuth } from "@/hooks/hooks.tsx";
+import { useAuth } from "@/context/hooks";
 import { Toaster } from 'react-hot-toast';
 
 import "@css/layout.css";
@@ -53,14 +53,14 @@ function RouteComponent() {
     >
       <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-        <Toaster
-            position="top-right"
-            toastOptions={{
-                style: {
-                    marginTop: '37px',
-                },
-            }}
-        />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            marginTop: '37px',
+          },
+        }}
+      />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>
 

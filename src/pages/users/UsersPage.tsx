@@ -5,8 +5,8 @@ import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule, FilterRule } from "@/components/table/DataTable";
 import type { UserData } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
-import { useUsers } from "@/hooks/hooks.tsx";
-import UserActions from "@/components/UserActions";
+import { useUsers } from "@/context/hooks";
+import UserActions from "@/pages/users/UserActions";
 
 export default function UsersPage() {
   const searchParams = Route.useSearch();
@@ -136,7 +136,7 @@ export default function UsersPage() {
     setPage(1);
   };
 
-  
+
   const handlePageChange = (newPage: number) => setPage(newPage);
   const handlePageSizeChange = (newSize: number) => {
     setPageSize(newSize);

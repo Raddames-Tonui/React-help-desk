@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import SubjectsPage from "@/pages/SubjectsPage";
+import SubjectsPage from "@/pages/subjects/SubjectsPage";
 
 export const Route = createFileRoute("/_protected/admin/subjects/")({
   component: RouteComponent,

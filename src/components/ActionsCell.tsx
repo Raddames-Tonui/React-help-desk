@@ -8,7 +8,7 @@ interface ActionsCellProps {
   editRole: (id: string, role: string) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
   openModal: (content: React.ReactNode) => void;
-  navigate: (opts: { to: string }) => void; // TanStack navigate
+  navigate: (opts: { to: string }) => void; 
 }
 
 export const ActionsCell: React.FC<ActionsCellProps> = ({
