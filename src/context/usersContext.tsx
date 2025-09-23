@@ -143,7 +143,7 @@ export const UsersProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return {
           ...prev,
           records: prev.records.filter((u) => u.id !== userId),
-          total: prev.total - 1,
+          total: prev.total_count - 1,
         };
       });
       toast.success("User deleted successfully");

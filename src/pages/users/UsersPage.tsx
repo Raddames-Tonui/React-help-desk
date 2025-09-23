@@ -2,33 +2,18 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "@/routes/_protected/admin/users";
 import { sortData } from "@/components/table/utils/tableUtils";
+import type { ApiResponse, UserData } from "@/context/types";
 import type { ColumnProps, SortRule, FilterRule } from "@/components/table/DataTable";
-import type { UserData } from "@/context/types.ts";
 import { DataTable } from "@/components/table/DataTable";
-import { useUsers } from "@/context/hooks";
-import UserActions from "@/pages/users/UserActions";
+import { useFetchData } from "@/hooks/useFetchData";
+import { TOKEN } from "@/context/hooks";
+import UserActions from "./UserActions";
 
 export default function UsersPage() {
   const searchParams = Route.useSearch();
   const navigate = useNavigate();
 
-  const {
-    users,
-    data,
-    isLoading,
-    error,
-    page,
-    pageSize,
-    setPage,
-    setPageSize,
-    setParams,
-    refresh,
-    editRole,
-    editStatus,
-    deleteUser,
-  } = useUsers();
-
-  // --- Parse initial sort from URL ---
+  // --- Parse initial sort from URL (frontend only) ---
   const initialSort: SortRule[] = searchParams.sortBy
     ? searchParams.sortBy
       .split(",")
@@ -42,23 +27,32 @@ export default function UsersPage() {
   const initialPage = searchParams.page ? Number(searchParams.page) : 1;
   const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
 
-  // --- Parse initial filters from URL ---
+  // --- Parse initial filters from URL (backend) ---
   const initialFilters: FilterRule[] = [];
   if (searchParams.role) initialFilters.push({ column: "role", operator: "eq", value: String(searchParams.role) });
   if (searchParams.status) initialFilters.push({ column: "status", operator: "eq", value: String(searchParams.status) });
 
   const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
   const [filters, setFilters] = useState<FilterRule[]>(initialFilters);
+  const [page, setPage] = useState(initialPage);
+  const [pageSize, setPageSize] = useState(initialPageSize);
 
-  useEffect(() => {
-    setPage(initialPage);
-    setPageSize(initialPageSize);
+  // --- Build backend params from filters ---
+  const backendParams: Record<string, string | number> = {
+    page,
+    page_size: pageSize,
+  };
+  filters.forEach((f) => (backendParams[f.column] = f.value));
 
-    const backendParams: Record<string, string> = {};
-    filters.forEach(f => backendParams[f.column] = f.value);
-    setParams(backendParams);
-  }, []);
+  const { data, isLoading, error, refresh } = useFetchData<ApiResponse<UserData>>({
+    url: "/api/admin/users",
+    token: TOKEN,
+    params: backendParams,
+  });
 
+  const users = data?.records ?? [];
+
+  // --- Frontend sorting ---
   const sortedUsers = useMemo(() => sortData(users, sortBy), [users, sortBy]);
 
   const usersColumns: ColumnProps<UserData>[] = [
@@ -103,17 +97,11 @@ export default function UsersPage() {
       id: "actions",
       caption: "Actions",
       size: 200,
-      renderCell: (_, row) => (
-        <UserActions
-          user={row}
-          editRole={editRole}
-          editStatus={editStatus}
-          deleteUser={deleteUser}
-        />
-      ),
+      renderCell: (_, row) => <UserActions user={row} onRefresh={refresh} />,
     },
   ];
 
+  // --- Sync state to URL ---
   const updateUrl = useCallback(() => {
     navigate({
       search: {
@@ -125,24 +113,26 @@ export default function UsersPage() {
     });
   }, [navigate, page, pageSize, sortBy, filters]);
 
+  useEffect(() => {
+    updateUrl();
+  }, [updateUrl]);
 
-
+  // --- Handlers ---
   const handleSortApply = (rules: SortRule[]) => setSortBy(rules);
+
   const handleFilterApply = (rules: FilterRule[]) => {
     setFilters(rules);
-    const backendParams: Record<string, string> = {};
-    rules.forEach(f => backendParams[f.column] = f.value);
-    setParams(backendParams);
-    setPage(1);
+    setPage(1); // reset page when filter changes
   };
 
-
   const handlePageChange = (newPage: number) => setPage(newPage);
+
   const handlePageSizeChange = (newSize: number) => {
     setPageSize(newSize);
     setPage(1);
   };
 
+  // Page size dropdown
   const tableActionsRight = (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
       <label htmlFor="pageSizeSelect"></label>
@@ -154,15 +144,13 @@ export default function UsersPage() {
         style={{ padding: "0.4rem 1rem " }}
       >
         {[5, 10, 20].map((size) => (
-          <option key={size} value={size}>{size}</option>
+          <option key={size} value={size}>
+            {size}
+          </option>
         ))}
       </select>
     </div>
   );
-
-  useEffect(() => {
-    updateUrl();
-  }, [updateUrl]);
 
   return (
     <div>

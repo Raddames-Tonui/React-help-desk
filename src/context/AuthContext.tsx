@@ -1,8 +1,9 @@
 import { useNavigate } from "@tanstack/react-router";
 import { type ReactNode, useState, useEffect } from "react";
 import type { User } from "@/context/types.ts";
-import { AuthContext, TOKEN } from "@/context/hooks";
-import { encryptData, decryptData } from "@/utils/cryptoUtils.ts"; 
+import { AuthContext } from "@/context/hooks";
+import { TOKEN } from "@/utils/Constants"
+import { encryptData, decryptData } from "@/utils/cryptoUtils.ts";
 const ENCRYPTION_KEY = "this_is_a_very_strong_key_32_chars!"; // must be >= 32 chars
 const USERS_STORAGE_KEY = "users";
 
