@@ -1,6 +1,6 @@
 // src/pages/admin/SubjectsPage.tsx
 import { useState } from "react";
-import { useSubjects } from "@/hooks/useSubjects";
+import { useSubjects } from "@/pages/subjects/tanstack-query/useSubjects";
 import type { SubjectData } from "@/context/types";
 import { DataTable, type ColumnProps } from "@/components/table/DataTable";
 

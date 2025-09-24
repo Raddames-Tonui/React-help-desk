@@ -8,7 +8,7 @@ These hooks streamline server communication and state management, offering a cle
 ## Implementation
 
 - `useContext` is demonstrated in **/src/pages/users/UsersPage.tsx**.  
-- `useFetchData` and `useMutateData` are implemented in **/src/pages/subjects/SubjectsPage.tsx**.  
+- `useFetchData` and `useMutateData` are implemented in **/src/pages/subjects/SubjectsPage.tsx** and the **/src/hooks**.  
 - TanStack Query (formerly React Query) examples are available in **/src/pages/subjects/tanstack-query/**.  
 - Check the browser **Network tab** in DevTools and the **__root.tsx** file for provider setup.
 
