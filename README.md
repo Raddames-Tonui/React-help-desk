@@ -2,9 +2,22 @@
 
 ## Overview
 
-This README explains the usage and advantages of two custom hooks used in the Users module: `useFetchData` and `useMutateData`. These hooks replace a traditional ContextProvider approach for managing users data in a table.
+This document outlines the purpose and usage of the custom hooks `useFetchData` and `useMutateData`.  
+These hooks streamline server communication and state management, offering a cleaner alternative to the traditional ContextProvider pattern for handling table data.
+
+## Implementation
+
+- `useContext` is demonstrated in **/src/pages/users/UsersPage.tsx**.  
+- `useFetchData` and `useMutateData` are implemented in **/src/pages/subjects/SubjectsPage.tsx**.  
+- TanStack Query (formerly React Query) examples are available in **/src/pages/subjects/tanstack-query/**.  
+- Check the browser **Network tab** in DevTools and the **__root.tsx** file for provider setup.
 
 ---
+
+## CONTENTS
+
+* Checkout Also [Custom Hooks Vs Tabstack Query](./README2.md) for more details.
+
 
 ## 1. useFetchData
 
