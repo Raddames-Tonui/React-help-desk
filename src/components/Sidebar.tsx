@@ -1,36 +1,21 @@
 import React from "react";
 import { Link, redirect } from "@tanstack/react-router";
-import Icon from "../utils/Icon";
+import Icon from "@/utils/Icon";
 
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
 }
 
-import type { IconName } from "../utils/Icon";
+import type { IconName } from "@/utils/Icon";
 
 const menuConfig: Record<string, { icon: IconName; label: string; path: string }[]> = {
   admin: [
-    { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
+    { icon: "pie", label: "Odata Dashboard", path: "/admin" },
     { icon: "notepad", label: "Subjects", path: "/admin/subjects" },
     { icon: "notes", label: "Tasks", path: "/admin/tasks" },
     { icon: "users", label: "Users", path: "/admin/users" },
-    { icon: "settings", label: "Settings", path: "/pages/settings" },
-  ],
-  trainee: [
-    { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
-    { icon: "notepad", label: "Subjects", path: "/admin/subjects" },
-    { icon: "notes", label: "Tasks", path: "/admin/tasks" },
-    { icon: "settings", label: "Settings", path: "/pages/settings" },
-  ],
-  vendor: [
-    { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
-    { icon: "settings", label: "Settings", path: "/pages/settings" },
-
-  ],
-  client: [
-    { icon: "pie", label: "Odata Dashboard", path: "/pages/odata/" },
-    { icon: "settings", label: "Settings", path: "/pages/settings" },
+    { icon: "settings", label: "Settings", path: "/admin/settings" },
   ]
 };
 

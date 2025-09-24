@@ -2,11 +2,11 @@ import { createRootRoute, Outlet } from '@tanstack/react-router'
 // import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { AuthProvider } from '@/context/AuthContext'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ODataProvider } from '@/context/ODataContext';
 import { UsersProvider } from '@/context/usersContext';
 import { SubjectProvider } from "@/context/SubjectsContext.tsx";
 import { TasksProvider } from '@/context/TasksContext';
 import { ThemeProvider } from '@/context/ThemeProvider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,12 +24,11 @@ const RootLayout = () => (
         <UsersProvider>
           <SubjectProvider>
             <TasksProvider>
-              <ODataProvider>
-                <Outlet />
-              </ODataProvider>
+              <Outlet />
             </TasksProvider>
           </SubjectProvider>
         </UsersProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ThemeProvider>
     {/*<TanStackRouterDevtools />*/}

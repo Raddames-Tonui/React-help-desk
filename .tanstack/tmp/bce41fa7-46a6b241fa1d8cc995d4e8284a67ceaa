@@ -23,7 +23,6 @@ import { Route as ProtectedAdminUserIdRouteImport } from './routes/_protected/ad
 import { Route as ProtectedAdminUsersIndexRouteImport } from './routes/_protected/admin/users/index'
 import { Route as ProtectedAdminTasksIndexRouteImport } from './routes/_protected/admin/tasks/index'
 import { Route as ProtectedAdminSubjectsIndexRouteImport } from './routes/_protected/admin/subjects/index'
-import { Route as ProtectedAdminSettingsIndexRouteImport } from './routes/_protected/admin/settings/index'
 import { Route as ProtectedAdminTasksTaskIdRouteImport } from './routes/_protected/admin/tasks/$taskId'
 import { Route as ProtectedAdminSubjectsSubjectIdRouteImport } from './routes/_protected/admin/subjects/$subjectId'
 
@@ -98,12 +97,6 @@ const ProtectedAdminSubjectsIndexRoute =
     path: '/admin/subjects/',
     getParentRoute: () => ProtectedRoute,
   } as any)
-const ProtectedAdminSettingsIndexRoute =
-  ProtectedAdminSettingsIndexRouteImport.update({
-    id: '/admin/settings/',
-    path: '/admin/settings/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
 const ProtectedAdminTasksTaskIdRoute =
   ProtectedAdminTasksTaskIdRouteImport.update({
     id: '/admin/tasks/$taskId',
@@ -128,7 +121,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
   '/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
-  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
   '/admin/tasks': typeof ProtectedAdminTasksIndexRoute
   '/admin/users': typeof ProtectedAdminUsersIndexRoute
@@ -144,7 +136,6 @@ export interface FileRoutesByTo {
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
   '/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
-  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
   '/admin/tasks': typeof ProtectedAdminTasksIndexRoute
   '/admin/users': typeof ProtectedAdminUsersIndexRoute
@@ -164,7 +155,6 @@ export interface FileRoutesById {
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
   '/_protected/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
-  '/_protected/admin/settings/': typeof ProtectedAdminSettingsIndexRoute
   '/_protected/admin/subjects/': typeof ProtectedAdminSubjectsIndexRoute
   '/_protected/admin/tasks/': typeof ProtectedAdminTasksIndexRoute
   '/_protected/admin/users/': typeof ProtectedAdminUsersIndexRoute
@@ -182,7 +172,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/subjects/$subjectId'
     | '/admin/tasks/$taskId'
-    | '/admin/settings'
     | '/admin/subjects'
     | '/admin/tasks'
     | '/admin/users'
@@ -198,7 +187,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/subjects/$subjectId'
     | '/admin/tasks/$taskId'
-    | '/admin/settings'
     | '/admin/subjects'
     | '/admin/tasks'
     | '/admin/users'
@@ -217,7 +205,6 @@ export interface FileRouteTypes {
     | '/_protected/admin/'
     | '/_protected/admin/subjects/$subjectId'
     | '/_protected/admin/tasks/$taskId'
-    | '/_protected/admin/settings/'
     | '/_protected/admin/subjects/'
     | '/_protected/admin/tasks/'
     | '/_protected/admin/users/'
@@ -330,13 +317,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminSubjectsIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/admin/settings/': {
-      id: '/_protected/admin/settings/'
-      path: '/admin/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof ProtectedAdminSettingsIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
     '/_protected/admin/tasks/$taskId': {
       id: '/_protected/admin/tasks/$taskId'
       path: '/admin/tasks/$taskId'
@@ -359,7 +339,6 @@ interface ProtectedRouteChildren {
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedAdminSubjectsSubjectIdRoute: typeof ProtectedAdminSubjectsSubjectIdRoute
   ProtectedAdminTasksTaskIdRoute: typeof ProtectedAdminTasksTaskIdRoute
-  ProtectedAdminSettingsIndexRoute: typeof ProtectedAdminSettingsIndexRoute
   ProtectedAdminSubjectsIndexRoute: typeof ProtectedAdminSubjectsIndexRoute
   ProtectedAdminTasksIndexRoute: typeof ProtectedAdminTasksIndexRoute
   ProtectedAdminUsersIndexRoute: typeof ProtectedAdminUsersIndexRoute
@@ -370,7 +349,6 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedAdminSubjectsSubjectIdRoute: ProtectedAdminSubjectsSubjectIdRoute,
   ProtectedAdminTasksTaskIdRoute: ProtectedAdminTasksTaskIdRoute,
-  ProtectedAdminSettingsIndexRoute: ProtectedAdminSettingsIndexRoute,
   ProtectedAdminSubjectsIndexRoute: ProtectedAdminSubjectsIndexRoute,
   ProtectedAdminTasksIndexRoute: ProtectedAdminTasksIndexRoute,
   ProtectedAdminUsersIndexRoute: ProtectedAdminUsersIndexRoute,

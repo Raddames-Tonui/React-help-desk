@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-interface MutateOptions<T, R> {
+interface MutateOptions<TRequest, TResponse> {
   url: string;
   method?: "POST" | "PUT" | "PATCH" | "DELETE";
   token?: string;
-  onSuccess?: (data: R) => void;
+  onSuccess?: (data: TResponse) => void;
   onError?: (err: Error) => void;
-  transform?: (data: any) => R;
+  transform?: (data: unknown) => TResponse;
 }
 
-async function safeJson(res: Response) {
+async function safeJson(res: Response): Promise<unknown> {
   const text = await res.text();
   if (!text) return {};
   try {
@@ -19,19 +19,19 @@ async function safeJson(res: Response) {
   }
 }
 
-export function useMutateData<T = any, R = any>({
+export function useMutateData<TRequest = unknown, TResponse = unknown>({
   url,
   method = "POST",
   token,
   onSuccess,
   onError,
   transform,
-}: MutateOptions<T, R>) {
-  const [data, setData] = useState<R | null>(null);
+}: MutateOptions<TRequest, TResponse>) {
+  const [data, setData] = useState<TResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const mutate = async (body?: T): Promise<R | null> => {
+  const mutate = async (body?: TRequest): Promise<TResponse | null> => {
     try {
       setIsLoading(true);
       setError(null);
@@ -47,17 +47,20 @@ export function useMutateData<T = any, R = any>({
       });
 
       const json = await safeJson(res);
-      if (!res.ok)
-        throw new Error(
-          (json as any).message || `Failed (status ${res.status})`
-        );
 
-      const result = transform ? transform(json) : json;
+      if (!res.ok) {
+        const msg =
+          (json as { message?: string }).message ||
+          `Failed (status ${res.status})`;
+        throw new Error(msg);
+      }
+
+      const result = transform ? transform(json) : (json as TResponse);
       setData(result);
       onSuccess?.(result);
       return result;
-    } catch (err: any) {
-      const e = new Error(err.message || "Unknown error");
+    } catch (err) {
+      const e = err instanceof Error ? err : new Error("Unknown error");
       setError(e.message);
       onError?.(e);
       return null;
@@ -68,3 +71,27 @@ export function useMutateData<T = any, R = any>({
 
   return { mutate, data, isLoading, error };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 5. Use Utility Types
+
+// TS gives you tools so you don’t need any:
+// Partial<T> → all props optional
+
+// Pick<T, K> → only some props
+
+// Omit<T, K> → everything except some props
+
+// Record<K, T> → map keys to a type

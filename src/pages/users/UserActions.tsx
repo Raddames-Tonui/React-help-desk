@@ -10,7 +10,7 @@ import "@/css/index.css";
 
 interface UserActionsProps {
   user: UserData;
-  onRefresh: () => void; // <-- refresh callback from parent
+  onRefresh: () => void; 
 }
 
 const UserActions: React.FC<UserActionsProps> = ({ user, onRefresh }) => {
@@ -20,7 +20,7 @@ const UserActions: React.FC<UserActionsProps> = ({ user, onRefresh }) => {
   const [modalBody, setModalBody] = useState<React.ReactNode>(null);
   const [modalFooter, setModalFooter] = useState<React.ReactNode>(null);
 
-  // --- Mutations using useMutateData ---
+  // --- Mutations using useMutateData Hook ---
   const editRoleMutation = useMutateData<{ role: string }>({
     url: `/api/admin/users/${user.id}/role`,
     method: "PUT",

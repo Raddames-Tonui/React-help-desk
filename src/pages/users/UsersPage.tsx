@@ -13,7 +13,7 @@ export default function UsersPage() {
   const searchParams = Route.useSearch();
   const navigate = useNavigate();
 
-  // --- Parse initial sort from URL (frontend only) ---
+  // Parse initial sort from URL (frontend only)
   const initialSort: SortRule[] = searchParams.sortBy
     ? searchParams.sortBy
       .split(",")
@@ -27,7 +27,7 @@ export default function UsersPage() {
   const initialPage = searchParams.page ? Number(searchParams.page) : 1;
   const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
 
-  // --- Parse initial filters from URL (backend) ---
+  // Parse initial filters from URL (backend)
   const initialFilters: FilterRule[] = [];
   if (searchParams.role) initialFilters.push({ column: "role", operator: "eq", value: String(searchParams.role) });
   if (searchParams.status) initialFilters.push({ column: "status", operator: "eq", value: String(searchParams.status) });
@@ -37,7 +37,7 @@ export default function UsersPage() {
   const [page, setPage] = useState(initialPage);
   const [pageSize, setPageSize] = useState(initialPageSize);
 
-  // --- Build backend params from filters ---
+  // Build backend params from filters
   const backendParams: Record<string, string | number> = {
     page,
     page_size: pageSize,
@@ -52,11 +52,20 @@ export default function UsersPage() {
 
   const users = data?.records ?? [];
 
-  // --- Frontend sorting ---
+  /**Frontend sorting 
+   * Memoizes a value (result of a computation) so that the computation only runs when dependencies change. 
+   * This is great for expensive calculations that shouldn’t be repeated on every render. */
   const sortedUsers = useMemo(() => sortData(users, sortBy), [users, sortBy]);
 
   const usersColumns: ColumnProps<UserData>[] = [
     { id: "id", caption: "ID", size: 5, isSortable: true },
+    {
+      id: "avatar_url", caption: "Image", size: 30,
+      renderCell: (_, row) => (
+        <img src={row.avatar_url || "/helpdesk-logo.png"} alt={row.name} style={{ width: 50, height: 50, borderRadius: "50%", objectFit: "cover" }}
+        />
+      )
+    },
     { id: "name", caption: "Name", size: 150, isSortable: true },
     { id: "email", caption: "Email", size: 200, isSortable: true },
     { id: "role", caption: "Role", size: 120, isSortable: true, isFilterable: true },
@@ -101,7 +110,8 @@ export default function UsersPage() {
     },
   ];
 
-  // --- Sync state to URL ---
+  /** Sync state to URL (Usecallback...)   * 
+   *  Purpose: Memoizes a function so that it’s only re-created when its dependencies change.*/
   const updateUrl = useCallback(() => {
     navigate({
       search: {
@@ -117,12 +127,11 @@ export default function UsersPage() {
     updateUrl();
   }, [updateUrl]);
 
-  // --- Handlers ---
   const handleSortApply = (rules: SortRule[]) => setSortBy(rules);
 
   const handleFilterApply = (rules: FilterRule[]) => {
     setFilters(rules);
-    setPage(1); // reset page when filter changes
+    setPage(1);
   };
 
   const handlePageChange = (newPage: number) => setPage(newPage);
@@ -169,6 +178,7 @@ export default function UsersPage() {
           onSortApply={handleSortApply}
           onFilterApply={handleFilterApply}
           tableActionsRight={tableActionsRight}
+
           pagination={{
             page,
             pageSize,
