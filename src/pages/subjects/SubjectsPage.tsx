@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "@/routes/_protected/admin/subjects";
 import { sortData } from "@/components/table/utils/tableUtils";
@@ -6,6 +6,8 @@ import type { ColumnProps, SortRule } from "@/components/table/DataTable";
 import type { SubjectData } from "@/context/types";
 import { DataTable } from "@/components/table/DataTable";
 import { useSubjects } from "@/pages/subjects/useSubjects";
+import Modal from "@/components/Modal";
+import SubjectForm from "./SubectForm";
 
 export default function SubjectsPage() {
     const searchParams = Route.useSearch();
@@ -23,6 +25,8 @@ export default function SubjectsPage() {
     const [page, setPage] = useState(initialPage);
     const [pageSize, setPageSize] = useState(initialPageSize);
     const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const { data, isLoading, error, refetch } = useSubjects(page, pageSize);
 
@@ -80,7 +84,7 @@ export default function SubjectsPage() {
         },
     ];
 
-    
+
 
     return (
         <div>
@@ -130,6 +134,14 @@ export default function SubjectsPage() {
                     }
                 />
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                title="Create Subject"
+                body={<SubjectForm onClose={() => setIsModalOpen(false)} />}
+                onClose={() => setIsModalOpen(false)}
+
+            />
         </div>
     );
 }
