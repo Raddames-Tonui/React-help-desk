@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as ProtectedRouteImport } from './routes/_protected'
-import { Route as _notFoundRouteImport } from './routes/__not-found'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
 import { Route as PublicAuthUnderdevelopmentRouteImport } from './routes/_public/auth/underdevelopment'
@@ -19,12 +18,7 @@ import { Route as PublicAuthUnauthorizedRouteImport } from './routes/_public/aut
 import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
 import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
-import { Route as ProtectedAdminUserIdRouteImport } from './routes/_protected/admin/$userId'
-import { Route as ProtectedAdminUsersIndexRouteImport } from './routes/_protected/admin/users/index'
-import { Route as ProtectedAdminTasksIndexRouteImport } from './routes/_protected/admin/tasks/index'
 import { Route as ProtectedAdminSubjectsIndexRouteImport } from './routes/_protected/admin/subjects/index'
-import { Route as ProtectedAdminSettingsIndexRouteImport } from './routes/_protected/admin/settings/index'
-import { Route as ProtectedAdminTasksTaskIdRouteImport } from './routes/_protected/admin/tasks/$taskId'
 import { Route as ProtectedAdminSubjectsSubjectIdRouteImport } from './routes/_protected/admin/subjects/$subjectId'
 
 const PublicRoute = PublicRouteImport.update({
@@ -33,10 +27,6 @@ const PublicRoute = PublicRouteImport.update({
 } as any)
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const _notFoundRoute = _notFoundRouteImport.update({
-  id: '/__not-found',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -75,39 +65,10 @@ const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => PublicRoute,
 } as any)
-const ProtectedAdminUserIdRoute = ProtectedAdminUserIdRouteImport.update({
-  id: '/admin/$userId',
-  path: '/admin/$userId',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-const ProtectedAdminUsersIndexRoute =
-  ProtectedAdminUsersIndexRouteImport.update({
-    id: '/admin/users/',
-    path: '/admin/users/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminTasksIndexRoute =
-  ProtectedAdminTasksIndexRouteImport.update({
-    id: '/admin/tasks/',
-    path: '/admin/tasks/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
 const ProtectedAdminSubjectsIndexRoute =
   ProtectedAdminSubjectsIndexRouteImport.update({
     id: '/admin/subjects/',
     path: '/admin/subjects/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminSettingsIndexRoute =
-  ProtectedAdminSettingsIndexRouteImport.update({
-    id: '/admin/settings/',
-    path: '/admin/settings/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminTasksTaskIdRoute =
-  ProtectedAdminTasksTaskIdRouteImport.update({
-    id: '/admin/tasks/$taskId',
-    path: '/admin/tasks/$taskId',
     getParentRoute: () => ProtectedRoute,
   } as any)
 const ProtectedAdminSubjectsSubjectIdRoute =
@@ -119,7 +80,6 @@ const ProtectedAdminSubjectsSubjectIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin/$userId': typeof ProtectedAdminUserIdRoute
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
@@ -127,15 +87,10 @@ export interface FileRoutesByFullPath {
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
-  '/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
-  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
-  '/admin/tasks': typeof ProtectedAdminTasksIndexRoute
-  '/admin/users': typeof ProtectedAdminUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin/$userId': typeof ProtectedAdminUserIdRoute
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
@@ -143,19 +98,13 @@ export interface FileRoutesByTo {
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
-  '/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
-  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
-  '/admin/tasks': typeof ProtectedAdminTasksIndexRoute
-  '/admin/users': typeof ProtectedAdminUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/__not-found': typeof _notFoundRoute
   '/_protected': typeof ProtectedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
-  '/_protected/admin/$userId': typeof ProtectedAdminUserIdRoute
   '/_public/auth/login': typeof PublicAuthLoginRoute
   '/_public/auth/register': typeof PublicAuthRegisterRoute
   '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
@@ -163,17 +112,12 @@ export interface FileRoutesById {
   '/_public/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
-  '/_protected/admin/tasks/$taskId': typeof ProtectedAdminTasksTaskIdRoute
-  '/_protected/admin/settings/': typeof ProtectedAdminSettingsIndexRoute
   '/_protected/admin/subjects/': typeof ProtectedAdminSubjectsIndexRoute
-  '/_protected/admin/tasks/': typeof ProtectedAdminTasksIndexRoute
-  '/_protected/admin/users/': typeof ProtectedAdminUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin/$userId'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
@@ -181,15 +125,10 @@ export interface FileRouteTypes {
     | '/auth/underdevelopment'
     | '/admin'
     | '/admin/subjects/$subjectId'
-    | '/admin/tasks/$taskId'
-    | '/admin/settings'
     | '/admin/subjects'
-    | '/admin/tasks'
-    | '/admin/users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin/$userId'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
@@ -197,18 +136,12 @@ export interface FileRouteTypes {
     | '/auth/underdevelopment'
     | '/admin'
     | '/admin/subjects/$subjectId'
-    | '/admin/tasks/$taskId'
-    | '/admin/settings'
     | '/admin/subjects'
-    | '/admin/tasks'
-    | '/admin/users'
   id:
     | '__root__'
     | '/'
-    | '/__not-found'
     | '/_protected'
     | '/_public'
-    | '/_protected/admin/$userId'
     | '/_public/auth/login'
     | '/_public/auth/register'
     | '/_public/auth/resetpassword'
@@ -216,16 +149,11 @@ export interface FileRouteTypes {
     | '/_public/auth/underdevelopment'
     | '/_protected/admin/'
     | '/_protected/admin/subjects/$subjectId'
-    | '/_protected/admin/tasks/$taskId'
-    | '/_protected/admin/settings/'
     | '/_protected/admin/subjects/'
-    | '/_protected/admin/tasks/'
-    | '/_protected/admin/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  _notFoundRoute: typeof _notFoundRoute
   ProtectedRoute: typeof ProtectedRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
 }
@@ -244,13 +172,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof ProtectedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/__not-found': {
-      id: '/__not-found'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof _notFoundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -302,46 +223,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthLoginRouteImport
       parentRoute: typeof PublicRoute
     }
-    '/_protected/admin/$userId': {
-      id: '/_protected/admin/$userId'
-      path: '/admin/$userId'
-      fullPath: '/admin/$userId'
-      preLoaderRoute: typeof ProtectedAdminUserIdRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/users/': {
-      id: '/_protected/admin/users/'
-      path: '/admin/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof ProtectedAdminUsersIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/tasks/': {
-      id: '/_protected/admin/tasks/'
-      path: '/admin/tasks'
-      fullPath: '/admin/tasks'
-      preLoaderRoute: typeof ProtectedAdminTasksIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
     '/_protected/admin/subjects/': {
       id: '/_protected/admin/subjects/'
       path: '/admin/subjects'
       fullPath: '/admin/subjects'
       preLoaderRoute: typeof ProtectedAdminSubjectsIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/settings/': {
-      id: '/_protected/admin/settings/'
-      path: '/admin/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof ProtectedAdminSettingsIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/tasks/$taskId': {
-      id: '/_protected/admin/tasks/$taskId'
-      path: '/admin/tasks/$taskId'
-      fullPath: '/admin/tasks/$taskId'
-      preLoaderRoute: typeof ProtectedAdminTasksTaskIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/admin/subjects/$subjectId': {
@@ -355,25 +241,15 @@ declare module '@tanstack/react-router' {
 }
 
 interface ProtectedRouteChildren {
-  ProtectedAdminUserIdRoute: typeof ProtectedAdminUserIdRoute
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedAdminSubjectsSubjectIdRoute: typeof ProtectedAdminSubjectsSubjectIdRoute
-  ProtectedAdminTasksTaskIdRoute: typeof ProtectedAdminTasksTaskIdRoute
-  ProtectedAdminSettingsIndexRoute: typeof ProtectedAdminSettingsIndexRoute
   ProtectedAdminSubjectsIndexRoute: typeof ProtectedAdminSubjectsIndexRoute
-  ProtectedAdminTasksIndexRoute: typeof ProtectedAdminTasksIndexRoute
-  ProtectedAdminUsersIndexRoute: typeof ProtectedAdminUsersIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedAdminUserIdRoute: ProtectedAdminUserIdRoute,
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedAdminSubjectsSubjectIdRoute: ProtectedAdminSubjectsSubjectIdRoute,
-  ProtectedAdminTasksTaskIdRoute: ProtectedAdminTasksTaskIdRoute,
-  ProtectedAdminSettingsIndexRoute: ProtectedAdminSettingsIndexRoute,
   ProtectedAdminSubjectsIndexRoute: ProtectedAdminSubjectsIndexRoute,
-  ProtectedAdminTasksIndexRoute: ProtectedAdminTasksIndexRoute,
-  ProtectedAdminUsersIndexRoute: ProtectedAdminUsersIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -401,7 +277,6 @@ const PublicRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  _notFoundRoute: _notFoundRoute,
   ProtectedRoute: ProtectedRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
 }

@@ -94,14 +94,6 @@ export const SubjectContext = createContext<SubjectContextValue | undefined>(
     undefined
 );
 
-export const useSubjects = () => {
-    const ctx = useContext(SubjectContext);
-    if (!ctx) {
-        throw new Error("useSubjects must be used within a SubjectProvider");
-    }
-    return ctx;
-};
-
 
 
 

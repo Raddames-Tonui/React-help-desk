@@ -1,60 +1,53 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Route } from "@/routes/_protected/admin/subjects";
 import { sortData } from "@/components/table/utils/tableUtils";
 import type { ColumnProps, SortRule } from "@/components/table/DataTable";
-import type { SubjectData, SubjectPayload } from "@/context/types.ts";
+import type { SubjectData } from "@/context/types";
 import { DataTable } from "@/components/table/DataTable";
-import { useSubjects } from "@/context/hooks";
-import Modal from "@/components/Modal";
-import SubjectForm from "@/pages/subjects/SubjectForm";
-import SubjectActions from "@/pages/subjects/SubjectActions";
+import { useSubjects } from "@/pages/subjects/useSubjects";
 
 export default function SubjectsPage() {
     const searchParams = Route.useSearch();
     const navigate = useNavigate();
 
-    const {
-        subjects,
-        subjectData,
-        isLoading,
-        error,
-        page,
-        pageSize,
-        setPage,
-        setPageSize,
-        setParams,
-        refresh,
-        deleteSubject,
-        updateSubject,
-        createSubject,
-    } = useSubjects();
-
-    const initialSortFromUrl: SortRule[] = searchParams.sortBy
+    // --- Parse from URL ---
+    const initialPage = searchParams.page ? Number(searchParams.page) : 1;
+    const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
+    const initialSort: SortRule[] = searchParams.sortBy
         ? searchParams.sortBy.split(",").map((s) => {
             const [column, direction = "asc"] = s.trim().split(" ");
             return { column, direction: direction as "asc" | "desc" };
         })
         : [];
 
-    const [sortBy, setSortBy] = useState<SortRule[]>(initialSortFromUrl);
+    // --- Local state ---
+    const [page, setPage] = useState(initialPage);
+    const [pageSize, setPageSize] = useState(initialPageSize);
+    const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
 
-    const initialPage = searchParams.page ? Number(searchParams.age) : 1;
-    const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
+    // --- Fetch subjects (backend only cares about page/pageSize) ---
+    const { data, isLoading, error, refetch } = useSubjects(page, pageSize);
 
+    // --- Keep URL in sync ---
     useEffect(() => {
-        setPage(initialPage);
-        setPageSize(initialPageSize);
+        navigate({
+            search: {
+                page,
+                pageSize,
+                sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
+            },
+            replace: true, // prevent history spam
+        });
+    }, [page, pageSize, sortBy, navigate]);
 
-        const backendParams: Record<string, string> = {};
-        if (searchParams.page) backendParams.page = String(searchParams.page);
-        if (searchParams.pageSize) backendParams.pageSize = String(searchParams.pageSize);
+    // --- Apply frontend sorting ---
+    const sortedSubjects = useMemo(
+        () => sortData(data?.records ?? [], sortBy),
+        [data?.records, sortBy]
+    );
 
-        setParams(backendParams);
-    }, []);
-
-    const sortedSubjects = useMemo(() => sortData(subjects, sortBy), [subjects, sortBy]);
-
+    // --- Table config ---
     const subjectsColumns: ColumnProps<SubjectData>[] = [
         { id: "id", caption: "ID", size: 5, isSortable: true },
         { id: "name", caption: "Name", size: 150, isSortable: true },
@@ -89,78 +82,12 @@ export default function SubjectsPage() {
             isSortable: true,
             renderCell: (v) => new Date(v as string).toLocaleDateString(),
         },
-        {
-            id: "actions",
-            caption: "Actions",
-            size: 200,
-            renderCell: (_, row) => (
-                <SubjectActions
-                    subject={row}
-                    updateSubject={updateSubject}
-                    deleteSubject={deleteSubject}
-                />
-            ),
-        },
     ];
-
-
-    const updateUrl = useCallback(() => {
-        navigate({
-            search: {
-                page,
-                pageSize,
-                sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
-            }
-        })
-    }, [navigate, page, pageSize, sortBy]);
-
-
-    const handleSortApply = (rules: SortRule[]) => {
-        setSortBy(rules);
-    };
-
-    const handlePageChange = (newPage: number) => {
-        setPage(newPage);
-    };
-    const handlePageSizeChange = (newSize: number) => {
-        setPageSize(newSize);
-        setPage(1);
-    }
-
-
-    const tableActionsRight = (
-        <div>
-            <label htmlFor="pageSizeSelect"></label>
-            <select
-                id="pageSizeSelect"
-                value={pageSize}
-                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                className="button-sec"
-                style={{ padding: "0.4rem 1rem " }}
-            >
-                {[3, 10, 20].map((size) => (
-                    <option key={size} value={size}>{size}</option>
-                ))}
-            </select>
-        </div>
-    );
-
-    useEffect(() => {
-        updateUrl();
-    }, [updateUrl]);
-
-
-    // Modal state for creating subject
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newPayload, setNewPayload] = useState<SubjectPayload>({ name: "", description: "" });
 
     return (
         <div>
             <div className="page-header">
                 <h1>Subjects</h1>
-                <button className="button-sec" onClick={() => setIsModalOpen(true)}>
-                    Create Subject
-                </button>
             </div>
 
             <div className="table-wrapper">
@@ -169,41 +96,39 @@ export default function SubjectsPage() {
                     data={sortedSubjects}
                     isLoading={isLoading}
                     error={error}
-                    onRefresh={refresh}
                     initialSort={sortBy}
-                    onSortApply={handleSortApply}
+                    onSortApply={setSortBy}
+                    enableFilter={false}
+                    onRefresh={() => refetch()}
                     pagination={{
-                        page: subjectData?.current_page,
-                        pageSize: subjectData?.page_size,
-                        total: subjectData?.total_count,
-                        onPageChange: handlePageChange,
+                        page,
+                        pageSize,
+                        total: data?.total_count ?? 0,
+                        onPageChange: setPage,
                     }}
-                    tableActionsRight={tableActionsRight}
+                    tableActionsRight={
+                        <div>
+                            <label htmlFor="pageSizeSelect">Page size: </label>
+                            <select
+                                id="pageSizeSelect"
+                                value={pageSize}
+                                onChange={(e) => {
+                                    setPageSize(Number(e.target.value));
+                                    setPage(1); // reset to first page
+                                }}
+                                className="button-sec"
+                                style={{ padding: "0.4rem 1rem " }}
+                            >
+                                {[3, 10, 20].map((size) => (
+                                    <option key={size} value={size}>
+                                        {size}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    }
                 />
             </div>
-
-            <Modal
-                isOpen={isModalOpen}
-                title="Create Subject"
-                body={<SubjectForm onChange={setNewPayload} />}
-                footer={
-                    <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
-                        <button
-                            className="modal-close-btn"
-                            onClick={() => {
-                                createSubject(newPayload);
-                                setIsModalOpen(false);
-                            }}
-                        >
-                            Create
-                        </button>
-                        <button className="cancel" onClick={() => setIsModalOpen(false)}>
-                            Cancel
-                        </button>
-                    </div>
-                }
-                onClose={() => setIsModalOpen(false)}
-            />
         </div>
     );
 }

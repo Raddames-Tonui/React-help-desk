@@ -1,24 +1,12 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { useDataTable } from "./DataTable";
 import ModalSort from "./modals/ModalSort";
 import ModalFilter from "./modals/ModalFilter";
 
 export function TableActions<T>() {
-    const { tableActionsLeft, tableActionsRight, onSortApply, onFilterApply, onRefresh, sortBy, filter } = useDataTable<T>();
+    const { tableActionsLeft, tableActionsRight, onSortApply, onFilterApply, onRefresh, sortBy, filter, enableSort, enableFilter } = useDataTable<T>();
     const [isSortOpen, setSortOpen] = useState(false);
     const [isFilterOpen, setFilterOpen] = useState(false);
-
-    // Handle sort apply
-    // const handleSortApply = (rules: any[]) => {
-    //     onSortApply?.(rules);
-    //     setSortOpen(false);
-    // };
-
-    // // Handle filter apply
-    // const handleFilterApply = (rules: any[]) => {
-    //     onFilterApply?.(rules);
-    //     setFilterOpen(false);
-    // };
 
     // Reset handlers
     const handleSortReset = () => onSortApply?.([]);
@@ -32,54 +20,56 @@ export function TableActions<T>() {
 
             <div className="table-action-default">
                 {/* Filter */}
-                {filter.length > 0 ? (
-                    <div className="open-action active">
-                        <span
-                            className="chip-label"
-                            onClick={() => setFilterOpen(true)}
-                        >
-                            {filter.length} Filter
-                        </span>
+                {enableFilter &&
+                    (filter.length > 0 ? (
+                        <div className="open-action active">
+                            <span
+                                className="chip-label"
+                                onClick={() => setFilterOpen(true)}
+                            >
+                                {filter.length} Filter
+                            </span>
+                            <button
+                                className="clear-action"
+                                onClick={handleFilterReset}
+                            >
+                                X
+                            </button>
+                        </div>
+                    ) : (
                         <button
-                            className="clear-action"
-                            onClick={handleFilterReset}
+                            onClick={() => setFilterOpen(true)}
+                            className="action-btn"
                         >
-                            X
+                            Filter
                         </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => setFilterOpen(true)}
-                        className="action-btn"
-                    >
-                        Filter
-                    </button>
-                )}
+                    ))}
 
                 {/* Sort */}
-                {sortBy.length > 0 ? (
-                    <div className="open-action active">
-                        <span
-                            className="chip-label"
-                            onClick={() => setSortOpen(true)}
-                        >
-                            {sortBy.length} Sort
-                        </span>
+                {enableSort &&
+                    (sortBy.length > 0 ? (
+                        <div className="open-action active">
+                            <span
+                                className="chip-label"
+                                onClick={() => setSortOpen(true)}
+                            >
+                                {sortBy.length} Sort
+                            </span>
+                            <button
+                                className="clear-action"
+                                onClick={handleSortReset}
+                            >
+                                X
+                            </button>
+                        </div>
+                    ) : (
                         <button
-                            className="clear-action"
-                            onClick={handleSortReset}
+                            onClick={() => setSortOpen(true)}
+                            className="action-btn"
                         >
-                            X
+                            Sort
                         </button>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => setSortOpen(true)}
-                        className="action-btn"
-                    >
-                        Sort
-                    </button>
-                )}
+                    ))}
 
                 {/* Refresh */}
                 <button onClick={() => onRefresh?.()} className="action-btn">
