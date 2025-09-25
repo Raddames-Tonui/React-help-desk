@@ -3,7 +3,7 @@ import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { AuthProvider } from '@/context/AuthContext'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from '@/context/ThemeProvider';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import "@/css/authPages.css";
 import "@/css/index.css"
 
