@@ -21,7 +21,7 @@ const RootLayout = () => (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
             <Outlet />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </ThemeProvider>
     {/*<TanStackRouterDevtools />*/}

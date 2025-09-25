@@ -55,11 +55,6 @@ function RouteComponent() {
 
       <Toaster
         position="top-right"
-        toastOptions={{
-          style: {
-            marginTop: '37px',
-          },
-        }}
       />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>

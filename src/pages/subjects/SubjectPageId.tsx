@@ -7,9 +7,8 @@ import Loader from "@/components/Loader.tsx";
 import Modal from "@/components/Modal";
 import TaskForm from "@/pages/Tasks/TaskForm";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { TOKEN } from "@/utils/Constants";
-import toast from "react-hot-toast";
 
 import "@/css/userspage.css";
 import "@/css/index.css";
@@ -24,52 +23,18 @@ async function fetchSubjectById(subjectId: number): Promise<SingleSubjectData> {
     return res.json();
 }
 
-async function createTaskApi(taskPayload: any) {
-    const res = await fetch("/api/admin/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${TOKEN}` },
-        body: JSON.stringify(taskPayload),
-    });
-    if (!res.ok) throw new Error("Failed to create task");
-    return res.json();
-}
 
 function SubjectPageId() {
     const { subjectId } = useParams({ from: SubjectRoute.id });
-    const queryClient = useQueryClient();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newPayload, setNewPayload] = useState<any>({});
 
-    // React Query: fetch subject
-    const {
-        data: subjectData,
-        isLoading,
-        isError,
-        error,
-    } = useQuery({
+    const { data: subjectData, isLoading, isError, error } = useQuery({
         queryKey: ["subject", subjectId],
         queryFn: () => fetchSubjectById(Number(subjectId)),
         enabled: !!subjectId,
     });
 
     const subject = subjectData?.subject;
-
-    const createTaskMutation = useMutation({
-        mutationFn: createTaskApi,
-        onSuccess: () => {
-            toast.success("Task created successfully!");
-            setIsModalOpen(false);
-            queryClient.invalidateQueries({ queryKey: ["tasks"] });
-        },
-        onError: (err: any) => {
-            toast.error(err?.message || "Failed to create task");
-        },
-    });
-
-    const handleTaskCreate = () => {
-        if (!subjectId) return;
-        createTaskMutation.mutate({ ...newPayload, subject_id: Number(subjectId) });
-    };
 
     if (isLoading) return <Loader />;
     if (isError) return <div className="subject-error">{(error as Error)?.message}</div>;
@@ -109,21 +74,15 @@ function SubjectPageId() {
             <Modal
                 isOpen={isModalOpen}
                 title="Create Task"
-                body={<TaskForm subjectId={Number(subjectId)} initialData={undefined} onChange={setNewPayload} />}
-                footer={
-                    <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
-                        <button className="modal-close-btn" onClick={handleTaskCreate} disabled={createTaskMutation.isLoading}>
-                            {createTaskMutation.isLoading ? "Saving..." : "Create"}
-                        </button>
-                        <button className="cancel" onClick={() => setIsModalOpen(false)}>
-                            Cancel
-                        </button>
-                    </div>
-                }
+                body={<TaskForm
+                    subjectId={Number(subjectId)}
+                    onClose={() => setIsModalOpen(false)}
+                />}
                 onClose={() => setIsModalOpen(false)}
             />
         </div>
     );
 }
+
 
 export default SubjectPageId;
