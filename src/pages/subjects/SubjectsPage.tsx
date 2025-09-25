@@ -11,7 +11,6 @@ export default function SubjectsPage() {
     const searchParams = Route.useSearch();
     const navigate = useNavigate();
 
-    // --- Parse from URL ---
     const initialPage = searchParams.page ? Number(searchParams.page) : 1;
     const initialPageSize = searchParams.pageSize ? Number(searchParams.pageSize) : 10;
     const initialSort: SortRule[] = searchParams.sortBy
@@ -21,12 +20,10 @@ export default function SubjectsPage() {
         })
         : [];
 
-    // --- Local state ---
     const [page, setPage] = useState(initialPage);
     const [pageSize, setPageSize] = useState(initialPageSize);
     const [sortBy, setSortBy] = useState<SortRule[]>(initialSort);
 
-    // --- Fetch subjects (backend only cares about page/pageSize) ---
     const { data, isLoading, error, refetch } = useSubjects(page, pageSize);
 
     // --- Keep URL in sync ---
@@ -37,7 +34,7 @@ export default function SubjectsPage() {
                 pageSize,
                 sortBy: sortBy.map((r) => `${r.column} ${r.direction}`).join(","),
             },
-            replace: true, // prevent history spam
+            replace: true,
         });
     }, [page, pageSize, sortBy, navigate]);
 
@@ -50,13 +47,15 @@ export default function SubjectsPage() {
     // --- Table config ---
     const subjectsColumns: ColumnProps<SubjectData>[] = [
         { id: "id", caption: "ID", size: 5, isSortable: true },
-        { id: "name", caption: "Name", size: 150, isSortable: true },
+        { id: "name", caption: "Name", size: 150, isSortable: true, isFilterable: true, filterType: "dropdown" },
         { id: "description", caption: "Description", size: 200 },
         {
             id: "is_active",
             caption: "Active",
             size: 100,
             isSortable: true,
+            isFilterable: true,
+            filterType: "dropdown",
             renderCell: (value) => (
                 <span
                     style={{
@@ -98,7 +97,7 @@ export default function SubjectsPage() {
                     error={error}
                     initialSort={sortBy}
                     onSortApply={setSortBy}
-                    enableFilter={false}
+                    // enableFilter={false}
                     onRefresh={() => refetch()}
                     pagination={{
                         page,

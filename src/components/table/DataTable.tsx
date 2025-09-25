@@ -1,4 +1,3 @@
-// DataTable.tsx
 import React, { createContext, useContext, useState } from "react";
 import "./css/DataTable.css";
 import { TableActions } from "./TableActions";
@@ -19,7 +18,6 @@ export interface ColumnProps<T, K extends keyof T = keyof T> {
   isSortable?: boolean;
   isFilterable?: boolean;
   filterType?: "text" | "dropdown";
-  filterOptions?: { value: string; label: string }[];
 
   data_type?: string | boolean | number | Date;
   renderCell?: (value: T[K], row: T) => React.ReactNode;

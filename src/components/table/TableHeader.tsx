@@ -1,4 +1,3 @@
-import React from "react";
 import { useDataTable } from "./DataTable";
 import type { ColumnProps } from "./DataTable";
 

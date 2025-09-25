@@ -8,7 +8,6 @@ export function TableActions<T>() {
     const [isSortOpen, setSortOpen] = useState(false);
     const [isFilterOpen, setFilterOpen] = useState(false);
 
-    // Reset handlers
     const handleSortReset = () => onSortApply?.([]);
     const handleFilterReset = () => onFilterApply?.([]);
 
@@ -81,7 +80,6 @@ export function TableActions<T>() {
                 {tableActionsRight}
             </div>
 
-            {/* Modals */}
             <ModalSort isOpen={isSortOpen} onClose={() => setSortOpen(false)} />
             <ModalFilter isOpen={isFilterOpen} onClose={() => setFilterOpen(false)} />
         </div>
