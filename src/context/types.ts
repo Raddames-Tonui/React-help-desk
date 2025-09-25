@@ -120,6 +120,7 @@ export type TaskData = {
     updated_at: string;
     created_by_name: string;
     subject_name?: string; 
+    actions?: number;
 };
 
 export type SingleTaskData = {

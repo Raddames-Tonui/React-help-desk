@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 import Footer from '@/components/Footer';
-import { useAuth } from "@/context/hooks";
 import { Toaster } from 'react-hot-toast';
 
 import "@css/layout.css";
@@ -37,9 +36,6 @@ export const Route = createFileRoute('/_protected')({
 });
 
 function RouteComponent() {
-  const { getUser } = useAuth();
-  const currentUser = getUser();
-
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {

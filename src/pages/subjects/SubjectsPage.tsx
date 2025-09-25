@@ -43,9 +43,10 @@ export default function SubjectsPage() {
     }, [page, pageSize, sortBy, navigate]);
 
     const sortedSubjects = useMemo(
-        () => sortData(data?.records ?? [], sortBy),
+        () => sortData<SubjectData>(data?.records ?? [], sortBy),
         [data?.records, sortBy]
     );
+
 
     const subjectsColumns: ColumnProps<SubjectData>[] = [
         { id: "id", caption: "ID", size: 5, isSortable: true },

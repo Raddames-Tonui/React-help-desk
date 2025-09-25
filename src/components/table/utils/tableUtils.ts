@@ -44,34 +44,37 @@ export function filterData<T>(data: T[], filters: FilterRule<T>[]): T[] {
 /**
  * Apply client-side sorting based on rules.
  */
-export interface SortRule<T> {
-    column: keyof T;
-    direction: "asc" | "desc";
+export interface SortRule<T = any> {
+  column: keyof T & string;
+  direction: "asc" | "desc";
 }
 
-export function sortData<T extends Record<string, any>>(data: T[], sortRules: SortRule<T>[]): T[] {
-    if (!sortRules.length) return data;
+export function sortData<T extends Record<string, any>>(
+  data: T[],
+  sortRules: SortRule<T>[]
+): T[] {
+  if (!sortRules.length) return data;
 
-    const sorted = [...data];
+  const sorted = [...data];
 
-    sortRules.forEach(rule => {
-        sorted.sort((a, b) => {
-            const valA = a[rule.column];
-            const valB = b[rule.column];
+  sortRules.forEach(rule => {
+    sorted.sort((a, b) => {
+      const valA = a[rule.column];
+      const valB = b[rule.column];
 
-            if (valA == null) return 1;
-            if (valB == null) return -1;
-            if (valA === valB) return 0;
+      if (valA == null) return 1;
+      if (valB == null) return -1;
+      if (valA === valB) return 0;
 
-            return rule.direction === "asc"
-                ? valA > valB
-                    ? 1
-                    : -1
-                : valA < valB
-                    ? 1
-                    : -1;
-        });
+      return rule.direction === "asc"
+        ? valA > valB
+          ? 1
+          : -1
+        : valA < valB
+          ? 1
+          : -1;
     });
+  });
 
-    return sorted;
+  return sorted;
 }
