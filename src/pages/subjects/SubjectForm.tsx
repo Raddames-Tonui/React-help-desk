@@ -24,7 +24,7 @@ export default function SubjectForm({ onClose, subject }: SubjectFormProps) {
 
     // Useform manages state(values, errors, reset )
     const { register, handleSubmit, formState: { errors }, reset } = useForm<SubjectFormValues>({
-        resolver: zodResolver(subjectSchema), // integrate Zod validation with react hook form
+        resolver: zodResolver(subjectSchema),
         defaultValues: subject
             ? { name: subject.name, description: subject.description }
             : undefined,
@@ -48,7 +48,7 @@ export default function SubjectForm({ onClose, subject }: SubjectFormProps) {
             return res.json();
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["subjects"] }); // Invalidates the subjects query so table/list updates automatically.
+            queryClient.invalidateQueries({ queryKey: ["subjects"] }); 
             reset();
             onClose();
             toast.success(`Subject ${subject ? "updated" : "created"} successfully!`);

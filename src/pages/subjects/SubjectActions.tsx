@@ -90,6 +90,15 @@ const SubjectActions: React.FC<SubjectActionsProps> = ({ subject }) => {
         });
     };
 
+    const handleViewTasks = () => {
+        navigate({
+            to: `/admin/subjects/$subjectId/tasks`,
+            params: { subjectId: subject.id.toString() },
+            search: { page: 1, pageSize: 10, sortBy: "" },
+        });
+    };
+
+
     return (
         <div className="action-icons">
             <button onClick={handleEdit}>
@@ -98,7 +107,7 @@ const SubjectActions: React.FC<SubjectActionsProps> = ({ subject }) => {
             <button onClick={handleView}>
                 <Icon iconName="eyeView" style={{ width: "18px" }} /> View
             </button>
-            <button onClick={handleView}>
+            <button onClick={handleViewTasks}>
                 <Icon iconName="eyeView" style={{ width: "18px" }} /> Tasks
             </button>
             <button onClick={handleDelete} disabled={deleteMutation.isPending}>

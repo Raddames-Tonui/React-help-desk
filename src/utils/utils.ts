@@ -17,8 +17,3 @@ export const truncateWords = (text?: string, wordLimit = 20) => {
   const words = text.split(/\s+/);
   return words.length <= wordLimit ? text : words.slice(0, wordLimit).join(" ") + "...";
 };
-
-
-
-
-
