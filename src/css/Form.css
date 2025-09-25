@@ -1,33 +1,72 @@
 @import url(./variables.css);
 
 .modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-form-group > div {
   display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 12px 16px;
-  align-items: start;
+  grid-template-columns: 150px 1fr;
 }
 
 .modal-form-group label {
-  display: contents; 
   font-size: 16px;
-  color: #333;
-  font-weight: bold;
+  font-weight: 600;
+  color: #222;
 }
 
 .modal-form-group input,
 .modal-form-group textarea {
   width: 100%;
-  padding: 8px 10px;
+  max-width: 420px;
+  padding: 10px 12px;
   border: 1px solid var(--form-border-default, #ccc);
   border-radius: 6px;
   font-size: 14px;
-  resize: vertical;
   outline: none;
-  transition: border-color 0.2s ease;
-  width: 400px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  resize: vertical;
 }
 
 .modal-form-group input:focus,
 .modal-form-group textarea:focus {
-  border-color: var(--primary-700);
+  border-color: var(--primary-700, #0077cc);
+  box-shadow: 0 0 0 2px rgba(0, 119, 204, 0.15);
 }
+
+.modal-form-group .submit-button {
+  display: flex;
+  justify-content: end;
+}
+
+.modal-form-group button[type="submit"] {
+  align-self: flex-start;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--primary-700, #0077cc);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+}
+
+.modal-form-group button[type="submit"]:hover:not(:disabled) {
+  background: var(--primary-800, #005fa3);
+}
+
+.modal-form-group button[type="submit"]:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.modal-form-group p {
+  font-size: 13px;
+  margin: 0;
+}
+
+

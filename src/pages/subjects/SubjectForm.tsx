@@ -48,7 +48,7 @@ export default function SubjectForm({ onClose, subject }: SubjectFormProps) {
             return res.json();
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["subjects"] }); 
+            queryClient.invalidateQueries({ queryKey: ["subjects"] });
             reset();
             onClose();
             toast.success(`Subject ${subject ? "updated" : "created"} successfully!`);
@@ -61,30 +61,39 @@ export default function SubjectForm({ onClose, subject }: SubjectFormProps) {
     const onSubmit = (data: SubjectFormValues) => mutation.mutate(data);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="modal-form-group">
             <div>
                 <label htmlFor="name">Name</label>
-                <input
-                    id="name"
-                    {...register("name")}
-                    placeholder="Enter subject name"
-                />
-                {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+                <div>
+                    <input
+                        id="name"
+                        {...register("name")}
+                        placeholder="Enter subject name"
+                    />
+                    {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+                </div>
             </div>
 
             <div>
                 <label htmlFor="description">Description</label>
-                <textarea
-                    id="description"
-                    {...register("description")}
-                    placeholder="Enter description"
-                />
-                {errors.description && <p style={{ color: "red" }}>{errors.description.message}</p>}
+                <div>
+                    <textarea
+                        id="description"
+                        {...register("description")}
+                        placeholder="Enter description"
+                    />
+                    {errors.description && <p style={{ color: "red" }}>{errors.description.message}</p>}
+                </div>
+
             </div>
 
-            <button type="submit" disabled={mutation.isPending}>
-                {mutation.isPending ? "Saving..." : subject ? "Update" : "Create"}
-            </button>
+            <div className="submit-button">
+
+                <button type="submit" disabled={mutation.isPending} >
+                    {mutation.isPending ? "Saving..." : subject ? "Update" : "Create"}
+                </button>
+            </div>
+
 
             {mutation.isError && (
                 <p style={{ color: "red" }}>{(mutation.error as Error).message}</p>

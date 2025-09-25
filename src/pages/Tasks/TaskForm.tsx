@@ -87,47 +87,58 @@ export default function TaskForm({ subjectId, onClose, task }: TaskFormProps) {
   const onSubmit = (data: TaskFormValues) => mutation.mutate(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Title</label>
-        <input {...register("title")} placeholder="Enter title" />
-        {errors.title && <p style={{ color: "red" }}>{errors.title.message}</p>}
-      </div>
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)} className="modal-form-group">
+        <div>
+          <label>Title</label>
+          <div>
+            <input {...register("title")} placeholder="Enter title" />
+            {errors.title && <p style={{ color: "red" }}>{errors.title.message}</p>}
+          </div>
+        </div>
 
-      <div>
-        <label>Description</label>
-        <textarea {...register("description")} placeholder="Enter description" />
-        {errors.description && <p style={{ color: "red" }}>{errors.description.message}</p>}
-      </div>
+        <div>
+          <label>Description</label>
+          <div>
+            <textarea {...register("description")} placeholder="Enter description" />
+            {errors.description && <p style={{ color: "red" }}>{errors.description.message}</p>}
+          </div>
+        </div>
 
-      <div>
-        <label>Requirements</label>
-        <textarea {...register("requirements")} placeholder="Enter requirements" />
-        {errors.requirements && <p style={{ color: "red" }}>{errors.requirements.message}</p>}
-      </div>
+        <div>
+          <label>Requirements</label>
+          <div>
+            <textarea {...register("requirements")} placeholder="Enter requirements" />
+            {errors.requirements && <p style={{ color: "red" }}>{errors.requirements.message}</p>}
+          </div>
+        </div>
 
-      <div>
-        <label>Due Date</label>
-        <input type="date" {...register("due_date")} />
-        {errors.due_date && <p style={{ color: "red" }}>{errors.due_date.message}</p>}
-      </div>
+        <div>
+          <label>Due Date</label>
+          <div>          <input type="date" {...register("due_date")} />
+            {errors.due_date && <p style={{ color: "red" }}>{errors.due_date.message}</p>}</div>
+        </div>
 
-      <div>
-        <label>Max Score</label>
-        <input
-          type="number"
-          {...register("max_score", { valueAsNumber: true })}
-        />
-        {errors.max_score && <p style={{ color: "red" }}>{errors.max_score.message}</p>}
-      </div>
+        <div>
+          <label>Max Score</label>
+          <div>
+            <input
+              type="number"
+              {...register("max_score", { valueAsNumber: true })}
+            />
+            {errors.max_score && <p style={{ color: "red" }}>{errors.max_score.message}</p>}
+          </div>
+        </div>
+        <div className="submit-button">
 
-      <button type="submit" disabled={mutation.isPending}>
-        {mutation.isPending ? "Saving..." : task ? "Update Task" : "Create Task"}
-      </button>
-
-      {mutation.isError && (
-        <p style={{ color: "red" }}>{(mutation.error as Error).message}</p>
-      )}
-    </form>
+          <button type="submit" disabled={mutation.isPending}>
+            {mutation.isPending ? "Saving..." : task ? "Update Task" : "Create Task"}
+          </button>
+        </div>
+        {mutation.isError && (
+          <p style={{ color: "red" }}>{(mutation.error as Error).message}</p>
+        )}
+      </form>
+    </div>
   );
 }

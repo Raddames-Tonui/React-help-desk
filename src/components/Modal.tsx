@@ -40,9 +40,7 @@ const Modal: React.FC<ModalProps> = ({
 
         <footer className="modal-footer">
           {footer || (
-            <button className="modal-close-btn" onClick={onClose}>
-              Close
-            </button>
+   ""
           )}
         </footer>
       </div>
