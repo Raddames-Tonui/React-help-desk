@@ -70,7 +70,6 @@ export function TableActions<T>() {
                         </button>
                     ))}
 
-                {/* Refresh */}
                 <button onClick={() => onRefresh?.()} className="action-btn">
                     Refresh
                 </button>

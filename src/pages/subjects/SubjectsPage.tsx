@@ -26,7 +26,6 @@ export default function SubjectsPage() {
 
     const { data, isLoading, error, refetch } = useSubjects(page, pageSize);
 
-    // --- Keep URL in sync ---
     useEffect(() => {
         navigate({
             search: {
@@ -38,13 +37,11 @@ export default function SubjectsPage() {
         });
     }, [page, pageSize, sortBy, navigate]);
 
-    // --- Apply frontend sorting ---
     const sortedSubjects = useMemo(
         () => sortData(data?.records ?? [], sortBy),
         [data?.records, sortBy]
     );
 
-    // --- Table config ---
     const subjectsColumns: ColumnProps<SubjectData>[] = [
         { id: "id", caption: "ID", size: 5, isSortable: true },
         { id: "name", caption: "Name", size: 150, isSortable: true, isFilterable: true, filterType: "dropdown" },
@@ -83,10 +80,15 @@ export default function SubjectsPage() {
         },
     ];
 
+    
+
     return (
         <div>
             <div className="page-header">
                 <h1>Subjects</h1>
+                <button className="button-sec" onClick={() => setIsModalOpen(true)}>
+                    Create Subject
+                </button>
             </div>
 
             <div className="table-wrapper">
@@ -97,7 +99,7 @@ export default function SubjectsPage() {
                     error={error}
                     initialSort={sortBy}
                     onSortApply={setSortBy}
-                    // enableFilter={false}
+                    enableFilter={false}
                     onRefresh={() => refetch()}
                     pagination={{
                         page,
@@ -113,7 +115,7 @@ export default function SubjectsPage() {
                                 value={pageSize}
                                 onChange={(e) => {
                                     setPageSize(Number(e.target.value));
-                                    setPage(1); // reset to first page
+                                    setPage(1);
                                 }}
                                 className="button-sec"
                                 style={{ padding: "0.4rem 1rem " }}

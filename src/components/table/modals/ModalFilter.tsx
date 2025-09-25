@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { useDataTable } from "../DataTable";
 import type { FilterRule } from "../DataTable";
@@ -99,7 +99,6 @@ export default function ModalFilter<T>({ isOpen, onClose }: ModalFilterProps) {
                   ))}
                 </select>
 
-                {/* Input adapts to column.filterType */}
                 {column?.filterType === "dropdown" ? (
                   <select
                     value={rule.value}
