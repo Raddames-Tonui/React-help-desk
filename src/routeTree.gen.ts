@@ -19,6 +19,7 @@ import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/au
 import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
 import { Route as ProtectedAdminSubjectsIndexRouteImport } from './routes/_protected/admin/subjects/index'
+import { Route as ProtectedAdminSettingsIndexRouteImport } from './routes/_protected/admin/settings/index'
 import { Route as ProtectedAdminSubjectsSubjectIdRouteImport } from './routes/_protected/admin/subjects/$subjectId'
 
 const PublicRoute = PublicRouteImport.update({
@@ -71,6 +72,12 @@ const ProtectedAdminSubjectsIndexRoute =
     path: '/admin/subjects/',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedAdminSettingsIndexRoute =
+  ProtectedAdminSettingsIndexRouteImport.update({
+    id: '/admin/settings/',
+    path: '/admin/settings/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedAdminSubjectsSubjectIdRoute =
   ProtectedAdminSubjectsSubjectIdRouteImport.update({
     id: '/admin/subjects/$subjectId',
@@ -87,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
+  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
+  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
 }
 export interface FileRoutesById {
@@ -112,6 +121,7 @@ export interface FileRoutesById {
   '/_public/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdRoute
+  '/_protected/admin/settings/': typeof ProtectedAdminSettingsIndexRoute
   '/_protected/admin/subjects/': typeof ProtectedAdminSubjectsIndexRoute
 }
 export interface FileRouteTypes {
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/auth/underdevelopment'
     | '/admin'
     | '/admin/subjects/$subjectId'
+    | '/admin/settings'
     | '/admin/subjects'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/auth/underdevelopment'
     | '/admin'
     | '/admin/subjects/$subjectId'
+    | '/admin/settings'
     | '/admin/subjects'
   id:
     | '__root__'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
     | '/_public/auth/underdevelopment'
     | '/_protected/admin/'
     | '/_protected/admin/subjects/$subjectId'
+    | '/_protected/admin/settings/'
     | '/_protected/admin/subjects/'
   fileRoutesById: FileRoutesById
 }
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminSubjectsIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/admin/settings/': {
+      id: '/_protected/admin/settings/'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof ProtectedAdminSettingsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/admin/subjects/$subjectId': {
       id: '/_protected/admin/subjects/$subjectId'
       path: '/admin/subjects/$subjectId'
@@ -243,12 +263,14 @@ declare module '@tanstack/react-router' {
 interface ProtectedRouteChildren {
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedAdminSubjectsSubjectIdRoute: typeof ProtectedAdminSubjectsSubjectIdRoute
+  ProtectedAdminSettingsIndexRoute: typeof ProtectedAdminSettingsIndexRoute
   ProtectedAdminSubjectsIndexRoute: typeof ProtectedAdminSubjectsIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedAdminSubjectsSubjectIdRoute: ProtectedAdminSubjectsSubjectIdRoute,
+  ProtectedAdminSettingsIndexRoute: ProtectedAdminSettingsIndexRoute,
   ProtectedAdminSubjectsIndexRoute: ProtectedAdminSubjectsIndexRoute,
 }
 

@@ -7,7 +7,8 @@ import type { SubjectData } from "@/context/types";
 import { DataTable } from "@/components/table/DataTable";
 import { useSubjects } from "@/pages/subjects/useSubjects";
 import Modal from "@/components/Modal";
-import SubjectForm from "./SubectForm";
+import SubjectForm from "@/pages/subjects/SubjectForm";
+import SubjectActions from "@/pages/subjects/SubjectActions";
 
 export default function SubjectsPage() {
     const searchParams = Route.useSearch();
@@ -81,6 +82,16 @@ export default function SubjectsPage() {
             size: 120,
             isSortable: true,
             renderCell: (v) => new Date(v as string).toLocaleDateString(),
+        },
+        {
+            id: "actions",
+            caption: "Actions",
+            size: 200,
+            renderCell: (_, row) => (
+                <SubjectActions
+                    subject={row}
+                />
+            ),
         },
     ];
 

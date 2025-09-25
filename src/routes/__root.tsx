@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from '@/context/ThemeProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import "@/css/authPages.css";
+import "@/css/index.css"
 
 const queryClient = new QueryClient({
   defaultOptions: {
