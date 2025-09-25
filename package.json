@@ -15,13 +15,12 @@
     "@tanstack/react-query-devtools": "^5.90.2",
     "@tanstack/react-router": "^1.131.44",
     "@tanstack/react-router-devtools": "^1.131.44",
-    "@zod/mini": "4.0.0-beta.20250505T195954",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.62.0",
     "react-hot-toast": "^2.6.0",
     "yup": "^1.7.0",
-    "zod": "^4.1.11"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

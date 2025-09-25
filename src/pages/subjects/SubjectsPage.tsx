@@ -140,7 +140,6 @@ export default function SubjectsPage() {
                 title="Create Subject"
                 body={<SubjectForm onClose={() => setIsModalOpen(false)} />}
                 onClose={() => setIsModalOpen(false)}
-
             />
         </div>
     );

@@ -44,38 +44,41 @@ export default function SubjectForm({ onClose }: { onClose: () => void }) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label htmlFor="name">Name</label>
-                <input
-                    id="name"
-                    {...register("name")}
-                    placeholder="Enter subject name"
-                />
-                {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
-            </div>
+        <div className="">
 
-            <div>
-                <label htmlFor="description">Description</label>
-                <textarea
-                    id="description"
-                    {...register("description")}
-                    placeholder="Enter description"
-                />
-                {errors.description && (
-                    <p style={{ color: "red" }}>{errors.description.message}</p>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                    <label htmlFor="name">Name</label>
+                    <input
+                        id="name"
+                        {...register("name")}
+                        placeholder="Enter subject name"
+                    />
+                    {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+                </div>
+
+                <div>
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        id="description"
+                        {...register("description")}
+                        placeholder="Enter description"
+                    />
+                    {errors.description && (
+                        <p style={{ color: "red" }}>{errors.description.message}</p>
+                    )}
+                </div>
+
+                <button type="submit" disabled={mutation.isPending}>
+                    {mutation.isPending ? "Saving..." : "Save"}
+                </button>
+
+                {mutation.isError && (
+                    <p style={{ color: "red" }}>
+                        {(mutation.error as Error).message}
+                    </p>
                 )}
-            </div>
-
-            <button type="submit" disabled={mutation.isPending}>
-                {mutation.isPending ? "Saving..." : "Save"}
-            </button>
-
-            {mutation.isError && (
-                <p style={{ color: "red" }}>
-                    {(mutation.error as Error).message}
-                </p>
-            )}
-        </form>
+            </form>
+        </div>
     );
 }
