@@ -18,8 +18,10 @@ import { Route as PublicAuthUnauthorizedRouteImport } from './routes/_public/aut
 import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
 import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
+import { Route as ProtectedAdminUsersIndexRouteImport } from './routes/_protected/admin/users/index'
 import { Route as ProtectedAdminSubjectsIndexRouteImport } from './routes/_protected/admin/subjects/index'
 import { Route as ProtectedAdminSettingsIndexRouteImport } from './routes/_protected/admin/settings/index'
+import { Route as ProtectedAdminUsersUserIdRouteImport } from './routes/_protected/admin/users/$userId'
 import { Route as ProtectedAdminSubjectsSubjectIdIndexRouteImport } from './routes/_protected/admin/subjects/$subjectId/index'
 import { Route as ProtectedAdminSubjectsSubjectIdTasksIndexRouteImport } from './routes/_protected/admin/subjects/$subjectId/tasks/index'
 
@@ -67,6 +69,12 @@ const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => PublicRoute,
 } as any)
+const ProtectedAdminUsersIndexRoute =
+  ProtectedAdminUsersIndexRouteImport.update({
+    id: '/admin/users/',
+    path: '/admin/users/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedAdminSubjectsIndexRoute =
   ProtectedAdminSubjectsIndexRouteImport.update({
     id: '/admin/subjects/',
@@ -77,6 +85,12 @@ const ProtectedAdminSettingsIndexRoute =
   ProtectedAdminSettingsIndexRouteImport.update({
     id: '/admin/settings/',
     path: '/admin/settings/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedAdminUsersUserIdRoute =
+  ProtectedAdminUsersUserIdRouteImport.update({
+    id: '/admin/users/$userId',
+    path: '/admin/users/$userId',
     getParentRoute: () => ProtectedRoute,
   } as any)
 const ProtectedAdminSubjectsSubjectIdIndexRoute =
@@ -100,8 +114,10 @@ export interface FileRoutesByFullPath {
   '/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
+  '/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
   '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
+  '/admin/users': typeof ProtectedAdminUsersIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   '/admin/subjects/$subjectId/tasks': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
@@ -113,8 +129,10 @@ export interface FileRoutesByTo {
   '/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
+  '/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
   '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
+  '/admin/users': typeof ProtectedAdminUsersIndexRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   '/admin/subjects/$subjectId/tasks': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
@@ -129,8 +147,10 @@ export interface FileRoutesById {
   '/_public/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
   '/_public/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
+  '/_protected/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
   '/_protected/admin/settings/': typeof ProtectedAdminSettingsIndexRoute
   '/_protected/admin/subjects/': typeof ProtectedAdminSubjectsIndexRoute
+  '/_protected/admin/users/': typeof ProtectedAdminUsersIndexRoute
   '/_protected/admin/subjects/$subjectId/': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   '/_protected/admin/subjects/$subjectId/tasks/': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
@@ -144,8 +164,10 @@ export interface FileRouteTypes {
     | '/auth/unauthorized'
     | '/auth/underdevelopment'
     | '/admin'
+    | '/admin/users/$userId'
     | '/admin/settings'
     | '/admin/subjects'
+    | '/admin/users'
     | '/admin/subjects/$subjectId'
     | '/admin/subjects/$subjectId/tasks'
   fileRoutesByTo: FileRoutesByTo
@@ -157,8 +179,10 @@ export interface FileRouteTypes {
     | '/auth/unauthorized'
     | '/auth/underdevelopment'
     | '/admin'
+    | '/admin/users/$userId'
     | '/admin/settings'
     | '/admin/subjects'
+    | '/admin/users'
     | '/admin/subjects/$subjectId'
     | '/admin/subjects/$subjectId/tasks'
   id:
@@ -172,8 +196,10 @@ export interface FileRouteTypes {
     | '/_public/auth/unauthorized'
     | '/_public/auth/underdevelopment'
     | '/_protected/admin/'
+    | '/_protected/admin/users/$userId'
     | '/_protected/admin/settings/'
     | '/_protected/admin/subjects/'
+    | '/_protected/admin/users/'
     | '/_protected/admin/subjects/$subjectId/'
     | '/_protected/admin/subjects/$subjectId/tasks/'
   fileRoutesById: FileRoutesById
@@ -249,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthLoginRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_protected/admin/users/': {
+      id: '/_protected/admin/users/'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof ProtectedAdminUsersIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/admin/subjects/': {
       id: '/_protected/admin/subjects/'
       path: '/admin/subjects'
@@ -261,6 +294,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof ProtectedAdminSettingsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/admin/users/$userId': {
+      id: '/_protected/admin/users/$userId'
+      path: '/admin/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof ProtectedAdminUsersUserIdRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/admin/subjects/$subjectId/': {
@@ -282,16 +322,20 @@ declare module '@tanstack/react-router' {
 
 interface ProtectedRouteChildren {
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
+  ProtectedAdminUsersUserIdRoute: typeof ProtectedAdminUsersUserIdRoute
   ProtectedAdminSettingsIndexRoute: typeof ProtectedAdminSettingsIndexRoute
   ProtectedAdminSubjectsIndexRoute: typeof ProtectedAdminSubjectsIndexRoute
+  ProtectedAdminUsersIndexRoute: typeof ProtectedAdminUsersIndexRoute
   ProtectedAdminSubjectsSubjectIdIndexRoute: typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   ProtectedAdminSubjectsSubjectIdTasksIndexRoute: typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
+  ProtectedAdminUsersUserIdRoute: ProtectedAdminUsersUserIdRoute,
   ProtectedAdminSettingsIndexRoute: ProtectedAdminSettingsIndexRoute,
   ProtectedAdminSubjectsIndexRoute: ProtectedAdminSubjectsIndexRoute,
+  ProtectedAdminUsersIndexRoute: ProtectedAdminUsersIndexRoute,
   ProtectedAdminSubjectsSubjectIdIndexRoute:
     ProtectedAdminSubjectsSubjectIdIndexRoute,
   ProtectedAdminSubjectsSubjectIdTasksIndexRoute:

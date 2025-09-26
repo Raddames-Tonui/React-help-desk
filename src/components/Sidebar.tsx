@@ -14,7 +14,7 @@ const menuConfig: Record<string, { icon: IconName; label: string; path: string }
     { icon: "pie", label: "Odata Dashboard", path: "/admin" },
     { icon: "notepad", label: "Subjects", path: "/admin/subjects" },
     // { icon: "notes", label: "Tasks", path: "" },
-    // { icon: "users", label: "Users", path: "" },
+    { icon: "users", label: "Users", path: "/admin/users" },
     // { icon: "settings", label: "Settings", path: "/admin/settings" },
   ]
 };
