@@ -13,7 +13,6 @@ interface UserActionsProps {
   onRefresh: () => void;
 }
 
-// --- generic fetcher for mutations ---
 async function mutateRequest<T>(
   url: string,
   method: "PUT" | "DELETE",
@@ -37,7 +36,6 @@ const UserActions: React.FC<UserActionsProps> = ({ user, onRefresh }) => {
   const [modalBody, setModalBody] = useState<React.ReactNode>(null);
   const [modalFooter, setModalFooter] = useState<React.ReactNode>(null);
 
-  // --- Mutations ---
   const editRoleMutation = useMutation({
     mutationFn: (data: { role: string }) =>
       mutateRequest(`/api/admin/users/${user.id}/role`, "PUT", data),
@@ -71,7 +69,6 @@ const UserActions: React.FC<UserActionsProps> = ({ user, onRefresh }) => {
     onError: () => toast.error("Failed to delete user"),
   });
 
-  // --- modal helpers ---
   const openModal = (title: string, body: React.ReactNode, footer?: React.ReactNode) => {
     setModalTitle(title);
     setModalBody(body);
