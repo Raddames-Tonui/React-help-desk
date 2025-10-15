@@ -1,12 +1,9 @@
-import Home from '@/pages/Home'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/tasks')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-    return <>
-        <Home /> 
-    </>
+  return <div>Hello "/about"!</div>
 }
