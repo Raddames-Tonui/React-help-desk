@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import path from "path"
 
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -13,18 +14,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@css": path.resolve(__dirname, "./src/css"),
-      "@components": path.resolve(__dirname, "./src/components"),
-    },
-  },
-  server: {
-    proxy: {
-      "/api": {
-        target: "https://the-dojo.pagoda.africa",
-        changeOrigin: true,
-        secure: true, 
-      },
-    },
-  },
+      "@": path.resolve(__dirname, "./src")
+    }
+  }
+
 })

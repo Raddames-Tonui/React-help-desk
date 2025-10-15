@@ -9,28 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PublicRouteImport } from './routes/_public'
-import { Route as ProtectedRouteImport } from './routes/_protected'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
-import { Route as PublicAuthUnderdevelopmentRouteImport } from './routes/_public/auth/underdevelopment'
-import { Route as PublicAuthUnauthorizedRouteImport } from './routes/_public/auth/unauthorized'
-import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
-import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
-import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
-import { Route as ProtectedAdminUsersIndexRouteImport } from './routes/_protected/admin/users/index'
-import { Route as ProtectedAdminSubjectsIndexRouteImport } from './routes/_protected/admin/subjects/index'
-import { Route as ProtectedAdminSettingsIndexRouteImport } from './routes/_protected/admin/settings/index'
-import { Route as ProtectedAdminUsersUserIdRouteImport } from './routes/_protected/admin/users/$userId'
-import { Route as ProtectedAdminSubjectsSubjectIdIndexRouteImport } from './routes/_protected/admin/subjects/$subjectId/index'
-import { Route as ProtectedAdminSubjectsSubjectIdTasksIndexRouteImport } from './routes/_protected/admin/subjects/$subjectId/tasks/index'
 
-const PublicRoute = PublicRouteImport.update({
-  id: '/_public',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProtectedRoute = ProtectedRouteImport.update({
-  id: '/_protected',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -38,192 +22,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProtectedAdminIndexRoute = ProtectedAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-const PublicAuthUnderdevelopmentRoute =
-  PublicAuthUnderdevelopmentRouteImport.update({
-    id: '/auth/underdevelopment',
-    path: '/auth/underdevelopment',
-    getParentRoute: () => PublicRoute,
-  } as any)
-const PublicAuthUnauthorizedRoute = PublicAuthUnauthorizedRouteImport.update({
-  id: '/auth/unauthorized',
-  path: '/auth/unauthorized',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicAuthResetpasswordRoute = PublicAuthResetpasswordRouteImport.update({
-  id: '/auth/resetpassword',
-  path: '/auth/resetpassword',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicAuthRegisterRoute = PublicAuthRegisterRouteImport.update({
-  id: '/auth/register',
-  path: '/auth/register',
-  getParentRoute: () => PublicRoute,
-} as any)
-const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
-  id: '/auth/login',
-  path: '/auth/login',
-  getParentRoute: () => PublicRoute,
-} as any)
-const ProtectedAdminUsersIndexRoute =
-  ProtectedAdminUsersIndexRouteImport.update({
-    id: '/admin/users/',
-    path: '/admin/users/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminSubjectsIndexRoute =
-  ProtectedAdminSubjectsIndexRouteImport.update({
-    id: '/admin/subjects/',
-    path: '/admin/subjects/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminSettingsIndexRoute =
-  ProtectedAdminSettingsIndexRouteImport.update({
-    id: '/admin/settings/',
-    path: '/admin/settings/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminUsersUserIdRoute =
-  ProtectedAdminUsersUserIdRouteImport.update({
-    id: '/admin/users/$userId',
-    path: '/admin/users/$userId',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminSubjectsSubjectIdIndexRoute =
-  ProtectedAdminSubjectsSubjectIdIndexRouteImport.update({
-    id: '/admin/subjects/$subjectId/',
-    path: '/admin/subjects/$subjectId/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
-const ProtectedAdminSubjectsSubjectIdTasksIndexRoute =
-  ProtectedAdminSubjectsSubjectIdTasksIndexRouteImport.update({
-    id: '/admin/subjects/$subjectId/tasks/',
-    path: '/admin/subjects/$subjectId/tasks/',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth/login': typeof PublicAuthLoginRoute
-  '/auth/register': typeof PublicAuthRegisterRoute
-  '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
-  '/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
-  '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
-  '/admin': typeof ProtectedAdminIndexRoute
-  '/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
-  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
-  '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
-  '/admin/users': typeof ProtectedAdminUsersIndexRoute
-  '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
-  '/admin/subjects/$subjectId/tasks': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
+  '/about': typeof AboutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth/login': typeof PublicAuthLoginRoute
-  '/auth/register': typeof PublicAuthRegisterRoute
-  '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
-  '/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
-  '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
-  '/admin': typeof ProtectedAdminIndexRoute
-  '/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
-  '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
-  '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
-  '/admin/users': typeof ProtectedAdminUsersIndexRoute
-  '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
-  '/admin/subjects/$subjectId/tasks': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
+  '/about': typeof AboutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_protected': typeof ProtectedRouteWithChildren
-  '/_public': typeof PublicRouteWithChildren
-  '/_public/auth/login': typeof PublicAuthLoginRoute
-  '/_public/auth/register': typeof PublicAuthRegisterRoute
-  '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
-  '/_public/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
-  '/_public/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
-  '/_protected/admin/': typeof ProtectedAdminIndexRoute
-  '/_protected/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
-  '/_protected/admin/settings/': typeof ProtectedAdminSettingsIndexRoute
-  '/_protected/admin/subjects/': typeof ProtectedAdminSubjectsIndexRoute
-  '/_protected/admin/users/': typeof ProtectedAdminUsersIndexRoute
-  '/_protected/admin/subjects/$subjectId/': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
-  '/_protected/admin/subjects/$subjectId/tasks/': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
+  '/about': typeof AboutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/auth/login'
-    | '/auth/register'
-    | '/auth/resetpassword'
-    | '/auth/unauthorized'
-    | '/auth/underdevelopment'
-    | '/admin'
-    | '/admin/users/$userId'
-    | '/admin/settings'
-    | '/admin/subjects'
-    | '/admin/users'
-    | '/admin/subjects/$subjectId'
-    | '/admin/subjects/$subjectId/tasks'
+  fullPaths: '/' | '/about'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/auth/login'
-    | '/auth/register'
-    | '/auth/resetpassword'
-    | '/auth/unauthorized'
-    | '/auth/underdevelopment'
-    | '/admin'
-    | '/admin/users/$userId'
-    | '/admin/settings'
-    | '/admin/subjects'
-    | '/admin/users'
-    | '/admin/subjects/$subjectId'
-    | '/admin/subjects/$subjectId/tasks'
-  id:
-    | '__root__'
-    | '/'
-    | '/_protected'
-    | '/_public'
-    | '/_public/auth/login'
-    | '/_public/auth/register'
-    | '/_public/auth/resetpassword'
-    | '/_public/auth/unauthorized'
-    | '/_public/auth/underdevelopment'
-    | '/_protected/admin/'
-    | '/_protected/admin/users/$userId'
-    | '/_protected/admin/settings/'
-    | '/_protected/admin/subjects/'
-    | '/_protected/admin/users/'
-    | '/_protected/admin/subjects/$subjectId/'
-    | '/_protected/admin/subjects/$subjectId/tasks/'
+  to: '/' | '/about'
+  id: '__root__' | '/' | '/about'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProtectedRoute: typeof ProtectedRouteWithChildren
-  PublicRoute: typeof PublicRouteWithChildren
+  AboutRoute: typeof AboutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_public': {
-      id: '/_public'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof PublicRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_protected': {
-      id: '/_protected'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof ProtectedRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -233,142 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_protected/admin/': {
-      id: '/_protected/admin/'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof ProtectedAdminIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_public/auth/underdevelopment': {
-      id: '/_public/auth/underdevelopment'
-      path: '/auth/underdevelopment'
-      fullPath: '/auth/underdevelopment'
-      preLoaderRoute: typeof PublicAuthUnderdevelopmentRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/auth/unauthorized': {
-      id: '/_public/auth/unauthorized'
-      path: '/auth/unauthorized'
-      fullPath: '/auth/unauthorized'
-      preLoaderRoute: typeof PublicAuthUnauthorizedRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/auth/resetpassword': {
-      id: '/_public/auth/resetpassword'
-      path: '/auth/resetpassword'
-      fullPath: '/auth/resetpassword'
-      preLoaderRoute: typeof PublicAuthResetpasswordRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/auth/register': {
-      id: '/_public/auth/register'
-      path: '/auth/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof PublicAuthRegisterRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_public/auth/login': {
-      id: '/_public/auth/login'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof PublicAuthLoginRouteImport
-      parentRoute: typeof PublicRoute
-    }
-    '/_protected/admin/users/': {
-      id: '/_protected/admin/users/'
-      path: '/admin/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof ProtectedAdminUsersIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/subjects/': {
-      id: '/_protected/admin/subjects/'
-      path: '/admin/subjects'
-      fullPath: '/admin/subjects'
-      preLoaderRoute: typeof ProtectedAdminSubjectsIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/settings/': {
-      id: '/_protected/admin/settings/'
-      path: '/admin/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof ProtectedAdminSettingsIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/users/$userId': {
-      id: '/_protected/admin/users/$userId'
-      path: '/admin/users/$userId'
-      fullPath: '/admin/users/$userId'
-      preLoaderRoute: typeof ProtectedAdminUsersUserIdRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/subjects/$subjectId/': {
-      id: '/_protected/admin/subjects/$subjectId/'
-      path: '/admin/subjects/$subjectId'
-      fullPath: '/admin/subjects/$subjectId'
-      preLoaderRoute: typeof ProtectedAdminSubjectsSubjectIdIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/admin/subjects/$subjectId/tasks/': {
-      id: '/_protected/admin/subjects/$subjectId/tasks/'
-      path: '/admin/subjects/$subjectId/tasks'
-      fullPath: '/admin/subjects/$subjectId/tasks'
-      preLoaderRoute: typeof ProtectedAdminSubjectsSubjectIdTasksIndexRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
   }
 }
 
-interface ProtectedRouteChildren {
-  ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
-  ProtectedAdminUsersUserIdRoute: typeof ProtectedAdminUsersUserIdRoute
-  ProtectedAdminSettingsIndexRoute: typeof ProtectedAdminSettingsIndexRoute
-  ProtectedAdminSubjectsIndexRoute: typeof ProtectedAdminSubjectsIndexRoute
-  ProtectedAdminUsersIndexRoute: typeof ProtectedAdminUsersIndexRoute
-  ProtectedAdminSubjectsSubjectIdIndexRoute: typeof ProtectedAdminSubjectsSubjectIdIndexRoute
-  ProtectedAdminSubjectsSubjectIdTasksIndexRoute: typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
-}
-
-const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
-  ProtectedAdminUsersUserIdRoute: ProtectedAdminUsersUserIdRoute,
-  ProtectedAdminSettingsIndexRoute: ProtectedAdminSettingsIndexRoute,
-  ProtectedAdminSubjectsIndexRoute: ProtectedAdminSubjectsIndexRoute,
-  ProtectedAdminUsersIndexRoute: ProtectedAdminUsersIndexRoute,
-  ProtectedAdminSubjectsSubjectIdIndexRoute:
-    ProtectedAdminSubjectsSubjectIdIndexRoute,
-  ProtectedAdminSubjectsSubjectIdTasksIndexRoute:
-    ProtectedAdminSubjectsSubjectIdTasksIndexRoute,
-}
-
-const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
-  ProtectedRouteChildren,
-)
-
-interface PublicRouteChildren {
-  PublicAuthLoginRoute: typeof PublicAuthLoginRoute
-  PublicAuthRegisterRoute: typeof PublicAuthRegisterRoute
-  PublicAuthResetpasswordRoute: typeof PublicAuthResetpasswordRoute
-  PublicAuthUnauthorizedRoute: typeof PublicAuthUnauthorizedRoute
-  PublicAuthUnderdevelopmentRoute: typeof PublicAuthUnderdevelopmentRoute
-}
-
-const PublicRouteChildren: PublicRouteChildren = {
-  PublicAuthLoginRoute: PublicAuthLoginRoute,
-  PublicAuthRegisterRoute: PublicAuthRegisterRoute,
-  PublicAuthResetpasswordRoute: PublicAuthResetpasswordRoute,
-  PublicAuthUnauthorizedRoute: PublicAuthUnauthorizedRoute,
-  PublicAuthUnderdevelopmentRoute: PublicAuthUnderdevelopmentRoute,
-}
-
-const PublicRouteWithChildren =
-  PublicRoute._addFileChildren(PublicRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProtectedRoute: ProtectedRouteWithChildren,
-  PublicRoute: PublicRouteWithChildren,
+  AboutRoute: AboutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
