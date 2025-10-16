@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
@@ -24,13 +25,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-        /* Aliases for Vite */
-    "ignoreDeprecations": "6.0",
-    "baseUrl": "./src",
+    /* Alias support for editor intellisense */
     "paths": {
-      "@/*": ["*"],
-      "@css/*": ["css/*"],
-      "@components/*": ["components/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

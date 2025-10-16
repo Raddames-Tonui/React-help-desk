@@ -16,9 +16,10 @@ export default function Navbar() {
   return (
     <nav>
       <div>
+        <img src="/todo.png" alt="todo logo" className="logo" />
         <Link to="/">Add Task</Link>
         <Link to="/tasks">All Tasks</Link>
-        <Link to="/settings">Settings</Link>
+        <Link to="/game">Game Zone</Link>
       </div>
       <button onClick={toggleTheme} className="secondary">
         Theme: {theme}

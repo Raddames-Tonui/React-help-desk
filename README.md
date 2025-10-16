@@ -1,73 +1,118 @@
-# React + TypeScript + Vite
+# 🧩 React + Vite + Zustand + TanStack Router
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project demonstrates a scalable and maintainable React architecture combining **Vite**, **Zustand**, and **TanStack Router** for fast routing and state management. It implements a **To-Do App with Theme Switching**, showing enterprise-level design principles such as modularity, persistence, and reactive UI updates.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+[View Website](https://taddaaaaaa.netlify.app)
+---
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## 🚀 Tech Stack
 
-## Expanding the ESLint configuration
+| Technology             | Purpose                                                         |
+| ---------------------- | --------------------------------------------------------------- |
+| **React (TypeScript)** | Component-based UI                                              |
+| **Vite**               | Ultra-fast build tool for modern development                    |
+| **Zustand**            | Lightweight global state management with slices and persistence |
+| **TanStack Router**    | Type-safe, file-based routing system                            |
+| **CSS Variables**      | Theme tokens for light/dark mode and global design consistency  |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧠 Core Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### ✅ Global State with Zustand
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* Centralized store managing **Todos** and **Theme**.
+* Instant updates across pages — no prop drilling.
+* Data persistence via localStorage using Zustand's `persist` middleware.
+* Supports future expansion into multiple slices (`themeStore`, `todoStore`, etc.).
+
+### 🎨 Theme System (CSS Variables)
+
+* Two theme modes: **Light** and **Dark**.
+* Defined in `/src/styles/variables.css` using tokens like `--primary-100`, `--secondary-100`, etc.
+* Dynamically toggled via Zustand and applied to `<body>` for instant theme switching.
+
+### 🗂️ Modular Routing
+
+* Built with **TanStack Router** for modern, file-based routing.
+* Each route (`/`, `/tasks`, `/game`) is a self-contained module.
+* Demonstrates global reactivity across routes.
+
+### 🧾 To-Do CRUD Operations
+
+* Add, edit, toggle, delete, and clear tasks.
+* Real-time synchronization across pages.
+* Fully reactive and persistent across reloads.
+
+---
+
+## 📁 Folder Structure
+
+```bash
+src/
+ ├─ main.tsx              # App entry point
+ ├─ store/
+ │   └─ appStore.ts       # Global Zustand store (theme + todos)
+ ├─ routes/
+ │   ├─ __root.tsx        # Root layout with Navbar
+ │   ├─ index.tsx         # Add To-Do page
+ │   ├─ tasks.tsx         # To-Do list CRUD page
+ │   └─ game.tsx          # Game page
+ ├─ components/
+ │   └─ Navbar.tsx        # Navigation bar with theme toggle
+ ├─ styles/
+ │   ├─ variables.css     # Light/Dark theme tokens
+ │   └─ index.css         # Global styles importing variables
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧱 Key Concepts Illustrated
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* **Zustand Subscriptions:** Components only re-render for the slice of state they use.
+* **Persistence:** State automatically saved and restored via middleware.
+* **Reactive Theming:** CSS variables respond instantly to store updates.
+* **Scalability:** Ready for splitting into domain-based slices.
+
+---
+
+## ⚙️ How to Run
+
+```bash
+# 1. Clone repo
+$ git clone <repo-url>
+
+# 2. Install dependencies
+$ npm install
+
+# 3. Start development server
+$ npm run dev
+
+# 4. Visit the app
+http://localhost:5173
 ```
+
+---
+
+## 🔮 Enterprise-Ready Extensions
+
+To scale this project into an enterprise-grade system:
+
+* Add **React Query** for async API integration.
+* Introduce **logging middleware** for audit trails.
+* Implement **design tokens** from JSON and generate CSS variables.
+* Add **unit tests** for Zustand slices.
+* Integrate **i18n** for multilingual UI.
+
+---
+
+## 💡 Summary
+
+This project exemplifies a clean, performant, and extensible modern React stack:
+
+> ⚡ *Vite* for speed, *Zustand* for simplicity, *TanStack Router* for routing power, and *CSS Variables* for elegant theming.*
+
+It’s not just a To-Do app — it’s a **foundation for enterprise-grade React architecture**.
