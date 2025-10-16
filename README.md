@@ -1,4 +1,4 @@
-# Advanced React Project Documentation: TanStack Router Integration
+# TanStack Router Integration
 
 ## Project Overview
 
