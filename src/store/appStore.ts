@@ -1,16 +1,22 @@
+
 /**
- * Zustand Theme Store
- * -------------------
- * A simple, reactive global store that holds the current theme.
- * Zustand uses plain JavaScript/TypeScript under the hood — no reducers or context needed.
+ * Zustand Global Store
+ * --------------------
+ * Holds TWO state slices:
+ * 1️ Theme management (light/dark)
+ * 2️ To-Do management (CRUD operations)
  *
- * `persist` middleware automatically saves to localStorage so your theme
- * survives page reloads.
+ * Zustand works with plain TypeScript/JavaScript objects.
+ * - "set" updates state reactively
+ * - "get" reads current state
+ * - With "persist" middleware, data is saved to localStorage automatically.
  */
+
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+// --- Define the types ---
 export interface Todo {
     id: string;
     text: string;
@@ -18,61 +24,59 @@ export interface Todo {
 }
 
 interface AppState {
-    // Theme Slice
     theme: "light" | "dark";
     toggleTheme: () => void;
 
-    // TODO slice
     todos: Todo[];
     addTodo: (text: string) => void;
     toggleTodo: (id: string) => void;
-    deleteTodo: (id: string) => void;
     editTodo: (id: string, newText: string) => void;
+    deleteTodo: (id: string) => void;
     clearTodos: () => void;
 }
 
-// --- Zustand store ---
+// --- Zustand Store ---
 export const useAppStore = create<AppState>()(
     persist(
-        (set, get) => ({
-
+        (set) => ({
             // THEME
             theme: "light",
             toggleTheme: () => (
                 set((state) => ({
-                    theme: state.theme === "light" ? "dark" : "light"
+                    theme: state.theme === "light" ? "dark" : "light",
                 }))
             ),
 
             // TODOS
             todos: [],
-            addTodo: (text) => (
+            addTodo: (text) => 
                 set((state) => ({
-                    todos: [...state.todos,
+                    todos: [
+                        ...state.todos,
                         {id: crypto.randomUUID(), text, completed: false},
                     ]
-                }))
-            ),
-            toggleTodo: (id) => (
+                })),
+            toggleTodo: (id) => 
                 set((state) => ({
-                    todos: state.todos.map((t) => t.id === id ? {...t, completed: !t.completed} : t),
-                }))
-            ),
-
-            deleteTodo: (id) => (
+                    todos: state.todos.map((t) =>
+                        t.id === id ? {...t, completed: !t.completed} : t 
+                    )
+                })),
+            editTodo: (id, newText) => 
                 set((state) => ({
-                    todos: state.todos.filter((t) => t.id !==id),
-                }))
-            ),
-            editTodo: (id, newText) => (
+                    todos: state.todos.map((t) => 
+                        t.id === id ? {...t, text: newText}: t
+                    ),
+                })),
+            deleteTodo: (id) => 
                 set((state) => ({
-                    todos: state.todos.map((t) =>  t.id === id ? {...t, text: newText}: t)
-                }))
-            ),
-
-            clearTodos: () => set({todos: []}),
+                    todos: state.todos.filter((t) => t.id !== id),
+                })),
+            clearTodos: () => set({todos: []}),        
         }),
-        { name: "app-storage" } // key for localStorage
+        {name: "app-storage"} // key for localStorage
     )
 )
 
+// (alias) persist<AppState, [], [], AppState>(initializer: StateCreator<AppState, [["zustand/persist", unknown]], []>, options: PersistOptions<AppState, AppState, unknown>): StateCreator<AppState, [], [["zustand/persist", AppState]]>
+// import persist

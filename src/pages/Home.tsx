@@ -8,10 +8,11 @@
 import { useAppStore } from "@/store/appStore";
 import { useState } from "react";
 
-const Home = () => {
- const addTodo = useAppStore((s) => s.addTodo);
-  const [text, setText] = useState("");
 
+const Home = () => {
+  const addTodo = useAppStore((state) => state.addTodo);
+  const [text, setText] = useState("");
+  
   const handleAdd = () => {
     if (!text.trim()) return;
     addTodo(text);
@@ -19,10 +20,11 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <section>
       <h1>Add Task</h1>
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        <input
+        <input type="text"
+          id="task"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter a task..."
@@ -31,7 +33,7 @@ const Home = () => {
           Add
         </button>
       </div>
-    </div>
+    </section>
   );
 };
 
