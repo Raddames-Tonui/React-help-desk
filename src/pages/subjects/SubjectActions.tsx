@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TOKEN } from "@/utils/Constants";
 import { Route } from "@/routes/_protected/admin/subjects";
 
+
+
 interface SubjectActionsProps {
     subject: SubjectData;
 }
