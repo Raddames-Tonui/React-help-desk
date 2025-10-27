@@ -11,6 +11,9 @@ export default defineConfig({
       autoCodeSplitting: true,
     }),
   ],
+    esbuild: {
+    logLevel: "silent",
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

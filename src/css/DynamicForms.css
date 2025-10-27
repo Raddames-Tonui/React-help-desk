@@ -1,0 +1,39 @@
+@import url(./variables.css);
+
+
+.dynamic-forms {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px;
+  background: #fafafa;
+  max-width: 600px;
+  margin: 40px auto;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.dynamic-forms a {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.dynamic-forms a:hover {
+  background: var(--primary-700);
+  color: white;
+  border-color: #0078ff;
+  transform: translateY(-1px);
+}
+
+.dynamic-forms a:active {
+  transform: translateY(0);
+  background: var();
+}

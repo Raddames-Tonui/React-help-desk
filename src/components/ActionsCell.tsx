@@ -3,10 +3,10 @@ import type { UserData } from "@/context/types.ts";
 
 interface ActionsCellProps {
   user: UserData;
-  viewProfile: (id: string) => Promise<{ name: string; email: string } | null>;
-  editStatus: (id: string, status: string) => Promise<void>;
-  editRole: (id: string, role: string) => Promise<void>;
-  deleteUser: (id: string) => Promise<void>;
+  viewProfile: (id: number) => Promise<{ name: string; email: string } | null>;
+  editStatus: (id: number, status: string) => Promise<void>;
+  editRole: (id: number, role: string) => Promise<void>;
+  deleteUser: (id: number) => Promise<void>;
   openModal: (content: React.ReactNode) => void;
   navigate: (opts: { to: string }) => void; 
 }

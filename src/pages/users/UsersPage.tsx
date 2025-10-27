@@ -55,7 +55,7 @@ export default function UsersPage() {
     const { data, isLoading, isError, error, refetch,} = useQuery<ApiResponse<UserData>, Error>({
         queryKey: ["users", backendParams],
         queryFn: () => fetchUsers(backendParams),
-        keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
     });
 
     const users = data?.records ?? [];

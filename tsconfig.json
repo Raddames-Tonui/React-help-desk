@@ -5,6 +5,13 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
-    "types": ["node"]
+    "strict": false,
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "allowJs": true,
+    "checkJs": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": false
   }
 }

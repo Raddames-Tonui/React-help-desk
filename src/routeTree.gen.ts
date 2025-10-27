@@ -12,17 +12,25 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PublicRouteImport } from './routes/_public'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProtectedDynamicformsIndexRouteImport } from './routes/_protected/dynamicforms/index'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
 import { Route as PublicAuthUnderdevelopmentRouteImport } from './routes/_public/auth/underdevelopment'
 import { Route as PublicAuthUnauthorizedRouteImport } from './routes/_public/auth/unauthorized'
 import { Route as PublicAuthResetpasswordRouteImport } from './routes/_public/auth/resetpassword'
 import { Route as PublicAuthRegisterRouteImport } from './routes/_public/auth/register'
 import { Route as PublicAuthLoginRouteImport } from './routes/_public/auth/login'
+import { Route as ProtectedDynamicformsUserRegistrationRouteImport } from './routes/_protected/dynamicforms/user-registration'
+import { Route as ProtectedDynamicformsContactformRouteImport } from './routes/_protected/dynamicforms/contactform'
 import { Route as ProtectedAdminUsersIndexRouteImport } from './routes/_protected/admin/users/index'
 import { Route as ProtectedAdminSubjectsIndexRouteImport } from './routes/_protected/admin/subjects/index'
 import { Route as ProtectedAdminSettingsIndexRouteImport } from './routes/_protected/admin/settings/index'
+import { Route as ProtectedDynamicformsProductFormRouteImport } from './routes/_protected/dynamicforms/product.form'
+import { Route as ProtectedDynamicformsMultiConditionFormRouteImport } from './routes/_protected/dynamicforms/multi-condition.form'
+import { Route as ProtectedDynamicformsAgentUpdateRouteImport } from './routes/_protected/dynamicforms/agent.update'
+import { Route as ProtectedDynamicformsAddressFormRouteImport } from './routes/_protected/dynamicforms/address.form'
 import { Route as ProtectedAdminUsersUserIdRouteImport } from './routes/_protected/admin/users/$userId'
 import { Route as ProtectedAdminSubjectsSubjectIdIndexRouteImport } from './routes/_protected/admin/subjects/$subjectId/index'
+import { Route as ProtectedDynamicformsJobApplicationFormRouteImport } from './routes/_protected/dynamicforms/job.application.form'
 import { Route as ProtectedAdminSubjectsSubjectIdTasksIndexRouteImport } from './routes/_protected/admin/subjects/$subjectId/tasks/index'
 
 const PublicRoute = PublicRouteImport.update({
@@ -38,6 +46,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedDynamicformsIndexRoute =
+  ProtectedDynamicformsIndexRouteImport.update({
+    id: '/dynamicforms/',
+    path: '/dynamicforms/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedAdminIndexRoute = ProtectedAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -69,6 +83,18 @@ const PublicAuthLoginRoute = PublicAuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => PublicRoute,
 } as any)
+const ProtectedDynamicformsUserRegistrationRoute =
+  ProtectedDynamicformsUserRegistrationRouteImport.update({
+    id: '/dynamicforms/user-registration',
+    path: '/dynamicforms/user-registration',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedDynamicformsContactformRoute =
+  ProtectedDynamicformsContactformRouteImport.update({
+    id: '/dynamicforms/contactform',
+    path: '/dynamicforms/contactform',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedAdminUsersIndexRoute =
   ProtectedAdminUsersIndexRouteImport.update({
     id: '/admin/users/',
@@ -87,6 +113,30 @@ const ProtectedAdminSettingsIndexRoute =
     path: '/admin/settings/',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedDynamicformsProductFormRoute =
+  ProtectedDynamicformsProductFormRouteImport.update({
+    id: '/dynamicforms/product/form',
+    path: '/dynamicforms/product/form',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedDynamicformsMultiConditionFormRoute =
+  ProtectedDynamicformsMultiConditionFormRouteImport.update({
+    id: '/dynamicforms/multi-condition/form',
+    path: '/dynamicforms/multi-condition/form',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedDynamicformsAgentUpdateRoute =
+  ProtectedDynamicformsAgentUpdateRouteImport.update({
+    id: '/dynamicforms/agent/update',
+    path: '/dynamicforms/agent/update',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedDynamicformsAddressFormRoute =
+  ProtectedDynamicformsAddressFormRouteImport.update({
+    id: '/dynamicforms/address/form',
+    path: '/dynamicforms/address/form',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedAdminUsersUserIdRoute =
   ProtectedAdminUsersUserIdRouteImport.update({
     id: '/admin/users/$userId',
@@ -99,6 +149,12 @@ const ProtectedAdminSubjectsSubjectIdIndexRoute =
     path: '/admin/subjects/$subjectId/',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedDynamicformsJobApplicationFormRoute =
+  ProtectedDynamicformsJobApplicationFormRouteImport.update({
+    id: '/dynamicforms/job/application/form',
+    path: '/dynamicforms/job/application/form',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 const ProtectedAdminSubjectsSubjectIdTasksIndexRoute =
   ProtectedAdminSubjectsSubjectIdTasksIndexRouteImport.update({
     id: '/admin/subjects/$subjectId/tasks/',
@@ -108,31 +164,47 @@ const ProtectedAdminSubjectsSubjectIdTasksIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dynamicforms/contactform': typeof ProtectedDynamicformsContactformRoute
+  '/dynamicforms/user-registration': typeof ProtectedDynamicformsUserRegistrationRoute
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
   '/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
+  '/dynamicforms': typeof ProtectedDynamicformsIndexRoute
   '/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
+  '/dynamicforms/address/form': typeof ProtectedDynamicformsAddressFormRoute
+  '/dynamicforms/agent/update': typeof ProtectedDynamicformsAgentUpdateRoute
+  '/dynamicforms/multi-condition/form': typeof ProtectedDynamicformsMultiConditionFormRoute
+  '/dynamicforms/product/form': typeof ProtectedDynamicformsProductFormRoute
   '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
   '/admin/users': typeof ProtectedAdminUsersIndexRoute
+  '/dynamicforms/job/application/form': typeof ProtectedDynamicformsJobApplicationFormRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   '/admin/subjects/$subjectId/tasks': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dynamicforms/contactform': typeof ProtectedDynamicformsContactformRoute
+  '/dynamicforms/user-registration': typeof ProtectedDynamicformsUserRegistrationRoute
   '/auth/login': typeof PublicAuthLoginRoute
   '/auth/register': typeof PublicAuthRegisterRoute
   '/auth/resetpassword': typeof PublicAuthResetpasswordRoute
   '/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
   '/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/admin': typeof ProtectedAdminIndexRoute
+  '/dynamicforms': typeof ProtectedDynamicformsIndexRoute
   '/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
+  '/dynamicforms/address/form': typeof ProtectedDynamicformsAddressFormRoute
+  '/dynamicforms/agent/update': typeof ProtectedDynamicformsAgentUpdateRoute
+  '/dynamicforms/multi-condition/form': typeof ProtectedDynamicformsMultiConditionFormRoute
+  '/dynamicforms/product/form': typeof ProtectedDynamicformsProductFormRoute
   '/admin/settings': typeof ProtectedAdminSettingsIndexRoute
   '/admin/subjects': typeof ProtectedAdminSubjectsIndexRoute
   '/admin/users': typeof ProtectedAdminUsersIndexRoute
+  '/dynamicforms/job/application/form': typeof ProtectedDynamicformsJobApplicationFormRoute
   '/admin/subjects/$subjectId': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   '/admin/subjects/$subjectId/tasks': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
@@ -141,16 +213,24 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_protected': typeof ProtectedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
+  '/_protected/dynamicforms/contactform': typeof ProtectedDynamicformsContactformRoute
+  '/_protected/dynamicforms/user-registration': typeof ProtectedDynamicformsUserRegistrationRoute
   '/_public/auth/login': typeof PublicAuthLoginRoute
   '/_public/auth/register': typeof PublicAuthRegisterRoute
   '/_public/auth/resetpassword': typeof PublicAuthResetpasswordRoute
   '/_public/auth/unauthorized': typeof PublicAuthUnauthorizedRoute
   '/_public/auth/underdevelopment': typeof PublicAuthUnderdevelopmentRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
+  '/_protected/dynamicforms/': typeof ProtectedDynamicformsIndexRoute
   '/_protected/admin/users/$userId': typeof ProtectedAdminUsersUserIdRoute
+  '/_protected/dynamicforms/address/form': typeof ProtectedDynamicformsAddressFormRoute
+  '/_protected/dynamicforms/agent/update': typeof ProtectedDynamicformsAgentUpdateRoute
+  '/_protected/dynamicforms/multi-condition/form': typeof ProtectedDynamicformsMultiConditionFormRoute
+  '/_protected/dynamicforms/product/form': typeof ProtectedDynamicformsProductFormRoute
   '/_protected/admin/settings/': typeof ProtectedAdminSettingsIndexRoute
   '/_protected/admin/subjects/': typeof ProtectedAdminSubjectsIndexRoute
   '/_protected/admin/users/': typeof ProtectedAdminUsersIndexRoute
+  '/_protected/dynamicforms/job/application/form': typeof ProtectedDynamicformsJobApplicationFormRoute
   '/_protected/admin/subjects/$subjectId/': typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   '/_protected/admin/subjects/$subjectId/tasks/': typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
@@ -158,31 +238,47 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dynamicforms/contactform'
+    | '/dynamicforms/user-registration'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
     | '/auth/unauthorized'
     | '/auth/underdevelopment'
     | '/admin'
+    | '/dynamicforms'
     | '/admin/users/$userId'
+    | '/dynamicforms/address/form'
+    | '/dynamicforms/agent/update'
+    | '/dynamicforms/multi-condition/form'
+    | '/dynamicforms/product/form'
     | '/admin/settings'
     | '/admin/subjects'
     | '/admin/users'
+    | '/dynamicforms/job/application/form'
     | '/admin/subjects/$subjectId'
     | '/admin/subjects/$subjectId/tasks'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dynamicforms/contactform'
+    | '/dynamicforms/user-registration'
     | '/auth/login'
     | '/auth/register'
     | '/auth/resetpassword'
     | '/auth/unauthorized'
     | '/auth/underdevelopment'
     | '/admin'
+    | '/dynamicforms'
     | '/admin/users/$userId'
+    | '/dynamicforms/address/form'
+    | '/dynamicforms/agent/update'
+    | '/dynamicforms/multi-condition/form'
+    | '/dynamicforms/product/form'
     | '/admin/settings'
     | '/admin/subjects'
     | '/admin/users'
+    | '/dynamicforms/job/application/form'
     | '/admin/subjects/$subjectId'
     | '/admin/subjects/$subjectId/tasks'
   id:
@@ -190,16 +286,24 @@ export interface FileRouteTypes {
     | '/'
     | '/_protected'
     | '/_public'
+    | '/_protected/dynamicforms/contactform'
+    | '/_protected/dynamicforms/user-registration'
     | '/_public/auth/login'
     | '/_public/auth/register'
     | '/_public/auth/resetpassword'
     | '/_public/auth/unauthorized'
     | '/_public/auth/underdevelopment'
     | '/_protected/admin/'
+    | '/_protected/dynamicforms/'
     | '/_protected/admin/users/$userId'
+    | '/_protected/dynamicforms/address/form'
+    | '/_protected/dynamicforms/agent/update'
+    | '/_protected/dynamicforms/multi-condition/form'
+    | '/_protected/dynamicforms/product/form'
     | '/_protected/admin/settings/'
     | '/_protected/admin/subjects/'
     | '/_protected/admin/users/'
+    | '/_protected/dynamicforms/job/application/form'
     | '/_protected/admin/subjects/$subjectId/'
     | '/_protected/admin/subjects/$subjectId/tasks/'
   fileRoutesById: FileRoutesById
@@ -232,6 +336,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_protected/dynamicforms/': {
+      id: '/_protected/dynamicforms/'
+      path: '/dynamicforms'
+      fullPath: '/dynamicforms'
+      preLoaderRoute: typeof ProtectedDynamicformsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_protected/admin/': {
       id: '/_protected/admin/'
@@ -275,6 +386,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicAuthLoginRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_protected/dynamicforms/user-registration': {
+      id: '/_protected/dynamicforms/user-registration'
+      path: '/dynamicforms/user-registration'
+      fullPath: '/dynamicforms/user-registration'
+      preLoaderRoute: typeof ProtectedDynamicformsUserRegistrationRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dynamicforms/contactform': {
+      id: '/_protected/dynamicforms/contactform'
+      path: '/dynamicforms/contactform'
+      fullPath: '/dynamicforms/contactform'
+      preLoaderRoute: typeof ProtectedDynamicformsContactformRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/admin/users/': {
       id: '/_protected/admin/users/'
       path: '/admin/users'
@@ -296,6 +421,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminSettingsIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/dynamicforms/product/form': {
+      id: '/_protected/dynamicforms/product/form'
+      path: '/dynamicforms/product/form'
+      fullPath: '/dynamicforms/product/form'
+      preLoaderRoute: typeof ProtectedDynamicformsProductFormRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dynamicforms/multi-condition/form': {
+      id: '/_protected/dynamicforms/multi-condition/form'
+      path: '/dynamicforms/multi-condition/form'
+      fullPath: '/dynamicforms/multi-condition/form'
+      preLoaderRoute: typeof ProtectedDynamicformsMultiConditionFormRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dynamicforms/agent/update': {
+      id: '/_protected/dynamicforms/agent/update'
+      path: '/dynamicforms/agent/update'
+      fullPath: '/dynamicforms/agent/update'
+      preLoaderRoute: typeof ProtectedDynamicformsAgentUpdateRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/dynamicforms/address/form': {
+      id: '/_protected/dynamicforms/address/form'
+      path: '/dynamicforms/address/form'
+      fullPath: '/dynamicforms/address/form'
+      preLoaderRoute: typeof ProtectedDynamicformsAddressFormRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/admin/users/$userId': {
       id: '/_protected/admin/users/$userId'
       path: '/admin/users/$userId'
@@ -310,6 +463,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminSubjectsSubjectIdIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/dynamicforms/job/application/form': {
+      id: '/_protected/dynamicforms/job/application/form'
+      path: '/dynamicforms/job/application/form'
+      fullPath: '/dynamicforms/job/application/form'
+      preLoaderRoute: typeof ProtectedDynamicformsJobApplicationFormRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/_protected/admin/subjects/$subjectId/tasks/': {
       id: '/_protected/admin/subjects/$subjectId/tasks/'
       path: '/admin/subjects/$subjectId/tasks'
@@ -321,21 +481,40 @@ declare module '@tanstack/react-router' {
 }
 
 interface ProtectedRouteChildren {
+  ProtectedDynamicformsContactformRoute: typeof ProtectedDynamicformsContactformRoute
+  ProtectedDynamicformsUserRegistrationRoute: typeof ProtectedDynamicformsUserRegistrationRoute
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
+  ProtectedDynamicformsIndexRoute: typeof ProtectedDynamicformsIndexRoute
   ProtectedAdminUsersUserIdRoute: typeof ProtectedAdminUsersUserIdRoute
+  ProtectedDynamicformsAddressFormRoute: typeof ProtectedDynamicformsAddressFormRoute
+  ProtectedDynamicformsAgentUpdateRoute: typeof ProtectedDynamicformsAgentUpdateRoute
+  ProtectedDynamicformsMultiConditionFormRoute: typeof ProtectedDynamicformsMultiConditionFormRoute
+  ProtectedDynamicformsProductFormRoute: typeof ProtectedDynamicformsProductFormRoute
   ProtectedAdminSettingsIndexRoute: typeof ProtectedAdminSettingsIndexRoute
   ProtectedAdminSubjectsIndexRoute: typeof ProtectedAdminSubjectsIndexRoute
   ProtectedAdminUsersIndexRoute: typeof ProtectedAdminUsersIndexRoute
+  ProtectedDynamicformsJobApplicationFormRoute: typeof ProtectedDynamicformsJobApplicationFormRoute
   ProtectedAdminSubjectsSubjectIdIndexRoute: typeof ProtectedAdminSubjectsSubjectIdIndexRoute
   ProtectedAdminSubjectsSubjectIdTasksIndexRoute: typeof ProtectedAdminSubjectsSubjectIdTasksIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedDynamicformsContactformRoute: ProtectedDynamicformsContactformRoute,
+  ProtectedDynamicformsUserRegistrationRoute:
+    ProtectedDynamicformsUserRegistrationRoute,
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
+  ProtectedDynamicformsIndexRoute: ProtectedDynamicformsIndexRoute,
   ProtectedAdminUsersUserIdRoute: ProtectedAdminUsersUserIdRoute,
+  ProtectedDynamicformsAddressFormRoute: ProtectedDynamicformsAddressFormRoute,
+  ProtectedDynamicformsAgentUpdateRoute: ProtectedDynamicformsAgentUpdateRoute,
+  ProtectedDynamicformsMultiConditionFormRoute:
+    ProtectedDynamicformsMultiConditionFormRoute,
+  ProtectedDynamicformsProductFormRoute: ProtectedDynamicformsProductFormRoute,
   ProtectedAdminSettingsIndexRoute: ProtectedAdminSettingsIndexRoute,
   ProtectedAdminSubjectsIndexRoute: ProtectedAdminSubjectsIndexRoute,
   ProtectedAdminUsersIndexRoute: ProtectedAdminUsersIndexRoute,
+  ProtectedDynamicformsJobApplicationFormRoute:
+    ProtectedDynamicformsJobApplicationFormRoute,
   ProtectedAdminSubjectsSubjectIdIndexRoute:
     ProtectedAdminSubjectsSubjectIdIndexRoute,
   ProtectedAdminSubjectsSubjectIdTasksIndexRoute:

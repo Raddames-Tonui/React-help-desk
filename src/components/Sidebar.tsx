@@ -13,8 +13,8 @@ const menuConfig: Record<string, { icon: IconName; label: string; path: string }
   admin: [
     { icon: "pie", label: "Odata Dashboard", path: "/admin" },
     { icon: "notepad", label: "Subjects", path: "/admin/subjects" },
-    // { icon: "notes", label: "Tasks", path: "" },
     { icon: "users", label: "Users", path: "/admin/users" },
+    { icon: "notes", label: "Dynamic Forms", path: "/dynamicforms" },
     // { icon: "settings", label: "Settings", path: "/admin/settings" },
   ]
 };
