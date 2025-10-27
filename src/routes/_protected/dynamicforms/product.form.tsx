@@ -248,6 +248,6 @@ const productFormSchema: any = {
 function RouteComponent() {
   return <div>
 
-    <DynamicForm props={productFormSchema} />
+    <DynamicForm schema={productFormSchema} />
   </div>
 }

@@ -371,6 +371,6 @@ const jobApplicationSchema: any = {
 
 function RouteComponent() {
   return <div>
-    <DynamicForm props={jobApplicationSchema} />
+    <DynamicForm schema={jobApplicationSchema} />
   </div>
 }

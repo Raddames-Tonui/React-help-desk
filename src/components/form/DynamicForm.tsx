@@ -11,7 +11,7 @@ interface FieldNode {
   defaultValue?: any;
 }
 
-export interface FormProps {
+export interface FormSchema {
   id: string;
   meta: {
     title?: string;
@@ -21,8 +21,8 @@ export interface FormProps {
   layout: any[];
 }
 
-const DynamicForm: React.FC<{ props: FormProps }> = ({ props }) => {
-  const { id, meta, fields } = props;
+const DynamicForm: React.FC<{ schema: FormSchema }> = ({ schema }) => {
+  const { id, meta, fields } = schema;
 
   const [formValues, setFormValues] = useState<Record<string, any>>({});
 
@@ -126,7 +126,7 @@ const DynamicForm: React.FC<{ props: FormProps }> = ({ props }) => {
             <input
               id={field.id}
               type="file"
-              accept={field.props?.accept || "*/*"}
+              accept={field.props?.accept}
               multiple={field.props?.multiple || false}
               data-max-size={field.props?.maxSize || undefined}
               onChange={(e) => handleChange(field.id, e.target.files)}

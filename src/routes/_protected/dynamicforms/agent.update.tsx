@@ -166,6 +166,6 @@ const agentUpdateSchema: any = {
 
 function RouteComponent() {
   return <div>
-    <DynamicForm props={agentUpdateSchema} />
+    <DynamicForm schema={agentUpdateSchema} />
   </div>
 }

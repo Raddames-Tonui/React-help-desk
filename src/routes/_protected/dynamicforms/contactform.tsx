@@ -93,7 +93,7 @@ const contactFormSchema: any = {
 function RouteComponent() {
     return (
         <div style={{ padding: "2rem" }}>
-            <DynamicForm props={contactFormSchema} />
+            <DynamicForm schema={contactFormSchema} />
         </div>
     );
 }

@@ -179,6 +179,6 @@ const addressFormSchema: any = {
 
 function RouteComponent() {
   return <div>
-    <DynamicForm props={addressFormSchema} />
+    <DynamicForm schema={addressFormSchema} />
   </div>
 }

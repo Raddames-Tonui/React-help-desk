@@ -208,5 +208,5 @@ const registrationFormSchema: any = {
 };
 
 function RouteComponent() {
-  return <div><DynamicForm props={registrationFormSchema} /></div>
+  return <div><DynamicForm schema={registrationFormSchema} /></div>
 }

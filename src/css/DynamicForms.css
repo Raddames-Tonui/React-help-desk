@@ -29,7 +29,7 @@
 .dynamic-forms a:hover {
   background: var(--primary-700);
   color: white;
-  border-color: #0078ff;
+  border-color: #5f5f5f;
   transform: translateY(-1px);
 }
 

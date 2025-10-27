@@ -329,6 +329,6 @@ const insuranceQuoteSchema: any = {
 };
 function RouteComponent() {
   return <div>
-    <DynamicForm props={insuranceQuoteSchema} />
+    <DynamicForm schema={insuranceQuoteSchema} />
   </div>
 }
