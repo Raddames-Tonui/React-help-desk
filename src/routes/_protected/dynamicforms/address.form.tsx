@@ -178,7 +178,15 @@ const addressFormSchema: any = {
 };
 
 function RouteComponent() {
+  const handleFormSubmit = (values: Record<string, any>) => {
+
+    console.log("Data for submission", values)
+  }
+
   return <div>
-    <DynamicForm schema={addressFormSchema} />
+    <DynamicForm
+      schema={addressFormSchema}
+      onSubmit={handleFormSubmit}
+    />
   </div>
 }

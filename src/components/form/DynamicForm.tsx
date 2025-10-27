@@ -3,7 +3,7 @@ import React, { useState } from "react";
 interface FieldNode {
   id: string;
   label: string;
-  renderer:  "text"| "select"| "textarea"| "checkbox"| "number"| "radio"| "file";
+  renderer: "text" | "select" | "textarea" | "checkbox" | "number" | "radio" | "file";
   inputType?: string;
   placeholder?: string;
   rules?: Record<string, any>;
@@ -21,7 +21,13 @@ export interface FormSchema {
   layout: any[];
 }
 
-const DynamicForm: React.FC<{ schema: FormSchema }> = ({ schema }) => {
+export interface DynamicFormProps {
+  schema: FormSchema;
+  onSubmit?: (Values: Record<string, any>) => void;
+}
+
+
+const DynamicForm: React.FC<DynamicFormProps> = ({ schema, onSubmit }) => {
   const { id, meta, fields } = schema;
 
   const [formValues, setFormValues] = useState<Record<string, any>>({});
@@ -30,12 +36,20 @@ const DynamicForm: React.FC<{ schema: FormSchema }> = ({ schema }) => {
     setFormValues((prev) => ({ ...prev, [fieldId]: value }));
   };
 
-  const handleReset = () => setFormValues({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formValues);
+
+    if (onSubmit) {
+      onSubmit(formValues);
+    } else {
+      console.log("Form submitted:", formValues);
+    }
   };
+
+
+  const handleReset = () => setFormValues({});
+
 
   const renderField = (field: FieldNode) => {
     const value = formValues[field.id] ?? field.defaultValue ?? "";
