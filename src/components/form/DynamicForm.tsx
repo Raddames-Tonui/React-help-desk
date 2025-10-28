@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./formstyle.css"
 
 interface FieldNode {
   id: string;
@@ -163,12 +164,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ schema, onSubmit }) => {
 
   return (
     <div className="dynamic-form">
-      {meta.title && <h1>{meta.title}</h1>}
-      {meta.subtitle && <h2>{meta.subtitle}</h2>}
+      {meta.title && <h1 className="form-h1">{meta.title}</h1>}
+      {meta.subtitle && <h2 className="form-h2">{meta.subtitle}</h2>}
 
       <form id={id} onSubmit={handleSubmit}>
         {Object.values(fields).map((field) => (
-          <div key={field.id} className="form-field" style={{ marginBottom: "0.5rem" }}>
+          <div key={field.id} className="form-field" >
             {field.renderer !== "checkbox" && (
               <label htmlFor={field.id}>{field.label}</label>
             )}
@@ -176,7 +177,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ schema, onSubmit }) => {
           </div>
         ))}
 
-        <div>
+        <div className="form-buttons">
           <button type="submit">Submit</button>
           <button type="button" onClick={handleReset} >
             Reset
