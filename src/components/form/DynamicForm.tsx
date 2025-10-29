@@ -1,5 +1,16 @@
 import React, { useState } from "react";
 import "./formstyle.css"
+import { isFieldVisible, validateField } from "./utils/Validation";
+
+// interface rulesSchema {
+//   required?: string | boolean;
+//   minLength?: { value: number; message: string };
+//   maxLength?: { value: number; message: string };
+//   pattern?: { value: RegExp; message: string };
+//   min?: { value: number; message: string };
+//   max?: { value: number; message: string };
+//   validate?: (value, allValues) => string | true;
+// }
 
 interface FieldNode {
   id: string;
@@ -32,20 +43,36 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ schema, onSubmit }) => {
   const { id, meta, fields } = schema;
 
   const [formValues, setFormValues] = useState<Record<string, any>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (fieldId: string, value: any) => {
     setFormValues((prev) => ({ ...prev, [fieldId]: value }));
   };
 
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (onSubmit) {
-      onSubmit(formValues);
-    } else {
-      console.log("Form submitted:", formValues);
+    const newErrors: Record<string, string> = {};
+
+    for (const fieldId of Object.keys(fields)) {
+      const field = fields[fieldId];
+      if (!isFieldVisible(field, formValues)) continue;
+
+      const error = validateField(field, formValues[fieldId], formValues);
+      if (error) newErrors[fieldId] = error;
     }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit?.(formValues);
+    }
+
+    // if (onSubmit) {
+    //   onSubmit(formValues);
+    // } else {
+    //   console.log("Form submitted:", formValues);
+    // }
   };
 
 
@@ -63,7 +90,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ schema, onSubmit }) => {
             value={value}
             onChange={(e) => handleChange(field.id, e.target.value)}
           >
-            <option value="">Select an option</option>
+            <option value="">{field.placeholder}</option>
             {field.props?.data?.map((opt: any) =>
               typeof opt === "string" ? (
                 <option key={opt} value={opt}>
@@ -163,20 +190,22 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ schema, onSubmit }) => {
   };
 
 
-  
-
   return (
     <div className="dynamic-form">
-      {meta.title && <h1 className="form-h1">{meta.title}</h1>}
-      {meta.subtitle && <h2 className="form-h2">{meta.subtitle}</h2>}
+      <h1 className="form-h1">{meta.title}</h1>
+      <h2 className="form-h2">{meta.subtitle}</h2>
+
 
       <form id={id} onSubmit={handleSubmit}>
         {Object.values(fields).map((field) => (
-          <div key={field.id} className="form-field" >
+          <div key={field.id} className="form-field">
             {field.renderer !== "checkbox" && (
-              <label htmlFor={field.id}>{field.label}</label>
+              <label htmlFor={field.id}> {field.label}</label>
             )}
             {renderField(field)}
+            {errors[field.id] && (
+              <p className="error-text">{errors[field.id]}</p>
+            )}
           </div>
         ))}
 

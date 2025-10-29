@@ -33,7 +33,7 @@
 html {
     font-size: 16px;
  }
-/*
+
 .dynamic-form {
     font-size: 1rem;
 }
@@ -106,4 +106,8 @@ html {
   border: 0;
   border-bottom: 1px solid var(--primary-100);
   margin-bottom: 1rem;
-} */
+}
+
+.error-text{
+  color: red;
+}

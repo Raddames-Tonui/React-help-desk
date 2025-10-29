@@ -31,5 +31,5 @@
       "@components/*": ["components/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "public/archive/d2.tsx"]
 }
