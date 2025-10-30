@@ -1,6 +1,6 @@
-import DynamicForm from '@/form/DynamicForm';
+import DynamicForm from '@/dynamic-form/DynamicForm';
 import { createFileRoute } from '@tanstack/react-router'
-import {jobApplicationSchema} from "@/utils/formSchemas.ts"
+import { jobApplicationSchema } from "@/utils/formSchemas.ts"
 
 export const Route = createFileRoute('/_protected/dynamicforms/address/form')({
   component: RouteComponent,

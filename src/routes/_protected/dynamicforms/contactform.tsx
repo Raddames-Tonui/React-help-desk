@@ -1,6 +1,6 @@
-import DynamicForm from '@/form/DynamicForm';
+import DynamicForm from '@/dynamic-form/DynamicForm';
 import { createFileRoute } from "@tanstack/react-router";
-import { contactFormSchema} from "@/utils/formSchemas"
+import { contactFormSchema } from "@/utils/formSchemas"
 
 export const Route = createFileRoute("/_protected/dynamicforms/contactform")({
     component: RouteComponent,

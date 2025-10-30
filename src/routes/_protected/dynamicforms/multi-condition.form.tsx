@@ -1,4 +1,4 @@
-import DynamicForm from '@/form/DynamicForm';
+import DynamicForm from '@/dynamic-form/DynamicForm';
 import { createFileRoute } from '@tanstack/react-router'
 import { insuranceQuoteSchema } from "@/utils/formSchemas"
 
