@@ -1,37 +1,18 @@
-
-/**
- * Home Page
- * ----------
- * Allows adding new todos (saved globally in Zustand store).
- */
-
-import { useAppStore } from "@/store/appStore";
-import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 
 const Home = () => {
-  const addTodo = useAppStore((state) => state.addTodo);
-  const [text, setText] = useState("");
-  
-  const handleAdd = () => {
-    if (!text.trim()) return;
-    addTodo(text);
-    setText("");
-  };
 
   return (
     <section>
-      <h1>Add Task</h1>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        <input type="text"
-          id="task"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Enter a task..."
-        />
-        <button className="primary" onClick={handleAdd}>
-          Add
-        </button>
+      <div className="dynamic-forms">
+        <Link to="/dynamicforms/contactform">SIMPLE CONTACT FORM</Link>
+        <Link to="/dynamicforms/user-registration">USER REGISTRATION WITH CONDITIONAL FIELDS</Link>
+        <Link to="/dynamicforms/agent/update">AGENT UPDATE FORM</Link>
+        <Link to="/dynamicforms/product/form">PRODUCT FORM WITH COMPLEX CONDITIONS</Link>
+        <Link to="/dynamicforms/address/form">ADDRESS FORM WITH COUNTRY-DEPENDENT FIELDS</Link>
+        <Link to="/dynamicforms/job/application/form">JOB APPLICATION FORM</Link>
+        <Link to="/dynamicforms/multi-condition/form">MULTI-CONDITION FORM</Link>
       </div>
     </section>
   );

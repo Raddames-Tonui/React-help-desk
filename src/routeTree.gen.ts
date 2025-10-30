@@ -12,6 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as GameRouteImport } from './routes/game'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DynamicformsUserRegistrationRouteImport } from './routes/dynamicforms/user-registration'
+import { Route as DynamicformsContactformRouteImport } from './routes/dynamicforms/contactform'
+import { Route as DynamicformsProductFormRouteImport } from './routes/dynamicforms/product.form'
+import { Route as DynamicformsMultiConditionFormRouteImport } from './routes/dynamicforms/multi-condition.form'
+import { Route as DynamicformsAgentUpdateRouteImport } from './routes/dynamicforms/agent.update'
+import { Route as DynamicformsAddressFormRouteImport } from './routes/dynamicforms/address.form'
+import { Route as DynamicformsJobApplicationFormRouteImport } from './routes/dynamicforms/job.application.form'
 
 const TasksRoute = TasksRouteImport.update({
   id: '/tasks',
@@ -28,35 +35,132 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DynamicformsUserRegistrationRoute =
+  DynamicformsUserRegistrationRouteImport.update({
+    id: '/dynamicforms/user-registration',
+    path: '/dynamicforms/user-registration',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DynamicformsContactformRoute = DynamicformsContactformRouteImport.update({
+  id: '/dynamicforms/contactform',
+  path: '/dynamicforms/contactform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DynamicformsProductFormRoute = DynamicformsProductFormRouteImport.update({
+  id: '/dynamicforms/product/form',
+  path: '/dynamicforms/product/form',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DynamicformsMultiConditionFormRoute =
+  DynamicformsMultiConditionFormRouteImport.update({
+    id: '/dynamicforms/multi-condition/form',
+    path: '/dynamicforms/multi-condition/form',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DynamicformsAgentUpdateRoute = DynamicformsAgentUpdateRouteImport.update({
+  id: '/dynamicforms/agent/update',
+  path: '/dynamicforms/agent/update',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DynamicformsAddressFormRoute = DynamicformsAddressFormRouteImport.update({
+  id: '/dynamicforms/address/form',
+  path: '/dynamicforms/address/form',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DynamicformsJobApplicationFormRoute =
+  DynamicformsJobApplicationFormRouteImport.update({
+    id: '/dynamicforms/job/application/form',
+    path: '/dynamicforms/job/application/form',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/game': typeof GameRoute
   '/tasks': typeof TasksRoute
+  '/dynamicforms/contactform': typeof DynamicformsContactformRoute
+  '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
+  '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
+  '/dynamicforms/agent/update': typeof DynamicformsAgentUpdateRoute
+  '/dynamicforms/multi-condition/form': typeof DynamicformsMultiConditionFormRoute
+  '/dynamicforms/product/form': typeof DynamicformsProductFormRoute
+  '/dynamicforms/job/application/form': typeof DynamicformsJobApplicationFormRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/game': typeof GameRoute
   '/tasks': typeof TasksRoute
+  '/dynamicforms/contactform': typeof DynamicformsContactformRoute
+  '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
+  '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
+  '/dynamicforms/agent/update': typeof DynamicformsAgentUpdateRoute
+  '/dynamicforms/multi-condition/form': typeof DynamicformsMultiConditionFormRoute
+  '/dynamicforms/product/form': typeof DynamicformsProductFormRoute
+  '/dynamicforms/job/application/form': typeof DynamicformsJobApplicationFormRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/game': typeof GameRoute
   '/tasks': typeof TasksRoute
+  '/dynamicforms/contactform': typeof DynamicformsContactformRoute
+  '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
+  '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
+  '/dynamicforms/agent/update': typeof DynamicformsAgentUpdateRoute
+  '/dynamicforms/multi-condition/form': typeof DynamicformsMultiConditionFormRoute
+  '/dynamicforms/product/form': typeof DynamicformsProductFormRoute
+  '/dynamicforms/job/application/form': typeof DynamicformsJobApplicationFormRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/game' | '/tasks'
+  fullPaths:
+    | '/'
+    | '/game'
+    | '/tasks'
+    | '/dynamicforms/contactform'
+    | '/dynamicforms/user-registration'
+    | '/dynamicforms/address/form'
+    | '/dynamicforms/agent/update'
+    | '/dynamicforms/multi-condition/form'
+    | '/dynamicforms/product/form'
+    | '/dynamicforms/job/application/form'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/game' | '/tasks'
-  id: '__root__' | '/' | '/game' | '/tasks'
+  to:
+    | '/'
+    | '/game'
+    | '/tasks'
+    | '/dynamicforms/contactform'
+    | '/dynamicforms/user-registration'
+    | '/dynamicforms/address/form'
+    | '/dynamicforms/agent/update'
+    | '/dynamicforms/multi-condition/form'
+    | '/dynamicforms/product/form'
+    | '/dynamicforms/job/application/form'
+  id:
+    | '__root__'
+    | '/'
+    | '/game'
+    | '/tasks'
+    | '/dynamicforms/contactform'
+    | '/dynamicforms/user-registration'
+    | '/dynamicforms/address/form'
+    | '/dynamicforms/agent/update'
+    | '/dynamicforms/multi-condition/form'
+    | '/dynamicforms/product/form'
+    | '/dynamicforms/job/application/form'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GameRoute: typeof GameRoute
   TasksRoute: typeof TasksRoute
+  DynamicformsContactformRoute: typeof DynamicformsContactformRoute
+  DynamicformsUserRegistrationRoute: typeof DynamicformsUserRegistrationRoute
+  DynamicformsAddressFormRoute: typeof DynamicformsAddressFormRoute
+  DynamicformsAgentUpdateRoute: typeof DynamicformsAgentUpdateRoute
+  DynamicformsMultiConditionFormRoute: typeof DynamicformsMultiConditionFormRoute
+  DynamicformsProductFormRoute: typeof DynamicformsProductFormRoute
+  DynamicformsJobApplicationFormRoute: typeof DynamicformsJobApplicationFormRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +186,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dynamicforms/user-registration': {
+      id: '/dynamicforms/user-registration'
+      path: '/dynamicforms/user-registration'
+      fullPath: '/dynamicforms/user-registration'
+      preLoaderRoute: typeof DynamicformsUserRegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dynamicforms/contactform': {
+      id: '/dynamicforms/contactform'
+      path: '/dynamicforms/contactform'
+      fullPath: '/dynamicforms/contactform'
+      preLoaderRoute: typeof DynamicformsContactformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dynamicforms/product/form': {
+      id: '/dynamicforms/product/form'
+      path: '/dynamicforms/product/form'
+      fullPath: '/dynamicforms/product/form'
+      preLoaderRoute: typeof DynamicformsProductFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dynamicforms/multi-condition/form': {
+      id: '/dynamicforms/multi-condition/form'
+      path: '/dynamicforms/multi-condition/form'
+      fullPath: '/dynamicforms/multi-condition/form'
+      preLoaderRoute: typeof DynamicformsMultiConditionFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dynamicforms/agent/update': {
+      id: '/dynamicforms/agent/update'
+      path: '/dynamicforms/agent/update'
+      fullPath: '/dynamicforms/agent/update'
+      preLoaderRoute: typeof DynamicformsAgentUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dynamicforms/address/form': {
+      id: '/dynamicforms/address/form'
+      path: '/dynamicforms/address/form'
+      fullPath: '/dynamicforms/address/form'
+      preLoaderRoute: typeof DynamicformsAddressFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dynamicforms/job/application/form': {
+      id: '/dynamicforms/job/application/form'
+      path: '/dynamicforms/job/application/form'
+      fullPath: '/dynamicforms/job/application/form'
+      preLoaderRoute: typeof DynamicformsJobApplicationFormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +242,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GameRoute: GameRoute,
   TasksRoute: TasksRoute,
+  DynamicformsContactformRoute: DynamicformsContactformRoute,
+  DynamicformsUserRegistrationRoute: DynamicformsUserRegistrationRoute,
+  DynamicformsAddressFormRoute: DynamicformsAddressFormRoute,
+  DynamicformsAgentUpdateRoute: DynamicformsAgentUpdateRoute,
+  DynamicformsMultiConditionFormRoute: DynamicformsMultiConditionFormRoute,
+  DynamicformsProductFormRoute: DynamicformsProductFormRoute,
+  DynamicformsJobApplicationFormRoute: DynamicformsJobApplicationFormRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
