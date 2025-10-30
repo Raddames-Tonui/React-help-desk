@@ -1,4 +1,4 @@
-import DynamicForm from '@/components/form/DynamicForm';
+import DynamicForm from '@/form/DynamicForm';
 import { createFileRoute } from '@tanstack/react-router'
 import { agentUpdateSchema } from "@/utils/formSchemas"
 
