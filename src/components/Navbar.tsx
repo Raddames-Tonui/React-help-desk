@@ -19,11 +19,10 @@ export default function Navbar() {
         <img src="/todo.png" alt="todo logo" className="logo" />
         <Link to="/">Forms</Link>
         <Link to="/forms">Select</Link>
-        {/* <Link to="/game">Game Zone</Link> */}
       </div>
-      <button onClick={toggleTheme} className="secondary">
+      {/* <button onClick={toggleTheme} className="secondary">
         Theme: {theme}
-      </button>
+      </button> */}
     </nav>
   );
 }

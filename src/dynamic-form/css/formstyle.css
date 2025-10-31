@@ -1,0 +1,424 @@
+@import url("./variables.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: var(--text-dark);
+}
+
+/*  GENERAL FORM WRAPPER  */
+.dynamic-form {
+  background: var(--bg-default);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.form-h1 {
+  font-size: 1.75rem;
+  color: var(--primary-700);
+  margin-bottom: 0.25rem;
+  text-align: start;
+}
+
+.form-h2 {
+  font-size: 1rem;
+  color: var(--text-light);
+  text-align: start;
+  margin-bottom: var(--space-sm);
+}
+
+/* FORM FIELDS  */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-md);
+}
+
+.form-field label {
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--primary-500);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/*  STACK LAYOUTS  */
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack-sm > * + * {
+  margin-top: var(--space-sm);
+}
+.stack-md > * + * {
+  margin-top: var(--space-md);
+}
+.stack-lg > * + * {
+  margin-top: var(--space-lg);
+}
+
+/* GRID LAYOUTS  */
+.grid {
+  display: grid;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.grid-cols-1 {
+  grid-template-columns: 1fr;
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Spacing variants */
+.gap-sm {
+  gap: var(--space-sm);
+}
+.gap-md {
+  gap: var(--space-md);
+}
+.gap-lg {
+  gap: var(--space-lg);
+}
+
+/* SECTIONS  */
+.form-section {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  background: var(--bg-secondary);
+}
+
+.form-section legend {
+  font-weight: 700;
+  color: var(--primary-700);
+  font-size: 1.1rem;
+  margin-bottom: var(--space-sm);
+}
+
+.form-section hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: var(--space-sm) 0 var(--space-md);
+}
+
+/* 
+   BUTTONS  */
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+button {
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--border-radius);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button[type="submit"] {
+  background: var(--primary-500);
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background: var(--primary-700);
+}
+
+button[type="reset"] {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+button[type="reset"]:hover {
+  background: #cbd5e1;
+}
+
+/* SWITCH  */
+.switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.switch input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.slider {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 9999px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background-color: var(--primary-500);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+/* 
+   MULTISELECT  */
+.multiselect-wrapper {
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  background: #fff;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.option-item {
+  padding: 0.1rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  user-select: none;
+  background: #f9fafb;
+}
+
+.option-item:hover {
+  background: var(--primary-50);
+}
+
+.option-item.selected {
+  background-color: var(--primary-500);
+  color: white;
+  border-color: var(--primary-500);
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  background: #e0f2f1;
+  border: 1px solid var(--primary-300);
+  border-radius: 99px;
+  padding: 0.1rem 0.6rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tag button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--primary-700);
+}
+
+/* 
+   ERROR MESSAGES  */
+.error-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #db3442;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+
+.error-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
+
+
+/*  RESPONSIVENESS */
+
+/* Small devices (phones ≤ 600px) */
+@media (max-width: 600px) {
+  .dynamic-form {
+    padding: var(--space-md);
+    margin: 1rem;
+  }
+
+  .form-h1 {
+    font-size: 1.4rem;
+  }
+
+  .form-h2 {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+  }
+
+  /* Stack fields tighter for mobile */
+  .stack-md > * + * {
+    margin-top: var(--space-sm);
+  }
+
+  /* Collapse grids into single column */
+  .grid-cols-2,
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce gaps on small devices */
+  .gap-md {
+    gap: var(--space-sm);
+  }
+
+  /* Buttons stack vertically */
+  .form-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+  }
+
+  .form-buttons button {
+    width: 100%;
+  }
+
+  /* Make multiselect more touch-friendly */
+  .multiselect-wrapper {
+    padding: 0.4rem;
+  }
+
+  .options-list {
+    max-height: 100px;
+  }
+
+  .form-section {
+    padding: var(--space-sm);
+  }
+}
+
+/* Medium devices (tablets ≤ 900px) */
+@media (max-width: 900px) {
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-h1 {
+    font-size: 1.6rem;
+  }
+
+  .form-section {
+    margin-bottom: var(--space-md);
+  }
+
+  .form-buttons {
+    justify-content: center;
+  }
+
+  .dynamic-form {
+    max-width: 90%;
+  }
+}
+
+/* Large screens (desktops ≥ 1200px) */
+@media (min-width: 1200px) {
+  .dynamic-form {
+    max-width: 1000px;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+/* Responsive grids that collapse 3→2→1 automatically */
+.grid[data-responsive="true"] {
+  /* min item width controls when it wraps; tweak as needed */
+  --min-col: 260px;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-col), 1fr));
+}
+
+/* Optional: finer mobile packing */
+@media (max-width: 480px) {
+  .grid[data-responsive="true"] {
+    --min-col: 220px;
+  }
+}
+
+/* Ensure children don’t overflow their grid cells */
+.grid[data-responsive="true"] > * {
+  min-width: 0;
+}

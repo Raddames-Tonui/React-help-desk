@@ -1,7 +1,7 @@
 export interface FieldNode {
     id: string;
     label: string;
-    renderer: "text"| "select"| "textarea"| "checkbox"| "number"| "radio"| "file" | "date";
+    renderer: "text"| "select"| "textarea"| "checkbox"| "number"| "radio"| "file" | "date" | "switch" | "multiselect";
     inputType?: string;
     placeholder?: string;
     rules?: Record<string, any>;

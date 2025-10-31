@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./css/formstyle.css";
+import "./formstyle.css";
 import { validateField } from "./utils/valitation";
 import type { DynamicFormProps, FieldNode, LayoutNode } from "./utils/types";
 
@@ -57,6 +57,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
 
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) onSubmit?.(formValues);
+    handleReset();
   };
 
   const handleReset = () => {
@@ -187,55 +188,51 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
   };
 
   /** ---------- Layout Renderer ---------- */
-  const renderLayoutNode = (node: LayoutNode, index?: number): JSX.Element | null => {
-    const key = node.fieldId || node.title || `${node.kind}-${index}`;
-
-    switch (node.kind) {
-      case "field": {
-        const field = fields[node.fieldId];
-        if (!isFieldVisible(field)) return null;
-        return (
-          <div key={field.id} className="form-field">
-            {field.renderer !== "checkbox" && field.renderer !== "switch" && (
-              <label htmlFor={field.id}>{field.label}</label>
-            )}
-            {renderField(field)}
-            {errors[field.id] && <p className="error-text">
-              <svg
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="error-icon"
-              ><circle cx="12" cy="12" r="10" /><line x1="12" y1="7" x2="12" y2="13" /><circle cx="12" cy="17" r="1" fill="currentColor" />
-              </svg>
-              {errors[field.id]}</p>}
-          </div>
-        );
-      }
-
-      case "stack":
-        return (
-          <div key={key} className={`stack stack-${node.spacing || "md"}`}>
-            {node.children?.map((child, i) => renderLayoutNode(child, i))}
-          </div>
-        );
-
-      case "grid":
-        return (
-          <div key={key} className={`grid grid-cols-${node.cols || 2} gap-${node.spacing || "md"}`}>
-            {node.children?.map((child, i) => renderLayoutNode(child, i))}
-          </div>
-        );
-
-      case "section":
-        return (
-          <fieldset key={key} className="form-section">
-            {node.title && <h3  className="section-title">{node.title}</h3>}
-            {node.children?.map((child, i) => renderLayoutNode(child, i))}
-          </fieldset>
-        );
-
-      default:
-        return null;
+const renderLayoutNode = (node: LayoutNode, index?: number): JSX.Element | null => {
+  const key = node.fieldId || node.title || `${node.kind}-${index}`;
+  
+  switch (node.kind) {
+    case "field": {
+      const field = fields[node.fieldId];
+      if (!isFieldVisible(field)) return null;
+      return (
+        <div key={field.id} className="form-field">
+          {field.renderer !== "checkbox" && field.renderer !== "switch" && (
+            <label htmlFor={field.id}>{field.label}</label>
+          )}
+          {renderField(field)}
+          {errors[field.id] && <p className="error-text">{errors[field.id]}</p>}
+        </div>
+      );
     }
-  };
+
+    case "stack":
+      return (
+        <div key={key} className={`stack stack-${node.spacing || "md"}`}>
+          {node.children?.map((child, i) => renderLayoutNode(child, i))}
+        </div>
+      );
+
+    case "grid":
+      return (
+        <div key={key} className={`grid grid-cols-${node.cols || 2} gap-${node.spacing || "md"}`}>
+          {node.children?.map((child, i) => renderLayoutNode(child, i))}
+        </div>
+      );
+
+    case "section":
+      return (
+        <fieldset key={key} className="form-section">
+          {node.title && <legend>{node.title}</legend>}
+          {node.withDivider && <hr />}
+          {node.children?.map((child, i) => renderLayoutNode(child, i))}
+        </fieldset>
+      );
+
+    default:
+      return null;
+  }
+};
 
   /** ---------- Render Form ---------- */
   return (
