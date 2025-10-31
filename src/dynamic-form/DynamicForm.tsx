@@ -16,9 +16,12 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     const checkCondition = (condition: any) => {
       const targetValue = formValues[condition.field];
       switch (condition.op) {
-        case "equals": return targetValue === condition.value;
-        case "in": return Array.isArray(condition.value) && condition.value.includes(targetValue);
-        default: return true;
+        case "equals":
+          return targetValue === condition.value;
+        case "in":
+          return Array.isArray(condition.value) && condition.value.includes(targetValue);
+        default:
+          return true;
       }
     };
 
@@ -27,18 +30,18 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
       : checkCondition(rule);
   };
 
-  //Handle value change + validation 
+  // Handle change + validation 
   const handleChange = (fieldId: string, value: any) => {
-    const updatedValues = { ...formValues, [fieldId]: value };
-
-    Object.values(fields).forEach((field) => {
-      if (!isFieldVisible(field)) updatedValues[field.id] = undefined;
+    setFormValues((prevValues) => {
+      const updatedValues = { ...prevValues, [fieldId]: value };
+      Object.values(fields).forEach((field) => {
+        if (!isFieldVisible(field)) updatedValues[field.id] = undefined;
+      });
+      return updatedValues;
     });
 
-    setFormValues(updatedValues);
-
     const field = fields[fieldId];
-    const error = validateField(field, value, updatedValues);
+    const error = validateField(field, value, { ...formValues, [fieldId]: value });
     setErrors((prev) => ({ ...prev, [fieldId]: error || "" }));
   };
 
@@ -55,18 +58,18 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     });
 
     setErrors(validationErrors);
-
     if (Object.keys(validationErrors).length === 0) {
       onSubmit?.(formValues);
     }
   };
 
-
+  // Reset 
   const handleReset = () => {
     setFormValues({});
     setErrors({});
   };
 
+  // Render each field 
   const renderField = (field: FieldNode) => {
     const value = formValues[field.id] ?? field.defaultValue ?? "";
     const handleInputChange = (e: React.ChangeEvent<any>) => handleChange(field.id, e.target.value);
@@ -83,6 +86,9 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
             })}
           </select>
         );
+
+      case "multiselect":
+        return <MultiSelectField field={field} value={value} onChange={handleChange} />;
 
       case "textarea":
         return (
@@ -140,6 +146,19 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
           </label>
         );
 
+      case "switch":
+        return (
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={!!value}
+              onChange={(e) => handleChange(field.id, e.target.checked)}
+            />
+            <span className="slider" />
+            {field.label}
+          </label>
+        );
+
       case "date":
         return (
           <input
@@ -174,6 +193,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     }
   };
 
+  // Render form 
   return (
     <div className="dynamic-form">
       {meta.title && <h1 className="form-h1">{meta.title}</h1>}
@@ -184,26 +204,105 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
           .filter(isFieldVisible)
           .map((field) => (
             <div key={field.id} className="form-field">
-              {field.renderer !== "checkbox" && <label htmlFor={field.id}>{field.label}</label>}
+              {field.renderer !== "checkbox" && field.renderer !== "switch" && (
+                <label htmlFor={field.id}>{field.label}</label>
+              )}
               {renderField(field)}
               {errors[field.id] && (
                 <p className="error-text">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="error-icon"
-                  ><circle cx="12" cy="12" r="10" /><line x1="12" y1="7" x2="12" y2="13" /><circle cx="12" cy="17" r="1" fill="currentColor" />
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" strokeWidth="2"
+                    strokeLinecap="round" strokeLinejoin="round"
+                    className="error-icon"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="7" x2="12" y2="13" />
+                    <circle cx="12" cy="17" r="1" fill="currentColor" />
                   </svg>
                   {errors[field.id]}
                 </p>
               )}
             </div>
-          ))
-        }
+          ))}
 
         <div className="form-buttons">
           <button type="submit">Submit</button>
           <button type="reset" onClick={handleReset}>Reset</button>
         </div>
       </form>
+    </div>
+  );
+}
+
+// Custom multi-select with search + tag removal
+function MultiSelectField({
+  field,
+  value,
+  onChange,
+}: {
+  field: FieldNode;
+  value: string[];
+  onChange: (id: string, value: any) => void;
+}) {
+  const [search, setSearch] = useState("");
+
+  const allOptions = field.props?.data || [];
+  const selected = value || [];
+
+  const filteredOptions = field.props?.searchable
+    ? allOptions.filter((opt: string) =>
+        opt.toLowerCase().includes(search.toLowerCase())
+      )
+    : allOptions;
+
+  const toggleValue = (option: string) => {
+    const newValues = selected.includes(option)
+      ? selected.filter((v) => v !== option)
+      : [...selected, option];
+    onChange(field.id, newValues);
+  };
+
+  const removeValue = (option: string) => {
+    onChange(field.id, selected.filter((v) => v !== option));
+  };
+
+  return (
+    <div className="multiselect-wrapper">
+      {field.props?.searchable && (
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-input"
+        />
+      )}
+
+      <div className="options-list">
+        {filteredOptions.map((option: string, index: number) => (
+          <div
+            key={index}
+            className={`option-item ${selected.includes(option) ? "selected" : ""}`}
+            onClick={() => toggleValue(option)}
+          >
+            {option}
+          </div>
+        ))}
+      </div>
+
+      {selected.length > 0 && (
+        <div className="selected-tags">
+          {selected.map((item: string, index: number) => (
+            <span key={index} className="tag">
+              {item}
+              <button onClick={() => removeValue(item)} type="button">
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

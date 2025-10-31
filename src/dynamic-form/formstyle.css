@@ -34,7 +34,120 @@ html {
     font-size: 16px;
  }
 
-.dynamic-form {
+
+
+ .switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.switch input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.slider {
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 9999px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.switch input:checked + .slider {
+  background-color: #4caf50;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+
+
+
+.multiselect-wrapper {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.5rem;
+  background: #fff;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.option-item {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.option-item.selected {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.tag {
+  background: #e8f5e9;
+  border: 1px solid #81c784;
+  border-radius: 9999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tag button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #388e3c;
+}
+
+
+/* .dynamic-form {
     font-size: 1rem;
     margin: 1rem 1rem 1rem 2rem;
 }
@@ -48,9 +161,9 @@ html {
 .form-buttons {
     display: flex;
     gap: 1rem;
-}
+} */
 
-
+/* 
 
 
 
@@ -88,7 +201,7 @@ html {
   border: 0;
   border-bottom: 1px solid var(--primary-100);
   margin-bottom: 1rem;
-}
+} */
 
 .error-text {
   display: flex;
