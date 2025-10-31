@@ -22,6 +22,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
   line-height: 1.6;
   box-sizing: border-box;
+  font-size: 16px;
 }
 
 main {
@@ -40,7 +41,7 @@ h1 {
 }
 
 /* Section Layout */
-section {
+section, .page-wrapper {
   margin: auto;
   background-color: var(--secondary-100);
   padding: 1.5rem;
@@ -54,140 +55,7 @@ section:hover {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* Inputs */
-input {
-  flex: 1;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
 
-input:focus {
-  outline: none;
-  border-color: var(--primary-100);
-  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
-}
-
-/* Buttons */
-button {
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-button:active {
-  transform: scale(0.97);
-}
-
-button.primary {
-  background-color: var(--primary-100);
-  color: white;
-}
-
-button.primary:hover {
-  background-color: var(--primary-200);
-}
-
-button.secondary {
-  background-color: var(--secondary-200);
-  color: var(--accent-100);
-}
-
-button.secondary:hover {
-  background-color: var(--accent-200);
-  color: var(--bg-color);
-}
-
-/* Todo List */
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
-  padding: 0.8rem 1rem;
-  margin-bottom: 0.6rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-}
-
-/* Task Text */
-li span {
-  flex: 1;
-  margin-right: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-  word-break: break-word;
-  transition: color 0.2s ease;
-}
-
-li span:hover {
-  color: var(--primary-100);
-}
-
-li span.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-/* Button Group Inside List */
-li div {
-  display: flex;
-  gap: 0.4rem;
-}
-
-/* Empty State */
-p {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin-top: 0.5rem;
-}
-
-p a {
-  color: var(--primary-100);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-p a:hover {
-  text-decoration: underline;
-}
-
-/* Clear All Button */
-button.clear-all {
-  display: block;
-  width: 100%;
-  margin-top: 1rem;
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--accent-100);
-}
-
-button.clear-all:hover {
-  background-color: var(--secondary-200);
-}
-
-/* Navbar */
 nav {
   display: flex;
   justify-content: space-between;
@@ -259,4 +127,71 @@ nav a:hover {
 .dynamic-forms a:active {
   transform: translateY(0);
   background: var();
+}
+
+
+
+
+input {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-100);
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
+}
+
+button {
+  border: 1px solid var(--text-color);
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button.primary {
+  background-color: var(--primary-100);
+  color: white;
+}
+
+button.primary:hover {
+  background-color: var(--primary-200);
+}
+
+button.secondary {
+  background-color: var(--secondary-200);
+  color: var(--accent-100);
+}
+
+button.secondary:hover {
+  background-color: var(--accent-200);
+  color: var(--bg-color);
+}
+
+
+button.clear-all {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--accent-100);
+}
+
+button.clear-all:hover {
+  background-color: var(--secondary-200);
 }

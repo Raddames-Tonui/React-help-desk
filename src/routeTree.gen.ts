@@ -9,8 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TasksRouteImport } from './routes/tasks'
-import { Route as GameRouteImport } from './routes/game'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DynamicformsUserRegistrationRouteImport } from './routes/dynamicforms/user-registration'
 import { Route as DynamicformsContactformRouteImport } from './routes/dynamicforms/contactform'
@@ -20,16 +18,6 @@ import { Route as DynamicformsAgentUpdateRouteImport } from './routes/dynamicfor
 import { Route as DynamicformsAddressFormRouteImport } from './routes/dynamicforms/address.form'
 import { Route as DynamicformsJobApplicationFormRouteImport } from './routes/dynamicforms/job.application.form'
 
-const TasksRoute = TasksRouteImport.update({
-  id: '/tasks',
-  path: '/tasks',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GameRoute = GameRouteImport.update({
-  id: '/game',
-  path: '/game',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -76,8 +64,6 @@ const DynamicformsJobApplicationFormRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/game': typeof GameRoute
-  '/tasks': typeof TasksRoute
   '/dynamicforms/contactform': typeof DynamicformsContactformRoute
   '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
   '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
@@ -88,8 +74,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/game': typeof GameRoute
-  '/tasks': typeof TasksRoute
   '/dynamicforms/contactform': typeof DynamicformsContactformRoute
   '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
   '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
@@ -101,8 +85,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/game': typeof GameRoute
-  '/tasks': typeof TasksRoute
   '/dynamicforms/contactform': typeof DynamicformsContactformRoute
   '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
   '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
@@ -115,8 +97,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/game'
-    | '/tasks'
     | '/dynamicforms/contactform'
     | '/dynamicforms/user-registration'
     | '/dynamicforms/address/form'
@@ -127,8 +107,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/game'
-    | '/tasks'
     | '/dynamicforms/contactform'
     | '/dynamicforms/user-registration'
     | '/dynamicforms/address/form'
@@ -139,8 +117,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/game'
-    | '/tasks'
     | '/dynamicforms/contactform'
     | '/dynamicforms/user-registration'
     | '/dynamicforms/address/form'
@@ -152,8 +128,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  GameRoute: typeof GameRoute
-  TasksRoute: typeof TasksRoute
   DynamicformsContactformRoute: typeof DynamicformsContactformRoute
   DynamicformsUserRegistrationRoute: typeof DynamicformsUserRegistrationRoute
   DynamicformsAddressFormRoute: typeof DynamicformsAddressFormRoute
@@ -165,20 +139,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tasks': {
-      id: '/tasks'
-      path: '/tasks'
-      fullPath: '/tasks'
-      preLoaderRoute: typeof TasksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/game': {
-      id: '/game'
-      path: '/game'
-      fullPath: '/game'
-      preLoaderRoute: typeof GameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -240,8 +200,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  GameRoute: GameRoute,
-  TasksRoute: TasksRoute,
   DynamicformsContactformRoute: DynamicformsContactformRoute,
   DynamicformsUserRegistrationRoute: DynamicformsUserRegistrationRoute,
   DynamicformsAddressFormRoute: DynamicformsAddressFormRoute,

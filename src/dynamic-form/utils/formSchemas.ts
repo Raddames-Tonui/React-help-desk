@@ -172,8 +172,9 @@ export const registrationFormSchema: any = {
             inputType: "password",
             rules: {
                 required: "Please confirm your password",
-                validate: (value, formValues) =>
-                    value === formValues.password || "Passwords don't match"
+                validate: (value: string, formValues: Record<string, any>) =>
+                             value === formValues.password || "Passwords don't match"
+
             }
         },
 
@@ -1025,8 +1026,9 @@ export const jobApplicationSchema: any = {
             },
             rules: {
                 required: "Select at least 3 skills",
-                validate: (value) =>
-                    (value && value.length >= 3) || "Select at least 3 skills"
+                validate: (value: string[] | undefined) =>
+                        (value && value.length >= 3) || "Select at least 3 skills"
+
             }
         },
 

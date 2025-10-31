@@ -36,19 +36,14 @@ html {
 
 .dynamic-form {
     font-size: 1rem;
-}
+    margin: 1rem 1rem 1rem 2rem;
 
-.form-h1 {
-    color: var(--primary-600);
 }
-.form-h2 {
-    color: var(--primary-700);
-}
-
 
 
 .form-field {
     margin-bottom: 1rem;
+    
 }
 
 .form-buttons {
@@ -56,19 +51,7 @@ html {
     gap: 1rem;
 }
 
-.form-buttons button {
-    font-size: 1rem;
-    padding: 0.5em 1.2em;
-    background-color: var(--primary-500);
-    color: white;    
-    border: 1px solid var(--border-color);
-    font-weight: bold;
-    transition: backround-color 0.2s ease;
-}
 
-.form-buttons button:hover {
-    background-color: var(--primary-700);
-}
 
 
 

@@ -12,7 +12,7 @@ function RouteComponent() {
         console.log("Data for submission", values)
     }
 
-    return <div>
+    return <div className='page-wrapper'>
         <DynamicForm
             schema={productFormSchema}
             onSubmit={handleFormSubmit}
