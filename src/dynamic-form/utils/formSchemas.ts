@@ -819,7 +819,7 @@ export const addressFormSchema: any = {
         zipCode: {
             id: "zipCode",
             label: "ZIP / Postal Code",
-            renderer: "text",
+            // renderer: "text",
             visibleWhen: {
                 field: "country",
                 op: "in",

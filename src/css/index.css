@@ -195,3 +195,37 @@ button.clear-all {
 button.clear-all:hover {
   background-color: var(--secondary-200);
 }
+
+
+
+
+
+
+
+.home-container {
+  padding: 1rem;
+}
+
+.form-selector {
+  padding: 0 3rem;
+  margin-bottom: 0.5rem;
+}
+.form-selector > select {
+  margin-left: 0.5rem;
+  padding: 0.3em;
+}
+
+.select-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.form-display {
+  border-top: 1px solid #ddd;
+  padding-top: 1.5rem;
+}
+
+.placeholder-text {
+  color: #888;
+  font-style: italic;
+}

@@ -8,7 +8,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
   const [formValues, setFormValues] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Check if field is visible 
+  /** 🔍 Check if a field should be visible */
   const isFieldVisible = (field: FieldNode): boolean => {
     const rule = field.visibleWhen;
     if (!rule) return true;
@@ -17,7 +17,9 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
       const targetValue = formValues[condition.field];
       switch (condition.op) {
         case "equals": return targetValue === condition.value;
+        case "notEquals": return targetValue !== condition.value;
         case "in": return Array.isArray(condition.value) && condition.value.includes(targetValue);
+        case "notIn": return Array.isArray(condition.value) && !condition.value.includes(targetValue);
         default: return true;
       }
     };
@@ -27,16 +29,18 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
       : checkCondition(rule);
   };
 
-  //Handle value change + validation 
+  /** 🧠 Handle value change + validation */
   const handleChange = (fieldId: string, value: any) => {
     const updatedValues = { ...formValues, [fieldId]: value };
 
+    // Optionally clear hidden field values
     Object.values(fields).forEach((field) => {
       if (!isFieldVisible(field)) updatedValues[field.id] = undefined;
     });
 
     setFormValues(updatedValues);
 
+    // Validate only this field
     const field = fields[fieldId];
     const error = validateField(field, value, updatedValues);
     setErrors((prev) => ({ ...prev, [fieldId]: error || "" }));
@@ -60,7 +64,6 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
       onSubmit?.(formValues);
     }
   };
-
 
   const handleReset = () => {
     setFormValues({});
@@ -189,8 +192,17 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
               {errors[field.id] && (
                 <p className="error-text">
                   <svg
-                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="error-icon"
-                  ><circle cx="12" cy="12" r="10" /><line x1="12" y1="7" x2="12" y2="13" /><circle cx="12" cy="17" r="1" fill="currentColor" />
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="error-icon"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="7" x2="12" y2="13" />
+                    <circle cx="12" cy="17" r="1" fill="currentColor" />
                   </svg>
                   {errors[field.id]}
                 </p>

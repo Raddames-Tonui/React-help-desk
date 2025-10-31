@@ -37,7 +37,6 @@ html {
 .dynamic-form {
     font-size: 1rem;
     margin: 1rem 1rem 1rem 2rem;
-
 }
 
 
@@ -91,6 +90,21 @@ html {
   margin-bottom: 1rem;
 }
 
-.error-text{
-  color: red;
+.error-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #db3442;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  font-weight: 500;
 }
+
+
+.error-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
+
