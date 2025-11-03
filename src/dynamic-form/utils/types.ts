@@ -10,6 +10,15 @@ export interface FieldNode {
     visibleWhen?: any;
 }
 
+export interface LayoutNode {
+  type: 'row' | 'column' | 'tabs' | 'group' | 'field';
+  id?: string;
+  fieldId?: string;
+  children?: LayoutNode[];
+  fields?: string[];
+  props?: Record<string, any>;
+}
+
 export interface FormSchema {
   id: string;
   meta: {
@@ -17,10 +26,11 @@ export interface FormSchema {
     subtitle?: string;
   };
   fields: Record<string, FieldNode>;
-  layout: any[];
+  layout: LayoutNode[];
 }
 
 export interface DynamicFormProps {
   schema: FormSchema;
   onSubmit?: (Values: Record<string, any>) => void;
 }
+

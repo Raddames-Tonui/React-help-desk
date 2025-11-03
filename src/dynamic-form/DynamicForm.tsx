@@ -8,7 +8,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
   const [formValues, setFormValues] = useState<Record<string, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  /** ---------- Visibility Logic ---------- */
+  // ---------- Visibility Logic ---------- 
   const isFieldVisible = (field: FieldNode): boolean => {
     const rule = field.visibleWhen;
     if (!rule) return true;
@@ -28,7 +28,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     return Array.isArray(rule) ? rule.every(checkCondition) : checkCondition(rule);
   };
 
-  /** ---------- Handle Input ---------- */
+  // ---------- Handle Input ---------- 
   const handleChange = (fieldId: string, value: any) => {
     setFormValues((prev) => {
       const updated = { ...prev, [fieldId]: value };
@@ -43,7 +43,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     setErrors((p) => ({ ...p, [fieldId]: error || "" }));
   };
 
-  /** ---------- Submission ---------- */
+  // ---------- Submission ---------- 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const validationErrors: Record<string, string> = {};
@@ -64,7 +64,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     setErrors({});
   };
 
-  /** ---------- Render Field ---------- */
+  // ---------- Render Field ---------- 
   const renderField = (field: FieldNode) => {
     const value = formValues[field.id] ?? field.defaultValue ?? "";
     const handleInputChange = (e: React.ChangeEvent<any>) =>
@@ -186,7 +186,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     }
   };
 
-  /** ---------- Layout Renderer ---------- */
+  // ---------- Layout Renderer ---------- 
   const renderLayoutNode = (node: LayoutNode, index?: number): JSX.Element | null => {
     const key = node.fieldId || node.title || `${node.kind}-${index}`;
 
@@ -237,7 +237,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     }
   };
 
-  /** ---------- Render Form ---------- */
+  // ---------- Render Form ---------- 
   return (
     <div className="dynamic-form">
       {meta.title && <h1 className="form-h1">{meta.title}</h1>}
@@ -254,7 +254,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
   );
 }
 
-/** ---------- MultiSelect Component ---------- */
+// ---------- MultiSelect Component ---------- 
 function MultiSelectField({
   field,
   value,
