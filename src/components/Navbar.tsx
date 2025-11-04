@@ -19,6 +19,7 @@ export default function Navbar() {
         <img src="/todo.png" alt="todo logo" className="logo" />
         <Link to="/">Forms</Link>
         <Link to="/forms">Select</Link>
+        <Link to="/tanstack/react-form">Tanstack/React-Form</Link>
       </div>
       {/* <button onClick={toggleTheme} className="secondary">
         Theme: {theme}

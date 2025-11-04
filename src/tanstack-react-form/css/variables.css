@@ -1,0 +1,23 @@
+:root {
+  --bg-default: #ffffff;
+  --bg-secondary: #f8fafc;
+
+  --primary-50: #f7fcfd;
+  --primary-100: #e0e9eb;
+  --primary-300: #70c9de;
+  --primary-500: #308aa0;
+  --primary-700: #144f5c;
+  --primary-900: #001419;
+
+  --text-dark: #1e293b;
+  --text-light: #64748b;
+  --text-blue: #228be6;
+
+  --border-color: #d1d5db;
+  --border-radius: 0px;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+}

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-form": "^1.23.8",
     "@tanstack/react-router": "^1.132.47",
     "@tanstack/react-router-devtools": "^1.133.1",
     "react": "^19.1.1",

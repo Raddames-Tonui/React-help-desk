@@ -70,12 +70,20 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
     const handleInputChange = (e: React.ChangeEvent<any>) =>
       handleChange(field.id, e.target.value);
 
+    const hasError = !!errors[field.id];
+    const errorClass = hasError ? "input-error" : "";
+
+
     if (!isFieldVisible(field)) return null;
 
     switch (field.renderer) {
       case "select":
         return (
-          <select id={field.id} value={value} onChange={handleInputChange}>
+          <select id={field.id}
+            value={value}
+            onChange={handleInputChange}
+            className={errorClass}
+          >
             <option value="">{field.placeholder || "Select..."}</option>
             {field.props?.data?.map((opt: any, i: number) => {
               const val = typeof opt === "object" ? opt.value : opt;
@@ -96,6 +104,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
             rows={field.props?.minRows || 3}
             value={value}
             onChange={handleInputChange}
+            className={errorClass}
           />
         );
 
@@ -110,6 +119,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
             step={field.props?.step || 1}
             placeholder={field.placeholder}
             onChange={(e) => handleChange(field.id, e.target.valueAsNumber)}
+            className={errorClass}
           />
         );
 
@@ -124,6 +134,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
                   value={opt.value}
                   checked={value === opt.value}
                   onChange={() => handleChange(field.id, opt.value)}
+                  className={errorClass}
                 />
                 {opt.label}
               </label>
@@ -139,6 +150,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
               id={field.id}
               checked={!!value}
               onChange={(e) => handleChange(field.id, e.target.checked)}
+              className={errorClass}
             />
             {field.label}
           </label>
@@ -151,6 +163,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
               type="checkbox"
               checked={!!value}
               onChange={(e) => handleChange(field.id, e.target.checked)}
+              className={errorClass}
             />
             <span className="slider" />
             {field.label}
@@ -159,7 +172,8 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
 
       case "date":
         return (
-          <input type="date" id={field.id} value={value} onChange={handleInputChange} />
+          <input type="date" id={field.id} value={value} onChange={handleInputChange} className={errorClass}
+          />
         );
 
       case "file":
@@ -170,6 +184,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
             accept={field.props?.accept}
             multiple={field.props?.multiple || false}
             onChange={(e) => handleChange(field.id, e.target.files)}
+            className={errorClass}
           />
         );
 
@@ -181,6 +196,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
             placeholder={field.placeholder}
             value={value}
             onChange={handleInputChange}
+            className={errorClass}
           />
         );
     }
@@ -227,7 +243,7 @@ export default function DynamicForm({ schema, onSubmit }: DynamicFormProps) {
       case "section":
         return (
           <fieldset key={key} className="form-section">
-            {node.title && <h3  className="section-title">{node.title}</h3>}
+            {node.title && <h3 className="section-title">{node.title}</h3>}
             {node.children?.map((child, i) => renderLayoutNode(child, i))}
           </fieldset>
         );

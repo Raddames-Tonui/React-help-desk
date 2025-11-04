@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FormsRouteImport } from './routes/forms'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TanstackReactFormRouteImport } from './routes/tanstack.react-form'
 import { Route as DynamicformsUserRegistrationRouteImport } from './routes/dynamicforms/user-registration'
 import { Route as DynamicformsContactformRouteImport } from './routes/dynamicforms/contactform'
 import { Route as DynamicformsProductFormRouteImport } from './routes/dynamicforms/product.form'
@@ -27,6 +28,11 @@ const FormsRoute = FormsRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TanstackReactFormRoute = TanstackReactFormRouteImport.update({
+  id: '/tanstack/react-form',
+  path: '/tanstack/react-form',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DynamicformsUserRegistrationRoute =
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/forms': typeof FormsRoute
   '/dynamicforms/contactform': typeof DynamicformsContactformRoute
   '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
+  '/tanstack/react-form': typeof TanstackReactFormRoute
   '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
   '/dynamicforms/agent/update': typeof DynamicformsAgentUpdateRoute
   '/dynamicforms/multi-condition/form': typeof DynamicformsMultiConditionFormRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/forms': typeof FormsRoute
   '/dynamicforms/contactform': typeof DynamicformsContactformRoute
   '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
+  '/tanstack/react-form': typeof TanstackReactFormRoute
   '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
   '/dynamicforms/agent/update': typeof DynamicformsAgentUpdateRoute
   '/dynamicforms/multi-condition/form': typeof DynamicformsMultiConditionFormRoute
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/forms': typeof FormsRoute
   '/dynamicforms/contactform': typeof DynamicformsContactformRoute
   '/dynamicforms/user-registration': typeof DynamicformsUserRegistrationRoute
+  '/tanstack/react-form': typeof TanstackReactFormRoute
   '/dynamicforms/address/form': typeof DynamicformsAddressFormRoute
   '/dynamicforms/agent/update': typeof DynamicformsAgentUpdateRoute
   '/dynamicforms/multi-condition/form': typeof DynamicformsMultiConditionFormRoute
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/forms'
     | '/dynamicforms/contactform'
     | '/dynamicforms/user-registration'
+    | '/tanstack/react-form'
     | '/dynamicforms/address/form'
     | '/dynamicforms/agent/update'
     | '/dynamicforms/multi-condition/form'
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/forms'
     | '/dynamicforms/contactform'
     | '/dynamicforms/user-registration'
+    | '/tanstack/react-form'
     | '/dynamicforms/address/form'
     | '/dynamicforms/agent/update'
     | '/dynamicforms/multi-condition/form'
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/forms'
     | '/dynamicforms/contactform'
     | '/dynamicforms/user-registration'
+    | '/tanstack/react-form'
     | '/dynamicforms/address/form'
     | '/dynamicforms/agent/update'
     | '/dynamicforms/multi-condition/form'
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   FormsRoute: typeof FormsRoute
   DynamicformsContactformRoute: typeof DynamicformsContactformRoute
   DynamicformsUserRegistrationRoute: typeof DynamicformsUserRegistrationRoute
+  TanstackReactFormRoute: typeof TanstackReactFormRoute
   DynamicformsAddressFormRoute: typeof DynamicformsAddressFormRoute
   DynamicformsAgentUpdateRoute: typeof DynamicformsAgentUpdateRoute
   DynamicformsMultiConditionFormRoute: typeof DynamicformsMultiConditionFormRoute
@@ -164,6 +177,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tanstack/react-form': {
+      id: '/tanstack/react-form'
+      path: '/tanstack/react-form'
+      fullPath: '/tanstack/react-form'
+      preLoaderRoute: typeof TanstackReactFormRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dynamicforms/user-registration': {
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   FormsRoute: FormsRoute,
   DynamicformsContactformRoute: DynamicformsContactformRoute,
   DynamicformsUserRegistrationRoute: DynamicformsUserRegistrationRoute,
+  TanstackReactFormRoute: TanstackReactFormRoute,
   DynamicformsAddressFormRoute: DynamicformsAddressFormRoute,
   DynamicformsAgentUpdateRoute: DynamicformsAgentUpdateRoute,
   DynamicformsMultiConditionFormRoute: DynamicformsMultiConditionFormRoute,
