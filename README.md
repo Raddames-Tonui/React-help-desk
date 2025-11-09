@@ -1,6 +1,6 @@
 # TanStack Query + React Hook Form + Zod: Comprehensive Guide
 
-![LIVE WWEBSITE](https://react-tanstack-query-main.netlify.app/)
+👉 [View Live App](https://react-tanstack-query-main.netlify.app/)
 
 This README covers:
 
