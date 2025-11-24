@@ -6,8 +6,8 @@ import type {
     UserData,
 } from "@/context/types.ts";
 
-export const TOKEN = import.meta.env.VITE_TOKEN;
-// export const TOKEN = "0b008ea4-07fa-435f-906d-76f134078e3d-mdcedoc7"
+// export const TOKEN = import.meta.env.VITE_TOKEN;
+export const TOKEN = "0b008ea4-07fa-435f-906d-76f134078e3d-mdcedoc7"
 
 
 // ----------- AUTH CONTEXT------------
